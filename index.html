@@ -733,6 +733,7 @@ footer a:hover{color:var(--text)}
     <p class="eyebrow rise">ダウンロード</p>
     <h2 class="rise">無料です。<br>アカウント登録もありません。</h2>
     <p class="lede rise">バージョン <b id="ver2">1.1.0</b> ・ MIT ライセンス ・ 回路データは端末内に保存されます。</p>
+    <p class="note" id="dl-state" hidden></p>
 
     <div class="dl-grid">
       <a class="dl-card rise" id="dl-win" href="https://github.com/naozane26n1100629-gif/Rosso-dist/releases">
@@ -1154,17 +1155,42 @@ onScroll();
 
 /* ============================================================
    12. 最新リリースを GitHub から取ってきてリンクを差し替える
-   取れなければリリース一覧ページへのリンクのまま残す。
    ============================================================ */
 (function () {
   var REPO = "naozane26n1100629-gif/Rosso-dist";
-  if (!window.fetch) return;
+  var cards = [
+    { card: "dl-win", meta: "meta-win" },
+    { card: "dl-mac", meta: "meta-mac" }
+  ];
+
+  /* まだリリースが無い / 取得できないときに、押しても何も落ちてこないボタンを
+     そのまま見せるのは不親切なので、状態を正直に出す。 */
+  function noRelease(reason) {
+    for (var i = 0; i < cards.length; i++) {
+      var c = document.getElementById(cards[i].card);
+      if (!c) continue;
+      var btn = c.querySelector(".btn");
+      if (btn) { btn.textContent = "リリース一覧を見る"; btn.classList.add("btn-s"); btn.classList.remove("btn-p"); }
+      var m = document.getElementById(cards[i].meta);
+      if (m) m.textContent = reason;
+    }
+    var note = document.getElementById("dl-state");
+    if (note) {
+      note.hidden = false;
+      note.textContent = "現在このバージョンのビルドを公開準備中です。公開されるとここが直接のダウンロードリンクに変わります。";
+    }
+  }
+
+  if (!window.fetch) return;   /* 古い環境。既定のリリース一覧リンクのまま */
+
   fetch("https://api.github.com/repos/" + REPO + "/releases/latest", {
     headers: { Accept: "application/vnd.github+json" }
   }).then(function (r) {
-    if (!r.ok) throw new Error("no release");
+    if (r.status === 404) { noRelease("ビルド公開準備中"); return null; }
+    if (!r.ok) throw new Error("HTTP " + r.status);
     return r.json();
   }).then(function (rel) {
+    if (!rel) return;
     var v = String(rel.tag_name || "").replace(/^v/, "");
     if (v) {
       var e1 = document.getElementById("ver"), e2 = document.getElementById("ver2");
@@ -1189,8 +1215,11 @@ onScroll();
       document.getElementById("meta-mac").textContent =
         "Apple Silicon (M1以降) ・ " + mac.name.replace(/^Rosso_/, "") + " ・ " + mb(mac.size);
     }
+    /* リリースはあるのに該当 OS の資産が無い場合も取り違えさせない */
+    if (!win && !mac) noRelease("ビルド公開準備中");
   }).catch(function () {
-    /* リリース未公開・通信不可・レート制限。リンク先はリリース一覧のまま */
+    /* 通信不可・レート制限。押せば手で辿れるリリース一覧に留める */
+    noRelease("リリース情報を取得できませんでした");
   });
 })();
 </script>
