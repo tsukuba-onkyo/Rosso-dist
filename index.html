@@ -4,9 +4,9 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Rosso — エフェクター回路シミュレーター</title>
-<meta name="description" content="回路図を描くと、その場で音が鳴る。Rust製の回路シミュレーションエンジンで、ゲルマニウムファズから真空管プリまで実部品1919点を使って設計・試聴できるデスクトップアプリ。Windows / macOS 無料。">
+<meta name="description" content="回路図を描くと、その場で音が鳴る。Rust製の回路ソルバ Lotus Engine が、ゲルマニウムファズから真空管プリまで実部品1919点の回路をそのまま解きます。Windows / macOS 無料。">
 <meta property="og:title" content="Rosso — エフェクター回路シミュレーター">
-<meta property="og:description" content="回路図を描くと、その場で音が鳴る。実部品1919点、Rust製シミュレーションエンジン。">
+<meta property="og:description" content="回路図を描くと、その場で音が鳴る。実部品1919点、Rust製ソルバ Lotus Engine。">
 <meta property="og:type" content="website">
 <link rel="icon" href="icon.png">
 <style>
@@ -575,12 +575,16 @@ footer a:hover{color:var(--text)}
   <div class="scrub-in">
     <div class="scrub-grid">
       <div>
-        <p class="eyebrow rise">シミュレーションエンジン</p>
+        <p class="eyebrow rise">Lotus Engine</p>
         <h2 class="rise" style="font-size:clamp(27px,3.6vw,44px)">歪みを「モデル」ではなく<br>回路から出す。</h2>
         <p class="lede rise" style="font-size:16.5px">
-          Rosso のエンジンは Rust で書かれています。回路を節点方程式 (MNA) に組み立て、
-          非線形な素子は Newton 法で毎サンプル解きます。歪みの形は近似カーブではなく、
-          ダイオードやトランジスタの式そのものから出てきます。
+          <b>Lotus Engine</b> は、回路を毎サンプル解くソルバです。Rust で書かれていて、
+          回路を節点方程式 (MNA) に組み立て、非線形な素子は Newton 法で解きます。
+          歪みの形は近似カーブではなく、ダイオードやトランジスタの式そのものから出てきます。
+        </p>
+        <p class="note rise" style="margin-top:14px">
+          回路のどこか一箇所だけを先に解くことはできません。ある節点の電圧は回路全体に同時に
+          依存しているので、46種のデバイスを1つの行列に組んで一度に解きます。
         </p>
         <div class="meters" style="margin-top:22px">
           <div class="meter"><span>DRIVE</span><b id="m-drive" class="hl">0%</b></div>
@@ -620,16 +624,17 @@ footer a:hover{color:var(--text)}
 <section id="vision">
   <div class="wrap two">
     <div>
-      <p class="eyebrow rise">回路図の画像から転写</p>
+      <p class="eyebrow rise">4DEM — 回路図の転写と診断</p>
       <h2 class="rise" style="font-size:clamp(27px,3.8vw,46px)">紙の回路図を、<br>編集できる回路にする。</h2>
       <p class="lede rise">
-        書籍やネットで見つけた回路図の画像を貼り付けると、AI が部品と配線を読み取って
+        書籍やネットで見つけた回路図の画像を貼り付けると、<b>4DEM</b> が部品と配線を読み取って
         Rosso の回路として起こします。並べ替えずに<span class="hl">元の図と同じ配置</span>で置くので、
         手元の図と見比べながら作業できます。
       </p>
       <p class="lede rise" style="font-size:16px">
         読み取りは複数回走らせて結果を突き合わせ、<span class="hl-b">食い違った箇所に印を付けて</span>提示します。
-        そのまま流し込まず、確認してから適用する作りです。
+        そのまま流し込まず、確認してから適用する作りです。組み終わったあとの改善提案
+        (どこに抵抗やコンデンサを足すべきか) も 4DEM の担当で、こちらは実測に基づいて出します。
       </p>
       <p class="note rise">
         AI の読み取りには Google Gemini の API キー (無料枠あり) をご自分で設定します。
