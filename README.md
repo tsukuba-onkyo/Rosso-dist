@@ -1,6 +1,6 @@
 # Rosso — 配布用リポジトリ
 
-[Rosso](https://github.com/naozane26n1100629-gif/Rosso) デスクトップ版のインストーラを配布するためのリポジトリです。
+[Rosso](https://github.com/tsukuba-onkyo/Rosso) デスクトップ版のインストーラを配布するためのリポジトリです。
 **ソースコードは置いていません。**
 
 ## ダウンロード
