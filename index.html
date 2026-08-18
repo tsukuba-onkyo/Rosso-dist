@@ -1650,5 +1650,13 @@ onScroll();
   });
 })();
 </script>
+
+<!-- Cloudflare Web Analytics。Cookie を使わず個人を追跡しないので同意バナーは不要。
+     見たいのは「英語ページがどの国から読まれているか」で、GitHub の Traffic API は
+     Pages のアクセスを一切含まないため、ここでしか測れない。
+     token は公開ページに埋め込む前提の識別子で、秘密情報ではない。
+     publish-site.sh が送るのは index.html / anime.min.js / icon.png の3つだけなので、
+     外部ファイルを増やさずこの1行で完結させている。 -->
+<script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "187453320bb046f09da61fde432fdc59"}'></script>
 </body>
 </html>
