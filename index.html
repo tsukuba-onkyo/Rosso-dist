@@ -68,6 +68,10 @@ header nav a:hover{color:var(--text)}
 }
 .top-dl:hover{transform:translateY(-1px);opacity:.9}
 @media(max-width:860px){header nav a:not(.top-dl){display:none}}
+/* 言語切替。英語圏の利用者が最初に触る導線なので狭い画面でも残す */
+.lang-btn{border:1px solid var(--border);border-radius:999px;padding:5px 12px;font-size:12.5px;letter-spacing:.04em}
+.lang-btn:hover{color:var(--text);border-color:var(--muted)}
+@media(max-width:860px){header nav a.lang-btn{display:inline-block}}
 
 /* ---------- 共通レイアウト ---------- */
 section{padding:clamp(90px,13vh,170px) var(--edge);position:relative}
@@ -418,6 +422,403 @@ footer a:hover{color:var(--text)}
 })();
 </script>
 
+<script>
+/* =====================================================================
+ * 配布ページの日英併存 (アプリ本体 js/i18n.js と同じ方式)
+ *
+ *   ・日本語の原文がそのまま辞書キー。辞書に無い文字列は日本語のまま出る
+ *   ・インラインマークアップを含む段落は data-i18n-html で「まるごと1キー」
+ *   ・辞書をこのファイルに埋め込んでいるのは、publish-site.sh が送るのが
+ *     index.html / anime.min.js / icon.png の3つだけだから。外部JSにすると
+ *     「送り忘れて英語だけ壊れる」経路ができる
+ *
+ * 未訳の検出は tests/site_i18n_test.js が担当 (ページの日本語と突合)。
+ * ===================================================================== */
+var SITE_EN = {
+  /* ---- インラインマークアップを含む段落 (まるごと1キー) ---- */
+  "同じ回路でもトランジスタを替えれば音は変わります。Rosso は部品ごとに hFE や接合容量、 真空管なら Koren 係数といった実際のパラメータを持っているので、 <span class=\"hl-o\">AC128</span> と <span class=\"hl-b\">BC109C</span> の違いも、 <span class=\"hl-p\">12AX7</span> と <span class=\"hl-p\">12AT7</span> の違いも、置き換えて聴き比べられます。":
+    "Swap the transistor and the same circuit sounds different. Rosso keeps the real parameters for every part - hFE and junction capacitance, Koren coefficients for tubes - so the difference between an <span class=\"hl-o\">AC128</span> and a <span class=\"hl-b\">BC109C</span>, or between a <span class=\"hl-p\">12AX7</span> and a <span class=\"hl-p\">12AT7</span>, is something you can swap in and listen to.",
+  "パラメータの細かさは分野によって違います。真空管158点は115通り、オペアンプ160点は107通りの 独立したパラメータを持ちます。一方ゲルマニウムトランジスタ180点は hFE と漏れ電流の等級で 36通りに分けているため、<b style=\"color:#9aa5b8;font-weight:500\">同じ等級の型番は同じ挙動になります</b> (公開されている実測値が乏しい領域なので、値をでっち上げないための割り切りです)。":
+    "How finely a part is modeled varies by field. The 158 tubes have 115 distinct parameter sets and the 160 op-amps have 107. The 180 germanium transistors, on the other hand, are sorted into 36 classes by hFE and leakage current, so <b style=\"color:#9aa5b8;font-weight:500\">part numbers in the same class behave identically</b> (published measurements are scarce here, and we would rather not invent numbers).",
+  "<b>Lotus Engine</b> は、回路を毎サンプル解くソルバです。Rust で書かれていて、 回路を節点方程式 (MNA) に組み立て、非線形な素子は Newton 法で解きます。 歪みの形は近似カーブではなく、ダイオードやトランジスタの式そのものから出てきます。":
+    "<b>Lotus Engine</b> is a solver that solves the circuit on every sample. Written in Rust, it assembles the circuit into nodal equations (MNA) and solves the nonlinear devices with Newton's method. The shape of the distortion is not an approximation curve - it falls out of the diode and transistor equations themselves.",
+  "右の波形とスペクトラムは、このページ上で実際に計算しています (正弦波 + tanh ソフトクリップの DFT)。 上下対称に潰しているので<b style=\"color:#9aa5b8;font-weight:500\">偶数次の倍音は出ません</b> — 棒が1本飛びに立つのはそのためです。アプリ本体はこれよりずっと踏み込んで、 素子ごとの物理式を連立して解いています。":
+    "The waveform and spectrum on the right are computed right here on this page (a sine wave plus a tanh soft clip, then a DFT). Because it is squashed symmetrically, <b style=\"color:#9aa5b8;font-weight:500\">no even harmonics appear</b> - that is why every other bar is missing. The app itself goes much further, solving the physical equations of each device simultaneously.",
+  "書籍やネットで見つけた回路図の画像を貼り付けると、<b>4DEM</b> が部品と配線を読み取って Rosso の回路として起こします。並べ替えずに<span class=\"hl\">元の図と同じ配置</span>で置くので、 手元の図と見比べながら作業できます。":
+    "Paste in a picture of a schematic from a book or the web and <b>4DEM</b> reads the parts and wiring and rebuilds it as a Rosso circuit. It places everything <span class=\"hl\">in the same layout as the original</span> rather than rearranging it, so you can work with your source drawing side by side.",
+  "読み取りは複数回走らせて結果を突き合わせ、<span class=\"hl-b\">食い違った箇所に印を付けて</span>提示します。 そのまま流し込まず、確認してから適用する作りです。組み終わったあとの改善提案 (どこに抵抗やコンデンサを足すべきか) も 4DEM の担当で、こちらは実測に基づいて出します。":
+    "The read runs several times and the results are cross-checked, then <span class=\"hl-b\">anything that disagrees is flagged</span> for you. Nothing is poured straight in - you confirm before applying. Suggestions for what to improve once it is built (where to add a resistor or a capacitor) are 4DEM's job too, and those come from measurements.",
+  "<b style=\"color:var(--text)\">配布物に署名を付けていません。</b> そのため初回起動時に OS が警告を出します。macOS では アプリを右クリック →「開く」を選ぶか、<code>システム設定 → プライバシーとセキュリティ</code> から許可してください。 Windows では SmartScreen の「詳細情報」→「実行」で進めます。":
+    "<b style=\"color:var(--text)\">The builds are not code-signed.</b> Your OS will warn you the first time you launch. On macOS, right-click the app and choose Open, or allow it from <code>System Settings &rarr; Privacy &amp; Security</code>. On Windows, click \"More info\" then \"Run anyway\" in SmartScreen.",
+  "<b style=\"color:var(--text)\">macOS で「\"Rosso\"は壊れているため開けません」と出る場合。</b> v1.3.4 以前の macOS 版に起きる不具合で、アプリは壊れていません。この表示のときは 右クリック →「開く」では回避できないので、ターミナルで次を実行してから開いてください。":
+    "<b style=\"color:var(--text)\">If macOS says \"Rosso is damaged and can't be opened\".</b> This is a bug in macOS builds up to v1.3.4 - the app is not damaged. Right-click and Open does not get around this one, so run the following in Terminal first, then open it.",
+  "<b style=\"color:var(--text)\">macOS 版は Apple Silicon 専用です。</b> Intel Mac 向けのビルドはまだありません。":
+    "<b style=\"color:var(--text)\">The macOS build is Apple Silicon only.</b> There is no Intel Mac build yet.",
+
+  /* ---- 回路図(SVG)の中の文字 ---- */
+  "1024段":
+    "1024 stages",
+
+  /* ---- 属性 ---- */
+  "Rosso で作成したビブラート回路の回路図":
+    "Schematic of a vibrato circuit built in Rosso",
+
+  /* ---- 本文 ---- */
+  "Rosso — エフェクター回路シミュレーター":
+    "Rosso - a circuit simulator for guitar effects",
+  "できること":
+    "What it does",
+  "部品ライブラリ":
+    "Part library",
+  "エンジン":
+    "Engine",
+  "回路図の転写":
+    "Schematic capture",
+  "ダウンロード":
+    "Download",
+  "バージョン":
+    "Version",
+  "・ 無料":
+    " · Free",
+  "回路図を描く。":
+    "Draw a schematic.",
+  "その場で音が鳴る。":
+    "Hear it immediately.",
+  "Rosso はギターエフェクターのための回路シミュレーターです。抵抗やトランジスタを並べて配線すると、 その回路をそのまま解いて音にします。基板を起こす前に、部品1本の違いを耳で確かめられます。":
+    "Rosso is a circuit simulator for guitar effects. Lay out resistors and transistors, wire them together, and it solves that circuit and turns it into sound. Before you commit to a board, you can hear what a single part change does.",
+  "↓ ダウンロード":
+    "↓ Download",
+  "何ができるのか見る":
+    "See what it can do",
+  "無料で使えます / Windows・macOS":
+    "Free to use / Windows and macOS",
+  "付属プリセット:":
+    "Included preset:",
+  "ビブラート (VB-2風)":
+    "Vibrato (VB-2 style)",
+  "部品:":
+    "Parts:",
+  "配線:":
+    "Wires:",
+  "要:":
+    "Key point:",
+  "MN3007 BBD + LFO による遅延変調":
+    "Delay modulation from an MN3007 BBD and an LFO",
+  "設計のループ":
+    "The design loop",
+  "置く、鳴らす、直す。":
+    "Place it, play it, fix it.",
+  "その往復が数秒で回る。":
+    "The round trip takes seconds.",
+  "01 / 置く":
+    "01 / Place",
+  "部品を並べて配線する":
+    "Lay out parts and wire them up",
+  "1920点の実部品から選んで置き、線でつなぐだけ。定数はあとから自由に変えられます。":
+    "Pick from 1,920 real parts, drop them in and draw wires. Values can be changed later, freely.",
+  "02 / 鳴らす":
+    "02 / Play",
+  "再生ボタンを押すと音になる":
+    "Press play and it becomes sound",
+  "回路がそのまま解かれて音が出ます。波形とスペクトラムも同時に見えるので、耳と目の両方で確認できます。":
+    "The circuit itself is solved and comes out as audio. The waveform and spectrum are shown at the same time, so you can check with your ears and your eyes at once.",
+  "03 / 直す":
+    "03 / Fix",
+  "おかしなところを指摘してくれる":
+    "It points out what looks wrong",
+  "誤配線チェックが常に走ります。実測に基づく改善提案は、ボタン一つで回路に反映できます。":
+    "A wiring check runs continuously. Suggested improvements, grounded in measurement, can be applied to the circuit with a single button.",
+  "部品を配置":
+    "Place parts",
+  "波形 / スペクトラム":
+    "Waveform / spectrum",
+  "誤配線チェック / アドバイザー":
+    "Wiring check / advisor",
+  "入力が浮いている":
+    "The input is floating",
+  "IN から先が GND に落ちていません。入力インピーダンスを決める抵抗を入れてください。":
+    "Nothing past IN reaches GND. Add a resistor to set the input impedance.",
+  "高域が落ちすぎている":
+    "Too much treble is being lost",
+  "出力段の 100n を 22n にすると −3dB 点が 1.6kHz から 7.2kHz に上がります。":
+    "Changing the 100n in the output stage to 22n moves the -3dB point from 1.6kHz up to 7.2kHz.",
+  "［適用］":
+    "[Apply]",
+  "バイアスは適正":
+    "Bias is where it should be",
+  "Q1 のコレクタ電圧は 4.6V。9V 電源に対しておおよそ中点です。":
+    "Q1's collector sits at 4.6V - roughly midpoint on a 9V supply.",
+  "「その年代のその石」で組める。":
+    "Build it with that decade's exact transistor.",
+  "収録部品":
+    "Parts included",
+  "ゲルマニウムトランジスタ":
+    "Germanium transistors",
+  "真空管 (プリ・パワー・整流)":
+    "Tubes (preamp, power, rectifier)",
+  "物理モデルの種類":
+    "Physical model types",
+  "ゲルマニウム":
+    "Germanium",
+  "AC128・OC44・NKT275・AD149・MP38 など180点。低い hFE、大きな漏れ電流、1.5MHz しかない fT まで持つので、あの丸さと不安定さが出ます。":
+    "180 parts including the AC128, OC44, NKT275, AD149 and MP38. Low hFE, heavy leakage and an fT of only 1.5MHz are all modeled, so you get that round, unruly character.",
+  "真空管":
+    "Tubes",
+  "12AX7・EL34・KT88・6L6GC・300B・2A3 など188点。Koren モデルで動くので、プリからパワー段まで組めます。":
+    "188 parts including the 12AX7, EL34, KT88, 6L6GC, 300B and 2A3. They run on the Koren model, so you can build anything from a preamp to an output stage.",
+  "BBD (アナログ遅延)":
+    "BBD (analog delay)",
+  "MN3007・MN3005・MN3207・V3205D など33点。コーラス・フランジャー・ビブラート・アナログディレイの中核です。":
+    "33 parts including the MN3007, MN3005, MN3207 and V3205D - the heart of chorus, flanger, vibrato and analog delay.",
+  "オペアンプ 160点":
+    "160 op-amps",
+  "JRC4558D・TL072・NE5532・TA7136AP など。GBW とスルーレートを持つので、帯域による差も出ます。":
+    "The JRC4558D, TL072, NE5532, TA7136AP and more. Each carries its own GBW and slew rate, so differences in bandwidth come through.",
+  "ダイオード・FET":
+    "Diodes and FETs",
+  "1N34A・1N4148・BAT41 のクリッピング差、2SK117・J201 のバラつき。歪みの質を決める部分がそのまま部品選びになります。":
+    "The clipping differences between a 1N34A, a 1N4148 and a BAT41; the spread between a 2SK117 and a J201. What decides the quality of your distortion is simply which part you pick.",
+  "CMOS・変わり種":
+    "CMOS and oddities",
+  "CD4013 によるサブオクターブ、SSM2164、NE570 コンパンダ、フォトカプラ、CdS、バリキャップ、サイリスタまで。":
+    "Sub-octaves from a CD4013, the SSM2164, NE570 companders, optocouplers, CdS cells, varicaps, even thyristors.",
+  "歪みを「モデル」ではなく":
+    "Distortion is not a model.",
+  "回路から出す。":
+    "It comes out of the circuit.",
+  "回路のどこか一箇所だけを先に解くことはできません。ある節点の電圧は回路全体に同時に 依存しているので、46種のデバイスを1つの行列に組んで一度に解きます。":
+    "No single point in a circuit can be solved ahead of the rest. The voltage at any node depends on the whole circuit at once, so all 46 device types go into one matrix and are solved together.",
+  "3次倍音":
+    "3rd harmonic",
+  "スコープ ─ IN":
+    "Scope - IN",
+  "・ スクロールすると DRIVE が上がります":
+    " · Scroll to raise DRIVE",
+  "スペクトラム (OUT) — 横軸は倍音の次数":
+    "Spectrum (OUT) - horizontal axis is harmonic order",
+  "4DEM — 回路図の転写と診断":
+    "4DEM - schematic capture and diagnosis",
+  "紙の回路図を、":
+    "Take a schematic on paper",
+  "編集できる回路にする。":
+    "and make it an editable circuit.",
+  "AI の読み取りには Google Gemini の API キー (無料枠あり) をご自分で設定します。 キーは端末内にのみ保存されます。この機能を使わない場合、設定は不要です。":
+    "Reading a schematic with AI uses your own Google Gemini API key (there is a free tier). The key is stored only on your machine. If you do not use this feature, no setup is needed.",
+  "転写結果の確認":
+    "Reviewing a capture",
+  "写真・スキャン":
+    "Photo or scan",
+  "編集できる回路":
+    "Editable circuit",
+  "読み取れた部品":
+    "Parts recognized",
+  "3回の読み取りで一致":
+    "Agreed on across 3 reads",
+  "食い違い (要確認)":
+    "Disagreements (please check)",
+  "2 — R4 / C3 の値":
+    "2 - the values of R4 and C3",
+  "※ 表示は機能の説明用の例です。読み取り精度は回路図の状態によって大きく変わります。":
+    "Note: this display is an illustration of the feature. Accuracy depends heavily on the condition of the schematic.",
+  "作る人のための機能":
+    "Features for people who build",
+  "「どっちが良いか」を、":
+    "Decide which one is better",
+  "思い込みでなく耳で決める。":
+    "with your ears, not your assumptions.",
+  "A/B 比較":
+    "A/B comparison",
+  "選んだ部品の状態を A と B に記録して、Tab キーで切り替えます。回路の他の部分は共通のままなので、 比べたい箇所だけが変わります。ポットを回すと、コンパイルし直さずそのまま音が追従します。":
+    "Record the state of the selected parts as A and B, then switch with the Tab key. The rest of the circuit stays identical, so only what you wanted to compare changes. Turn a pot and the sound follows without recompiling.",
+  "コピーとグリッド複製":
+    "Copy and grid duplication",
+  "Shift+ドラッグで範囲選択、Ctrl+C / Ctrl+V でコピー。段数を指定してグリッド状に複製もできるので、 多段クリッパーやラダーフィルタを一気に並べられます。":
+    "Shift-drag to select an area, Ctrl+C / Ctrl+V to copy. You can also duplicate onto a grid with a set number of stages, so a multi-stage clipper or a ladder filter goes down all at once.",
+  "A/B — Q1 の差し替え":
+    "A/B - swapping Q1",
+  "クリックで切り替わります。数値は各型番の収録パラメータです。":
+    "Click to switch. The numbers are the parameters stored for each part.",
+  "実際のギターを通せる":
+    "Run a real guitar through it",
+  "オーディオ入力から生の信号を流せます。撥弦のシミュレーション、サイン波、矩形波、ノイズ、手持ちの音声ファイルも入力にできます。":
+    "Feed a live signal in from an audio input. A plucked-string simulation, sine, square, noise, or your own audio files can all be the source.",
+  "キャビネットシミュレーション":
+    "Cabinet simulation",
+  "1×12 オープンバック / 4×12 クローズドバックを後段に置けます。スピーカーを通した後の音で判断できます。":
+    "Put a 1x12 open back or a 4x12 closed back after the circuit and judge the sound as it leaves a speaker.",
+  "精度を選べる":
+    "Pick your accuracy",
+  "標準から 8× オーバーサンプリングまで。組んでいる間は軽く、詰めの段階で上げる、という使い方ができます。":
+    "From standard up to 8x oversampling. Keep it light while you build, then raise it when you are finishing.",
+  "14種のプリセット":
+    "14 presets",
+  "RCフィルタから Marshall 1959風プリ (12AX7×3)、オクターブファズ (CD4013)、リングモジュレータ、クリーンなオクターブアップ、シンセのVCFやサンプル&ホールドまで。改造の出発点に。":
+    "From an RC filter to a Marshall 1959-style preamp (three 12AX7s), an octave fuzz (CD4013), a ring modulator, a clean octave-up, and synth VCFs and sample-and-holds. Starting points to modify.",
+  "JSON で保存":
+    "Saved as JSON",
+  "回路はテキストの JSON。差分が読めるので、バージョン管理にも人に渡すのにも向いています。":
+    "Circuits are plain-text JSON. Diffs are readable, which suits version control and handing a file to someone else.",
+  "自動アップデート":
+    "Automatic updates",
+  "新しいバージョンが出たらアプリが知らせます。ダウンロードし直しは不要です。":
+    "The app tells you when a new version is out. No downloading it again.",
+  "無料です。":
+    "It's free.",
+  "アカウント登録もありません。":
+    "No account, either.",
+  "・ 個人利用は無料 ・ 回路データは端末内に保存されます。":
+    " · Free for personal use · Circuit data is stored on your own machine.",
+  "64bit ・ インストーラ (.exe / .msi)":
+    "64-bit · Installer (.exe / .msi)",
+  "Apple Silicon (M1以降) ・ .dmg":
+    "Apple Silicon (M1 or later) · .dmg",
+  "インストール前に知っておいてほしいこと":
+    "What to know before you install",
+  "v1.3.5 以降では出なくなります (出た場合は上のコマンドで通せます)。":
+    "From v1.3.5 on this no longer happens (and if it does, the command above gets you through).",
+  "回路シミュレーションは CPU を使います。大きな回路や高い精度設定では負荷が上がるので、 必要に応じて品質設定を下げてください。":
+    "Circuit simulation uses the CPU. Large circuits and high accuracy settings raise the load, so turn the quality setting down if you need to.",
+  "— エフェクター回路シミュレーター":
+    " - a circuit simulator for guitar effects",
+  "リリース":
+    "Releases",
+  "不具合の報告":
+    "Report a bug",
+  "© 2026 筑波音響":
+    "© 2026 Tsukuba Onkyo",
+
+  /* ---- meta ---- */
+  "回路図を描くと、その場で音が鳴る。Rust製の回路ソルバ Lotus Engine が、ゲルマニウムファズから真空管プリまで実部品1920点の回路をそのまま解きます。Windows / macOS 無料。":
+    "Draw a schematic and it makes sound on the spot. Lotus Engine, a circuit solver written in Rust, solves real circuits built from 1,920 real parts - from germanium fuzz to tube preamps. Free for Windows and macOS.",
+  "回路図を描くと、その場で音が鳴る。実部品1920点、Rust製ソルバ Lotus Engine。":
+    "Draw a schematic and it makes sound on the spot. 1,920 real parts, solved by Lotus Engine in Rust.",
+
+  /* ---- ページ内スクリプトが出す文字列 ---- */
+  "64bit ・ ":
+    "64-bit · ",
+  " ・ ":
+    " · ",
+  "抵抗 カーボンコンポ":
+    "Resistor, carbon comp",
+  "フィルムコンデンサ":
+    "Film capacitor",
+  "AC128 (ゲルマニウム)":
+    "AC128 (germanium)",
+  "抵抗 金属皮膜":
+    "Resistor, metal film",
+  "ポット A100k":
+    "Pot A100k",
+  "電解コンデンサ":
+    "Electrolytic capacitor",
+  "1N34A (ゲルマ)":
+    "1N34A (germanium)",
+  "漏れ電流 ICBO":
+    "Leakage current ICBO",
+  "遷移周波数 fT":
+    "Transition frequency fT",
+  "接合容量 Cbc":
+    "Junction capacitance Cbc",
+  "極性":
+    "Polarity",
+  "PNP ・ ゲルマニウム":
+    "PNP · germanium",
+  "NPN ・ シリコン":
+    "NPN · silicon",
+  "LED 赤 5mm":
+    "LED red 5mm",
+  "リリース一覧を見る":
+    "See all releases",
+  "現在このバージョンのビルドを公開準備中です。公開されるとここが直接のダウンロードリンクに変わります。":
+    "A build of this version is being prepared for release. Once it is out, this turns into a direct download link.",
+  "ビルド公開準備中":
+    "Build in preparation",
+  "Apple Silicon (M1以降) ・ ":
+    "Apple Silicon (M1 or later) · ",
+  "リリース情報を取得できませんでした":
+    "Could not fetch release information",
+};
+
+var Lang = (function () {
+  var KEY = "rosso-site-lang", SUP = ["ja", "en"];
+  function detect() {
+    try { var s = localStorage.getItem(KEY); if (SUP.indexOf(s) >= 0) return s; } catch (e) {}
+    var n = (navigator.language || (navigator.languages || [])[0] || "") + "";
+    return /^ja/i.test(n) ? "ja" : (n ? "en" : "ja");
+  }
+  var lang = detect();
+  /* 翻訳。辞書に無ければ原文をそのまま返す (未訳が事故にならない) */
+  function T(s) {
+    if (lang === "ja" || s == null) return s;
+    var k = String(s);
+    if (Object.prototype.hasOwnProperty.call(SITE_EN, k)) return SITE_EN[k];   /* 前後の空白ごと一致 */
+    k = k.trim();
+    return Object.prototype.hasOwnProperty.call(SITE_EN, k) ? SITE_EN[k] : s;
+  }
+  var ATTRS = ["title", "alt", "aria-label"];
+  function apply() {
+    if (lang === "ja") return;
+    document.documentElement.lang = "en";
+    /* 1. まるごと差し替える段落 */
+    var blocks = document.querySelectorAll("[data-i18n-html]");
+    for (var i = 0; i < blocks.length; i++) {
+      var key = blocks[i].innerHTML.trim().replace(/\s*\n\s*/g, " ");
+      if (Object.prototype.hasOwnProperty.call(SITE_EN, key)) blocks[i].innerHTML = SITE_EN[key];
+    }
+    /* 2. テキストノード。SCRIPT/STYLE と回路図(SVG)の中は触らない */
+    var w = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, {
+      acceptNode: function (n) {
+        var p = n.parentNode, t = p && p.nodeName;
+        if (t === "SCRIPT" || t === "STYLE") return NodeFilter.FILTER_REJECT;
+        if (p && p.closest && p.closest("[data-i18n-html]")) return NodeFilter.FILTER_REJECT;
+        return NodeFilter.FILTER_ACCEPT;
+      }
+    });
+    var node, hits = [];
+    while ((node = w.nextNode())) {
+      var k = node.nodeValue.trim().replace(/\s*\n\s*/g, " ");
+      if (k && Object.prototype.hasOwnProperty.call(SITE_EN, k)) hits.push([node, SITE_EN[k]]);
+    }
+    for (var j = 0; j < hits.length; j++) {
+      var pad = hits[j][0].nodeValue.match(/^(\s*)[\s\S]*?(\s*)$/);   /* 前後の空白は残す */
+      hits[j][0].nodeValue = pad[1] + hits[j][1] + pad[2];
+    }
+    /* 3. 属性 / <title> / meta */
+    for (var a = 0; a < ATTRS.length; a++) {
+      var els = document.querySelectorAll("[" + ATTRS[a] + "]");
+      for (var e = 0; e < els.length; e++) {
+        var cur = els[e].getAttribute(ATTRS[a]);
+        if (Object.prototype.hasOwnProperty.call(SITE_EN, cur)) els[e].setAttribute(ATTRS[a], SITE_EN[cur]);
+      }
+    }
+    if (Object.prototype.hasOwnProperty.call(SITE_EN, document.title)) document.title = SITE_EN[document.title];
+    var metas = document.querySelectorAll("meta[content]");
+    for (var m = 0; m < metas.length; m++) {
+      var c = metas[m].getAttribute("content");
+      if (Object.prototype.hasOwnProperty.call(SITE_EN, c)) metas[m].setAttribute("content", SITE_EN[c]);
+    }
+  }
+  function set(l) {
+    if (SUP.indexOf(l) < 0 || l === lang) return;
+    try { localStorage.setItem(KEY, l); } catch (e) {}
+    location.reload();   /* 生成済みDOMを戻すより読み直す方が確実 */
+  }
+  return { get lang() { return lang; }, T: T, apply: apply, set: set };
+})();
+var T = Lang.T;
+
+document.addEventListener("DOMContentLoaded", function () {
+  Lang.apply();
+  var b = document.getElementById("lang-btn");
+  if (b) {
+    b.textContent = Lang.lang === "ja" ? "EN" : "日本語";
+    b.addEventListener("click", function (ev) {
+      ev.preventDefault();
+      Lang.set(Lang.lang === "ja" ? "en" : "ja");
+    });
+  }
+});
+</script>
+
 <div id="bar"></div>
 
 <header id="hdr">
@@ -428,6 +829,7 @@ footer a:hover{color:var(--text)}
     <a href="#engine">エンジン</a>
     <a href="#vision">回路図の転写</a>
     <a href="#dl" class="top-dl">ダウンロード</a>
+    <a href="#" id="lang-btn" class="lang-btn" aria-label="Switch language">EN</a>
   </nav>
 </header>
 
@@ -534,7 +936,7 @@ footer a:hover{color:var(--text)}
   <div class="wrap">
     <p class="eyebrow rise">部品ライブラリ</p>
     <h2 class="rise">「その年代のその石」で組める。</h2>
-    <p class="lede rise">
+    <p class="lede rise" data-i18n-html>
       同じ回路でもトランジスタを替えれば音は変わります。Rosso は部品ごとに hFE や接合容量、
       真空管なら Koren 係数といった実際のパラメータを持っているので、
       <span class="hl-o">AC128</span> と <span class="hl-b">BC109C</span> の違いも、
@@ -547,7 +949,7 @@ footer a:hover{color:var(--text)}
       <div class="stat rise"><b><span class="num" data-to="188">0</span></b><span>真空管 (プリ・パワー・整流)</span></div>
       <div class="stat rise"><b><span class="num" data-to="47">0</span></b><span>物理モデルの種類</span></div>
     </div>
-    <p class="note rise" style="margin-top:14px">
+    <p class="note rise" style="margin-top:14px" data-i18n-html>
       パラメータの細かさは分野によって違います。真空管158点は115通り、オペアンプ160点は107通りの
       独立したパラメータを持ちます。一方ゲルマニウムトランジスタ180点は hFE と漏れ電流の等級で
       36通りに分けているため、<b style="color:#9aa5b8;font-weight:500">同じ等級の型番は同じ挙動になります</b>
@@ -577,7 +979,7 @@ footer a:hover{color:var(--text)}
       <div>
         <p class="eyebrow rise">Lotus Engine</p>
         <h2 class="rise" style="font-size:clamp(27px,3.6vw,44px)">歪みを「モデル」ではなく<br>回路から出す。</h2>
-        <p class="lede rise" style="font-size:16.5px">
+        <p class="lede rise" style="font-size:16.5px" data-i18n-html>
           <b>Lotus Engine</b> は、回路を毎サンプル解くソルバです。Rust で書かれていて、
           回路を節点方程式 (MNA) に組み立て、非線形な素子は Newton 法で解きます。
           歪みの形は近似カーブではなく、ダイオードやトランジスタの式そのものから出てきます。
@@ -591,7 +993,7 @@ footer a:hover{color:var(--text)}
           <div class="meter"><span>THD</span><b id="m-thd" class="hl-o">0.0%</b></div>
           <div class="meter"><span>3次倍音</span><b id="m-h" class="hl-p">0.5%</b></div>
         </div>
-        <p class="note" style="margin-top:20px">
+        <p class="note" style="margin-top:20px" data-i18n-html>
           右の波形とスペクトラムは、このページ上で実際に計算しています (正弦波 + tanh ソフトクリップの DFT)。
           上下対称に潰しているので<b style="color:#9aa5b8;font-weight:500">偶数次の倍音は出ません</b> —
           棒が1本飛びに立つのはそのためです。アプリ本体はこれよりずっと踏み込んで、
@@ -626,12 +1028,12 @@ footer a:hover{color:var(--text)}
     <div>
       <p class="eyebrow rise">4DEM — 回路図の転写と診断</p>
       <h2 class="rise" style="font-size:clamp(27px,3.8vw,46px)">紙の回路図を、<br>編集できる回路にする。</h2>
-      <p class="lede rise">
+      <p class="lede rise" data-i18n-html>
         書籍やネットで見つけた回路図の画像を貼り付けると、<b>4DEM</b> が部品と配線を読み取って
         Rosso の回路として起こします。並べ替えずに<span class="hl">元の図と同じ配置</span>で置くので、
         手元の図と見比べながら作業できます。
       </p>
-      <p class="lede rise" style="font-size:16px">
+      <p class="lede rise" style="font-size:16px" data-i18n-html>
         読み取りは複数回走らせて結果を突き合わせ、<span class="hl-b">食い違った箇所に印を付けて</span>提示します。
         そのまま流し込まず、確認してから適用する作りです。組み終わったあとの改善提案
         (どこに抵抗やコンデンサを足すべきか) も 4DEM の担当で、こちらは実測に基づいて出します。
@@ -757,16 +1159,16 @@ footer a:hover{color:var(--text)}
 
     <div class="caveat rise">
       <h3>インストール前に知っておいてほしいこと</h3>
-      <p><b style="color:var(--text)">配布物に署名を付けていません。</b>
+      <p data-i18n-html><b style="color:var(--text)">配布物に署名を付けていません。</b>
         そのため初回起動時に OS が警告を出します。macOS では
         アプリを右クリック →「開く」を選ぶか、<code>システム設定 → プライバシーとセキュリティ</code> から許可してください。
         Windows では SmartScreen の「詳細情報」→「実行」で進めます。</p>
-      <p><b style="color:var(--text)">macOS で「"Rosso"は壊れているため開けません」と出る場合。</b>
+      <p data-i18n-html><b style="color:var(--text)">macOS で「"Rosso"は壊れているため開けません」と出る場合。</b>
         v1.3.4 以前の macOS 版に起きる不具合で、アプリは壊れていません。この表示のときは
         右クリック →「開く」では回避できないので、ターミナルで次を実行してから開いてください。</p>
       <pre style="overflow-x:auto"><code>xattr -cr /Applications/Rosso.app</code></pre>
       <p>v1.3.5 以降では出なくなります (出た場合は上のコマンドで通せます)。</p>
-      <p><b style="color:var(--text)">macOS 版は Apple Silicon 専用です。</b>
+      <p data-i18n-html><b style="color:var(--text)">macOS 版は Apple Silicon 専用です。</b>
         Intel Mac 向けのビルドはまだありません。</p>
       <p>回路シミュレーションは CPU を使います。大きな回路や高い精度設定では負荷が上がるので、
         必要に応じて品質設定を下げてください。</p>
@@ -779,7 +1181,7 @@ footer a:hover{color:var(--text)}
     <span><span style="color:var(--orange)">⚡</span> <b style="color:var(--text)">Rosso</b> — エフェクター回路シミュレーター</span>
     <a href="https://github.com/tsukuba-onkyo/Rosso-dist/releases">リリース</a>
     <a href="https://github.com/tsukuba-onkyo/Rosso-dist/issues">不具合の報告</a>
-    <span class="sp">&copy; 2026 筑波音響</span>
+    <span class="sp">© 2026 筑波音響</span>
   </div>
 </footer>
 
@@ -1053,13 +1455,13 @@ function setStep(i) {
 /* ステージ1の擬似パレット */
 (function () {
   var rows = [
-    ["R1", "抵抗 カーボンコンポ", "68k", 0],
-    ["C1", "フィルムコンデンサ", "10n", 0],
-    ["Q1", "AC128 (ゲルマニウム)", "hFE 90", 1],
-    ["R2", "抵抗 金属皮膜", "470", 0],
-    ["VR1", "ポット A100k", "FUZZ", 0],
-    ["C2", "電解コンデンサ", "22µ", 0],
-    ["D1", "1N34A (ゲルマ)", "Vf 0.30", 1]
+    ["R1", T("抵抗 カーボンコンポ"), "68k", 0],
+    ["C1", T("フィルムコンデンサ"), "10n", 0],
+    ["Q1", T("AC128 (ゲルマニウム)"), "hFE 90", 1],
+    ["R2", T("抵抗 金属皮膜"), "470", 0],
+    ["VR1", T("ポット A100k"), "FUZZ", 0],
+    ["C2", T("電解コンデンサ"), "22µ", 0],
+    ["D1", T("1N34A (ゲルマ)"), "Vf 0.30", 1]
   ];
   var host = document.getElementById("fake-pal");
   host.innerHTML = rows.map(function (r) {
@@ -1111,10 +1513,10 @@ onScroll();
 (function () {
   /* js/parts.js に入っている実際の値。書き換えるときは DB 側と必ず突き合わせる */
   var data = {
-    a: { name: "AC128", rows: [["hFE (bf)", "80"], ["漏れ電流 ICBO", "2µA"], ["遷移周波数 fT", "1.5MHz"],
-                               ["接合容量 Cbc", "30pF"], ["極性", "PNP ・ ゲルマニウム"]] },
-    b: { name: "BC109C", rows: [["hFE (bf)", "450"], ["漏れ電流 ICBO", "1nA"], ["遷移周波数 fT", "150MHz"],
-                                ["接合容量 Cbc", "4pF"], ["極性", "NPN ・ シリコン"]] }
+    a: { name: "AC128", rows: [["hFE (bf)", "80"], [T("漏れ電流 ICBO"), "2µA"], [T("遷移周波数 fT"), "1.5MHz"],
+                               [T("接合容量 Cbc"), "30pF"], [T("極性"), T("PNP ・ ゲルマニウム")]] },
+    b: { name: "BC109C", rows: [["hFE (bf)", "450"], [T("漏れ電流 ICBO"), "1nA"], [T("遷移周波数 fT"), "150MHz"],
+                                [T("接合容量 Cbc"), "4pF"], [T("極性"), T("NPN ・ シリコン")]] }
   };
   var tbl = document.getElementById("ab-tbl");
   var btns = [].slice.call(document.querySelectorAll(".ab-btn"));
@@ -1144,7 +1546,7 @@ onScroll();
   var etc = ["2N3904", "BC109C", "2N5088", "MPSA18", "2SC1815", "2N2222A", "BC549C",
              "2SK117", "J201", "2N5457", "BF245A", "JRC4558D", "TL072", "NE5532",
              "TA7136AP", "CD4013", "1N4148", "BAT41", "1N914", "1N5817",
-             "SSM2164", "NE570", "BA6110", "LED 赤 5mm"];
+             "SSM2164", "NE570", "BA6110", T("LED 赤 5mm")];
   function cls(n) {
     if (ge.indexOf(n) >= 0) return " ge";
     if (tube.indexOf(n) >= 0) return " tube";
@@ -1180,14 +1582,14 @@ onScroll();
       var c = document.getElementById(cards[i].card);
       if (!c) continue;
       var btn = c.querySelector(".btn");
-      if (btn) { btn.textContent = "リリース一覧を見る"; btn.classList.add("btn-s"); btn.classList.remove("btn-p"); }
+      if (btn) { btn.textContent = T("リリース一覧を見る"); btn.classList.add("btn-s"); btn.classList.remove("btn-p"); }
       var m = document.getElementById(cards[i].meta);
       if (m) m.textContent = reason;
     }
     var note = document.getElementById("dl-state");
     if (note) {
       note.hidden = false;
-      note.textContent = "現在このバージョンのビルドを公開準備中です。公開されるとここが直接のダウンロードリンクに変わります。";
+      note.textContent = T("現在このバージョンのビルドを公開準備中です。公開されるとここが直接のダウンロードリンクに変わります。");
     }
   }
 
@@ -1196,7 +1598,7 @@ onScroll();
   fetch("https://api.github.com/repos/" + REPO + "/releases/latest", {
     headers: { Accept: "application/vnd.github+json" }
   }).then(function (r) {
-    if (r.status === 404) { noRelease("ビルド公開準備中"); return null; }
+    if (r.status === 404) { noRelease(T("ビルド公開準備中")); return null; }
     if (!r.ok) throw new Error("HTTP " + r.status);
     return r.json();
   }).then(function (rel) {
@@ -1218,18 +1620,18 @@ onScroll();
     if (win) {
       document.getElementById("dl-win").href = win.browser_download_url;
       document.getElementById("meta-win").textContent =
-        "64bit ・ " + win.name.replace(/^Rosso_/, "") + " ・ " + mb(win.size);
+        T("64bit ・ ") + win.name.replace(/^Rosso_/, "") + T(" ・ ") + mb(win.size);
     }
     if (mac) {
       document.getElementById("dl-mac").href = mac.browser_download_url;
       document.getElementById("meta-mac").textContent =
-        "Apple Silicon (M1以降) ・ " + mac.name.replace(/^Rosso_/, "") + " ・ " + mb(mac.size);
+        T("Apple Silicon (M1以降) ・ ") + mac.name.replace(/^Rosso_/, "") + T(" ・ ") + mb(mac.size);
     }
     /* リリースはあるのに該当 OS の資産が無い場合も取り違えさせない */
-    if (!win && !mac) noRelease("ビルド公開準備中");
+    if (!win && !mac) noRelease(T("ビルド公開準備中"));
   }).catch(function () {
     /* 通信不可・レート制限。押せば手で辿れるリリース一覧に留める */
-    noRelease("リリース情報を取得できませんでした");
+    noRelease(T("リリース情報を取得できませんでした"));
   });
 })();
 </script>
