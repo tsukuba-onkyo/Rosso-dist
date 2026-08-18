@@ -740,7 +740,18 @@ var SITE_EN = {
 
 var Lang = (function () {
   var KEY = "rosso-site-lang", SUP = ["ja", "en"];
+  /* ?lang=en / ?lang=ja を最優先で見る。英語ページを**リンクとして貼れる**ようにするため
+     (localStorage も navigator も、貼った先の相手のブラウザでは制御できない)。
+     指定された言語は保存するので、以後はパラメータ無しでも維持される。 */
+  function fromUrl() {
+    var m = /[?&]lang=([a-z-]+)/i.exec(location.search);
+    if (!m) return null;
+    var l = m[1].toLowerCase().split("-")[0];   /* en-US → en */
+    return SUP.indexOf(l) >= 0 ? l : null;
+  }
   function detect() {
+    var u = fromUrl();
+    if (u) { try { localStorage.setItem(KEY, u); } catch (e) {} return u; }
     try { var s = localStorage.getItem(KEY); if (SUP.indexOf(s) >= 0) return s; } catch (e) {}
     var n = (navigator.language || (navigator.languages || [])[0] || "") + "";
     return /^ja/i.test(n) ? "ja" : (n ? "en" : "ja");
@@ -800,7 +811,11 @@ var Lang = (function () {
   function set(l) {
     if (SUP.indexOf(l) < 0 || l === lang) return;
     try { localStorage.setItem(KEY, l); } catch (e) {}
-    location.reload();   /* 生成済みDOMを戻すより読み直す方が確実 */
+    /* URL から ?lang= を落としてから読み直す。**残すと再読み込みで必ずそれが勝ち、
+       ?lang=en で来た人はボタンで日本語に戻せなくなる。**
+       生成済みDOMを戻すより読み直す方が確実なので reload 相当にする。 */
+    var q = location.search.replace(/([?&])lang=[^&]*(&|$)/i, "$1").replace(/[?&]$/, "");
+    location.replace(location.pathname + q + location.hash);
   }
   return { get lang() { return lang; }, T: T, apply: apply, set: set };
 })();
