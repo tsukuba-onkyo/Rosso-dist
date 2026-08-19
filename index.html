@@ -109,6 +109,11 @@ header nav a:hover{color:var(--text)}
 /* 言語切替。英語圏の利用者が最初に触る導線なので狭い画面でも残す */
 .lang-btn{border:1px solid var(--border);border-radius:999px;padding:5px 12px;font-size:12.5px;letter-spacing:.04em}
 .lang-btn:hover{color:var(--text);border-color:var(--muted)}
+.i18n-bar{display:none;position:fixed;left:0;right:0;bottom:0;z-index:60;align-items:center;justify-content:center;gap:12px;padding:11px 46px 11px 16px;background:var(--bg2);border-top:1px solid var(--border);font-size:13.5px;color:var(--muted);text-align:center}
+.i18n-bar.on{display:flex}
+.i18n-bar a{color:var(--text);text-decoration:underline;text-underline-offset:3px}
+.i18n-bar button{position:absolute;right:12px;top:50%;transform:translateY(-50%);background:none;border:0;color:var(--muted);font-size:19px;line-height:1;cursor:pointer;padding:4px 8px}
+.i18n-bar button:hover{color:var(--text)}
 @media(max-width:860px){header nav a.lang-btn{display:inline-block}}
 
 /* ---------- 共通レイアウト ---------- */
@@ -447,6 +452,13 @@ footer a:hover{color:var(--text)}
 </style>
 </head>
 <body>
+<!-- 英語圏から来た人への案内。**自動では切り替えない** (切り替えると検索エンジンから
+     日本語ページが消える)。表示するかどうかだけを navigator.language で決める。 -->
+<div class="i18n-bar" id="i18n-bar">
+  <span>This page is in Japanese.</span>
+  <a href="en/">Read it in English →</a>
+  <button type="button" id="i18n-bar-x" aria-label="Dismiss">×</button>
+</div>
 <script>
 /* JS が生きている間だけ .rise を隠す。万一この後のスクリプトが落ちても、
    3秒後の保険で全部出す (真っ白なページを絶対に残さない)。 */
@@ -811,14 +823,23 @@ var Lang = (function () {
     var l = m[1].toLowerCase().split("-")[0];   /* en-US → en */
     return SUP.indexOf(l) >= 0 ? l : null;
   }
-  function detect() {
-    if (STATIC) return STATIC;
+  /* **利用者が明示的に選んだ言語**だけを見る。?lang= と localStorage の2つ。 */
+  function chosen() {
     var u = fromUrl();
     if (u) { try { localStorage.setItem(KEY, u); } catch (e) {} return u; }
     try { var s = localStorage.getItem(KEY); if (SUP.indexOf(s) >= 0) return s; } catch (e) {}
-    var n = (navigator.language || (navigator.languages || [])[0] || "") + "";
-    return /^ja/i.test(n) ? "ja" : (n ? "en" : "ja");
+    return null;
   }
+  /* このファイルは日本語ページなので、**常に日本語のまま出す**。
+     かつて navigator.language を見てその場で DOM を英語に書き換えていたが、
+     クローラは常に英語相当で来るため、Google から見た / は英語ページになり、
+     日本語ページが検索結果から丸ごと消えていた (日本語クエリで英語版しか出ない)。
+     英語は en/ という実体があるので、書き換えではなく移動で扱う。
+     ブラウザ言語での自動切替はしない — 案内バー (#i18n-bar) を出すだけにする。 */
+  function detect() { return STATIC ? STATIC : "ja"; }
+  /* 英語を明示的に選んである人だけ en/ へ送る。
+     クローラは ?lang= も localStorage も持たないので、ここには入らない。 */
+  if (!STATIC && chosen() === "en") location.replace("en/" + location.hash);
   var lang = detect();
   /* 翻訳。辞書に無ければ原文をそのまま返す (未訳が事故にならない) */
   function T(s) {
@@ -883,12 +904,20 @@ var Lang = (function () {
     var q = location.search.replace(/([?&])lang=[^&]*(&|$)/i, "$1").replace(/[?&]$/, "");
     location.replace(location.pathname + q + location.hash);
   }
-  return { get lang() { return lang; }, T: T, apply: apply, set: set };
+  return { get lang() { return lang; }, T: T, apply: apply, set: set, chosen: chosen };
 })();
 var T = Lang.T;
 
 document.addEventListener("DOMContentLoaded", function () {
   Lang.apply();
+  /* 日本語ページに英語圏の人が来て、まだ言語を選んでいないときだけ案内を出す */
+  var bar = document.getElementById("i18n-bar");
+  if (bar && Lang.lang === "ja" && !Lang.chosen()) {
+    var nv = (navigator.language || (navigator.languages || [])[0] || "") + "";
+    if (nv && !/^ja/i.test(nv)) bar.classList.add("on");
+  }
+  var barX = document.getElementById("i18n-bar-x");
+  if (barX) barX.addEventListener("click", function () { bar.classList.remove("on"); });
   var b = document.getElementById("lang-btn");
   if (b) {
     b.textContent = Lang.lang === "ja" ? "EN" : "日本語";
