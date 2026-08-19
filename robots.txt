@@ -1,0 +1,6 @@
+# Rosso 配布ページ
+# 全て公開して構わない。sitemap の場所だけ知らせる。
+User-agent: *
+Allow: /
+
+Sitemap: https://tsukuba-onkyo.github.io/Rosso-dist/sitemap.xml

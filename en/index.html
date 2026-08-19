@@ -1,12 +1,14 @@
 <!DOCTYPE html>
-<html lang="ja">
+<!-- 自動生成: scripts/build-site-en.js が site/index.html から作ります。
+     ここを直しても次の生成で消えます。訳は index.html の SITE_EN を直してください。 -->
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Rosso — エフェクター回路シミュレーター</title>
-<meta name="description" content="回路図を描くと、その場で音が鳴る。Rust製の回路ソルバ Lotus Engine が、ゲルマニウムファズから真空管プリまで実部品1920点の回路をそのまま解きます。Windows / macOS 無料。">
-<meta property="og:title" content="Rosso — エフェクター回路シミュレーター">
-<meta property="og:description" content="回路図を描くと、その場で音が鳴る。実部品1920点、Rust製ソルバ Lotus Engine。">
+<title>Rosso - a circuit simulator for guitar effects</title>
+<meta name="description" content="Draw a schematic and it makes sound on the spot. Lotus Engine, a circuit solver written in Rust, solves real circuits built from 1,920 real parts - from germanium fuzz to tube preamps. Free for Windows and macOS.">
+<meta property="og:title" content="Rosso - a circuit simulator for guitar effects">
+<meta property="og:description" content="Draw a schematic and it makes sound on the spot. 1,920 real parts, solved by Lotus Engine in Rust.">
 <meta property="og:type" content="website">
 
 <!-- ============================================================
@@ -18,31 +20,31 @@
        scripts/build-site-en.js が **このファイルから** 生成する実体のページ。
        ?lang=en は今まで通り動くが、canonical で本体に寄せて重複を作らない
      ============================================================ -->
-<link rel="canonical" href="https://tsukuba-onkyo.github.io/Rosso-dist/">
+<link rel="canonical" href="https://tsukuba-onkyo.github.io/Rosso-dist/en/">
 <link rel="alternate" hreflang="ja" href="https://tsukuba-onkyo.github.io/Rosso-dist/">
 <link rel="alternate" hreflang="en" href="https://tsukuba-onkyo.github.io/Rosso-dist/en/">
 <link rel="alternate" hreflang="x-default" href="https://tsukuba-onkyo.github.io/Rosso-dist/">
-<meta property="og:url" content="https://tsukuba-onkyo.github.io/Rosso-dist/">
+<meta property="og:url" content="https://tsukuba-onkyo.github.io/Rosso-dist/en/">
 <meta property="og:site_name" content="Rosso">
-<meta property="og:locale" content="ja_JP">
-<meta property="og:locale:alternate" content="en_US">
-<meta property="og:image" content="https://tsukuba-onkyo.github.io/Rosso-dist/ogp.png">
+<meta property="og:locale" content="en_US">
+<meta property="og:locale:alternate" content="ja_JP">
+<meta property="og:image" content="https://tsukuba-onkyo.github.io/Rosso-dist/ogp-en.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="Rosso — 回路図を描く。その場で音が鳴る。">
+<meta property="og:image:alt" content="Rosso - draw the schematic, hear it immediately">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Rosso — エフェクター回路シミュレーター">
-<meta name="twitter:description" content="回路図を描くと、その場で音が鳴る。実部品1920点、Rust製ソルバ Lotus Engine。">
-<meta name="twitter:image" content="https://tsukuba-onkyo.github.io/Rosso-dist/ogp.png">
-<link rel="icon" href="icon.png">
+<meta name="twitter:title" content="Rosso - a circuit simulator for guitar effects">
+<meta name="twitter:description" content="Draw a schematic and it makes sound on the spot. 1,920 real parts, solved by Lotus Engine in Rust.">
+<meta name="twitter:image" content="https://tsukuba-onkyo.github.io/Rosso-dist/ogp-en.png">
+<link rel="icon" href="../icon.png">
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"SoftwareApplication",
  "name":"Rosso",
  "applicationCategory":"MultimediaApplication",
  "applicationSubCategory":"Circuit Simulator",
  "operatingSystem":"Windows 10+, macOS 12+ (Apple Silicon)",
- "url":"https://tsukuba-onkyo.github.io/Rosso-dist/",
- "image":"https://tsukuba-onkyo.github.io/Rosso-dist/ogp.png",
+ "url":"https://tsukuba-onkyo.github.io/Rosso-dist/en/",
+ "image":"https://tsukuba-onkyo.github.io/Rosso-dist/ogp-en.png",
  "inLanguage":["ja","en"],
  "author":{"@type":"Organization","name":"筑波音響"},
  "offers":{"@type":"Offer","price":"0","priceCurrency":"JPY"}}
@@ -778,6 +780,7 @@ var SITE_EN = {
     "Could not fetch release information",
 };
 
+var SITE_STATIC_LANG = "en";
 var Lang = (function () {
   var KEY = "rosso-site-lang", SUP = ["ja", "en"];
   /* en/index.html は scripts/build-site-en.js が**訳し終えた状態**で吐く静的ページ。
@@ -887,11 +890,11 @@ document.addEventListener("DOMContentLoaded", function () {
 <header id="hdr">
   <a class="brand" href="#top"><span class="spark">⚡</span> Rosso</a>
   <nav>
-    <a href="#loop">できること</a>
-    <a href="#parts">部品ライブラリ</a>
-    <a href="#engine">エンジン</a>
-    <a href="#vision">回路図の転写</a>
-    <a href="#dl" class="top-dl">ダウンロード</a>
+    <a href="#loop">What it does</a>
+    <a href="#parts">Part library</a>
+    <a href="#engine">Engine</a>
+    <a href="#vision">Schematic capture</a>
+    <a href="#dl" class="top-dl">Download</a>
     <a href="#" id="lang-btn" class="lang-btn" aria-label="Switch language">EN</a>
   </nav>
 </header>
@@ -899,38 +902,37 @@ document.addEventListener("DOMContentLoaded", function () {
 <!-- ================= ヒーロー ================= -->
 <section class="hero" id="top">
   <div class="hero-in">
-    <div class="badge rise"><i class="dot"></i> <span>バージョン <b id="ver">1.4.0</b><span class="badge-os"> — Windows / macOS</span> ・ 無料</span></div>
+    <div class="badge rise"><i class="dot"></i> <span>Version <b id="ver">1.4.0</b><span class="badge-os"> — Windows / macOS</span>  · Free</span></div>
 
     <h1 class="rise">
-      回路図を描く。<span class="l2">その場で音が鳴る。</span>
+      Draw a schematic.<span class="l2">Hear it immediately.</span>
     </h1>
 
     <p class="lede rise">
-      Rosso はギターエフェクターのための回路シミュレーターです。抵抗やトランジスタを並べて配線すると、
-      その回路をそのまま解いて音にします。基板を起こす前に、部品1本の違いを耳で確かめられます。
+      Rosso is a circuit simulator for guitar effects. Lay out resistors and transistors, wire them together, and it solves that circuit and turns it into sound. Before you commit to a board, you can hear what a single part change does.
     </p>
 
     <div class="cta rise">
-      <a class="btn btn-p" href="#dl">↓ ダウンロード</a>
-      <a class="btn btn-s" href="#loop">何ができるのか見る</a>
-      <small id="cta-note">無料で使えます / Windows・macOS</small>
+      <a class="btn btn-p" href="#dl">↓ Download</a>
+      <a class="btn btn-s" href="#loop">See what it can do</a>
+      <small id="cta-note">Free to use / Windows and macOS</small>
     </div>
 
     <!-- 実際に Rosso で作ったビブラート回路 (VB-2風) をそのまま描画 -->
     <div class="sch-box rise">
       <div class="sch-frame">
-        <svg class="sch" id="hero-sch" viewBox="-48 -220 980 445" aria-label="Rosso で作成したビブラート回路の回路図">
+        <svg class="sch" id="hero-sch" viewBox="-48 -220 980 445" aria-label="Schematic of a vibrato circuit built in Rosso">
           <g id="sch-g">
-            <line class="ln" x1="20" y1="0" x2="50" y2="0"></line><line class="ln" x1="90" y1="0" x2="160" y2="0"></line><line class="ln" x1="120" y1="-60" x2="120" y2="0"></line><line class="ln" x1="120" y1="0" x2="120" y2="60"></line><line class="ln" x1="120" y1="-120" x2="120" y2="-160"></line><line class="ln" x1="120" y1="120" x2="120" y2="180"></line><line class="ln" x1="190" y1="-20" x2="190" y2="-160"></line><line class="ln" x1="190" y1="20" x2="220" y2="20"></line><line class="ln" x1="220" y1="0" x2="220" y2="60"></line><line class="ln" x1="220" y1="0" x2="350" y2="0"></line><line class="ln" x1="220" y1="60" x2="250" y2="60"></line><line class="ln" x1="250" y1="120" x2="250" y2="180"></line><line class="ln" x1="350" y1="20" x2="350" y2="80"></line><line class="ln" x1="350" y1="80" x2="320" y2="80"></line><line class="ln" x1="320" y1="80" x2="320" y2="140"></line><line class="ln" x1="400" y1="-20" x2="400" y2="-160"></line><line class="ln" x1="400" y1="40" x2="400" y2="180"></line><line class="ln" x1="450" y1="0" x2="460" y2="0"></line><line class="ln" x1="520" y1="0" x2="580" y2="0"></line><line class="ln" x1="550" y1="0" x2="550" y2="60"></line><line class="ln" x1="550" y1="100" x2="550" y2="180"></line><line class="ln" x1="640" y1="0" x2="710" y2="0"></line><line class="ln" x1="670" y1="0" x2="670" y2="60"></line><line class="ln" x1="670" y1="100" x2="670" y2="180"></line><line class="ln" x1="750" y1="0" x2="780" y2="0"></line><line class="ln" x1="840" y1="0" x2="900" y2="0"></line><line class="ln" x1="900" y1="0" x2="900" y2="180"></line><line class="ln" x1="810" y1="20" x2="810" y2="60"></line><line class="ln" x1="810" y1="60" x2="860" y2="60"></line><line class="ln" x1="60" y1="-160" x2="400" y2="-160"></line><line class="ln" x1="60" y1="180" x2="900" y2="180"></line><g class="component" transform="translate(0,0)"><g class="sym" transform="rotate(0)"><circle cx="-8" cy="0" r="9"></circle><path d="M -14 0 L -2 0 M -6 -4 L -2 0 L -6 4"></path><line x1="1" y1="0" x2="20" y2="0"></line><text x="-8" y="-14" text-anchor="middle">IN</text></g></g><g class="component" transform="translate(70,0)"><g class="sym" transform="rotate(0)"><line x1="-20" y1="0" x2="-3" y2="0"></line><line x1="-3" y1="-9" x2="-3" y2="9"></line><line x1="3" y1="-9" x2="3" y2="9"></line><line x1="3" y1="0" x2="20" y2="0"></line></g></g><g class="component" transform="translate(120,-90)"><g class="sym" transform="rotate(90)"><line x1="-30" y1="0" x2="-18" y2="0"></line><path d="M -18 0 L -15 -6 L -9 6 L -3 -6 L 3 6 L 9 -6 L 15 6 L 18 0"></path><line x1="18" y1="0" x2="30" y2="0"></line></g></g><g class="component" transform="translate(120,90)"><g class="sym" transform="rotate(90)"><line x1="-30" y1="0" x2="-18" y2="0"></line><path d="M -18 0 L -15 -6 L -9 6 L -3 -6 L 3 6 L 9 -6 L 15 6 L 18 0"></path><line x1="18" y1="0" x2="30" y2="0"></line></g></g><g class="component" transform="translate(180,0)"><g class="sym" transform="rotate(0)"><circle cx="0" cy="0" r="14"></circle><line x1="-20" y1="0" x2="-5" y2="0"></line><line x1="-5" y1="-9" x2="-5" y2="9"></line><line x1="-5" y1="-4" x2="10" y2="-13"></line><line x1="10" y1="-13" x2="10" y2="-20"></line><line x1="-5" y1="4" x2="10" y2="13"></line><line x1="10" y1="13" x2="10" y2="20"></line><path d="M 4 12 L 10 13 L 6 7 Z" class="fill"></path></g></g><g class="component" transform="translate(250,90)"><g class="sym" transform="rotate(90)"><line x1="-30" y1="0" x2="-18" y2="0"></line><path d="M -18 0 L -15 -6 L -9 6 L -3 -6 L 3 6 L 9 -6 L 15 6 L 18 0"></path><line x1="18" y1="0" x2="30" y2="0"></line></g></g><g class="component" transform="translate(400,10)"><g class="sym" transform="rotate(0)"><rect x="-40" y="-22" width="80" height="44" rx="4"></rect><line x1="-50" y1="-10" x2="-40" y2="-10"></line><line x1="40" y1="-10" x2="50" y2="-10"></line><line x1="-50" y1="10" x2="-40" y2="10"></line><line x1="0" y1="-30" x2="0" y2="-22"></line><line x1="0" y1="22" x2="0" y2="30"></line><text x="0" y="-8" text-anchor="middle">BBD</text><text x="0" y="6" text-anchor="middle">1024段</text><text x="-36" y="13">CK</text></g></g><g class="component" transform="translate(300,140)"><g class="sym" transform="rotate(0)"><circle cx="0" cy="0" r="13"></circle><path d="M -8 0 Q -4 -8 0 0 T 8 0"></path><line x1="13" y1="0" x2="20" y2="0"></line><text x="0" y="-17" text-anchor="middle">LFO</text></g></g><g class="component" transform="translate(490,0)"><g class="sym" transform="rotate(0)"><line x1="-30" y1="0" x2="-18" y2="0"></line><path d="M -18 0 L -15 -6 L -9 6 L -3 -6 L 3 6 L 9 -6 L 15 6 L 18 0"></path><line x1="18" y1="0" x2="30" y2="0"></line></g></g><g class="component" transform="translate(550,80)"><g class="sym" transform="rotate(90)"><line x1="-20" y1="0" x2="-3" y2="0"></line><line x1="-3" y1="-9" x2="-3" y2="9"></line><line x1="3" y1="-9" x2="3" y2="9"></line><line x1="3" y1="0" x2="20" y2="0"></line></g></g><g class="component" transform="translate(610,0)"><g class="sym" transform="rotate(0)"><line x1="-30" y1="0" x2="-18" y2="0"></line><path d="M -18 0 L -15 -6 L -9 6 L -3 -6 L 3 6 L 9 -6 L 15 6 L 18 0"></path><line x1="18" y1="0" x2="30" y2="0"></line></g></g><g class="component" transform="translate(670,80)"><g class="sym" transform="rotate(90)"><line x1="-20" y1="0" x2="-3" y2="0"></line><line x1="-3" y1="-9" x2="-3" y2="9"></line><line x1="3" y1="-9" x2="3" y2="9"></line><line x1="3" y1="0" x2="20" y2="0"></line></g></g><g class="component" transform="translate(730,0)"><g class="sym" transform="rotate(0)"><line x1="-20" y1="0" x2="-3" y2="0"></line><line x1="-3" y1="-9" x2="-3" y2="9"></line><line x1="3" y1="-9" x2="3" y2="9"></line><line x1="3" y1="0" x2="20" y2="0"></line></g></g><g class="component" transform="translate(810,0)"><g class="sym" transform="rotate(180)"><line x1="-30" y1="0" x2="-18" y2="0"></line><path d="M -18 0 L -15 -6 L -9 6 L -3 -6 L 3 6 L 9 -6 L 15 6 L 18 0"></path><line x1="18" y1="0" x2="30" y2="0"></line><path d="M 0 -20 L 0 -12 M -4 -8 L 0 -12 L 4 -8"></path></g></g><g class="component" transform="translate(60,-170)"><g class="sym" transform="rotate(0)"><line x1="0" y1="10" x2="0" y2="0"></line><line x1="-10" y1="0" x2="10" y2="0"></line><text x="0" y="-5" text-anchor="middle">+9V</text></g></g><g class="component" transform="translate(60,190)"><g class="sym" transform="rotate(0)"><line x1="0" y1="-10" x2="0" y2="0"></line><line x1="-12" y1="0" x2="12" y2="0"></line><line x1="-8" y1="5" x2="8" y2="5"></line><line x1="-4" y1="10" x2="4" y2="10"></line></g></g><g class="component" transform="translate(880,60)"><g class="sym" transform="rotate(0)"><line x1="-20" y1="0" x2="-1" y2="0"></line><circle cx="8" cy="0" r="9"></circle><path d="M 3 -4 L 9 0 L 3 4 Z" class="fill"></path><text x="8" y="-14" text-anchor="middle">OUT</text></g></g><circle class="jn" cx="120" cy="0" r="3"></circle>
+            <line class="ln" x1="20" y1="0" x2="50" y2="0"></line><line class="ln" x1="90" y1="0" x2="160" y2="0"></line><line class="ln" x1="120" y1="-60" x2="120" y2="0"></line><line class="ln" x1="120" y1="0" x2="120" y2="60"></line><line class="ln" x1="120" y1="-120" x2="120" y2="-160"></line><line class="ln" x1="120" y1="120" x2="120" y2="180"></line><line class="ln" x1="190" y1="-20" x2="190" y2="-160"></line><line class="ln" x1="190" y1="20" x2="220" y2="20"></line><line class="ln" x1="220" y1="0" x2="220" y2="60"></line><line class="ln" x1="220" y1="0" x2="350" y2="0"></line><line class="ln" x1="220" y1="60" x2="250" y2="60"></line><line class="ln" x1="250" y1="120" x2="250" y2="180"></line><line class="ln" x1="350" y1="20" x2="350" y2="80"></line><line class="ln" x1="350" y1="80" x2="320" y2="80"></line><line class="ln" x1="320" y1="80" x2="320" y2="140"></line><line class="ln" x1="400" y1="-20" x2="400" y2="-160"></line><line class="ln" x1="400" y1="40" x2="400" y2="180"></line><line class="ln" x1="450" y1="0" x2="460" y2="0"></line><line class="ln" x1="520" y1="0" x2="580" y2="0"></line><line class="ln" x1="550" y1="0" x2="550" y2="60"></line><line class="ln" x1="550" y1="100" x2="550" y2="180"></line><line class="ln" x1="640" y1="0" x2="710" y2="0"></line><line class="ln" x1="670" y1="0" x2="670" y2="60"></line><line class="ln" x1="670" y1="100" x2="670" y2="180"></line><line class="ln" x1="750" y1="0" x2="780" y2="0"></line><line class="ln" x1="840" y1="0" x2="900" y2="0"></line><line class="ln" x1="900" y1="0" x2="900" y2="180"></line><line class="ln" x1="810" y1="20" x2="810" y2="60"></line><line class="ln" x1="810" y1="60" x2="860" y2="60"></line><line class="ln" x1="60" y1="-160" x2="400" y2="-160"></line><line class="ln" x1="60" y1="180" x2="900" y2="180"></line><g class="component" transform="translate(0,0)"><g class="sym" transform="rotate(0)"><circle cx="-8" cy="0" r="9"></circle><path d="M -14 0 L -2 0 M -6 -4 L -2 0 L -6 4"></path><line x1="1" y1="0" x2="20" y2="0"></line><text x="-8" y="-14" text-anchor="middle">IN</text></g></g><g class="component" transform="translate(70,0)"><g class="sym" transform="rotate(0)"><line x1="-20" y1="0" x2="-3" y2="0"></line><line x1="-3" y1="-9" x2="-3" y2="9"></line><line x1="3" y1="-9" x2="3" y2="9"></line><line x1="3" y1="0" x2="20" y2="0"></line></g></g><g class="component" transform="translate(120,-90)"><g class="sym" transform="rotate(90)"><line x1="-30" y1="0" x2="-18" y2="0"></line><path d="M -18 0 L -15 -6 L -9 6 L -3 -6 L 3 6 L 9 -6 L 15 6 L 18 0"></path><line x1="18" y1="0" x2="30" y2="0"></line></g></g><g class="component" transform="translate(120,90)"><g class="sym" transform="rotate(90)"><line x1="-30" y1="0" x2="-18" y2="0"></line><path d="M -18 0 L -15 -6 L -9 6 L -3 -6 L 3 6 L 9 -6 L 15 6 L 18 0"></path><line x1="18" y1="0" x2="30" y2="0"></line></g></g><g class="component" transform="translate(180,0)"><g class="sym" transform="rotate(0)"><circle cx="0" cy="0" r="14"></circle><line x1="-20" y1="0" x2="-5" y2="0"></line><line x1="-5" y1="-9" x2="-5" y2="9"></line><line x1="-5" y1="-4" x2="10" y2="-13"></line><line x1="10" y1="-13" x2="10" y2="-20"></line><line x1="-5" y1="4" x2="10" y2="13"></line><line x1="10" y1="13" x2="10" y2="20"></line><path d="M 4 12 L 10 13 L 6 7 Z" class="fill"></path></g></g><g class="component" transform="translate(250,90)"><g class="sym" transform="rotate(90)"><line x1="-30" y1="0" x2="-18" y2="0"></line><path d="M -18 0 L -15 -6 L -9 6 L -3 -6 L 3 6 L 9 -6 L 15 6 L 18 0"></path><line x1="18" y1="0" x2="30" y2="0"></line></g></g><g class="component" transform="translate(400,10)"><g class="sym" transform="rotate(0)"><rect x="-40" y="-22" width="80" height="44" rx="4"></rect><line x1="-50" y1="-10" x2="-40" y2="-10"></line><line x1="40" y1="-10" x2="50" y2="-10"></line><line x1="-50" y1="10" x2="-40" y2="10"></line><line x1="0" y1="-30" x2="0" y2="-22"></line><line x1="0" y1="22" x2="0" y2="30"></line><text x="0" y="-8" text-anchor="middle">BBD</text><text x="0" y="6" text-anchor="middle">1024 stages</text><text x="-36" y="13">CK</text></g></g><g class="component" transform="translate(300,140)"><g class="sym" transform="rotate(0)"><circle cx="0" cy="0" r="13"></circle><path d="M -8 0 Q -4 -8 0 0 T 8 0"></path><line x1="13" y1="0" x2="20" y2="0"></line><text x="0" y="-17" text-anchor="middle">LFO</text></g></g><g class="component" transform="translate(490,0)"><g class="sym" transform="rotate(0)"><line x1="-30" y1="0" x2="-18" y2="0"></line><path d="M -18 0 L -15 -6 L -9 6 L -3 -6 L 3 6 L 9 -6 L 15 6 L 18 0"></path><line x1="18" y1="0" x2="30" y2="0"></line></g></g><g class="component" transform="translate(550,80)"><g class="sym" transform="rotate(90)"><line x1="-20" y1="0" x2="-3" y2="0"></line><line x1="-3" y1="-9" x2="-3" y2="9"></line><line x1="3" y1="-9" x2="3" y2="9"></line><line x1="3" y1="0" x2="20" y2="0"></line></g></g><g class="component" transform="translate(610,0)"><g class="sym" transform="rotate(0)"><line x1="-30" y1="0" x2="-18" y2="0"></line><path d="M -18 0 L -15 -6 L -9 6 L -3 -6 L 3 6 L 9 -6 L 15 6 L 18 0"></path><line x1="18" y1="0" x2="30" y2="0"></line></g></g><g class="component" transform="translate(670,80)"><g class="sym" transform="rotate(90)"><line x1="-20" y1="0" x2="-3" y2="0"></line><line x1="-3" y1="-9" x2="-3" y2="9"></line><line x1="3" y1="-9" x2="3" y2="9"></line><line x1="3" y1="0" x2="20" y2="0"></line></g></g><g class="component" transform="translate(730,0)"><g class="sym" transform="rotate(0)"><line x1="-20" y1="0" x2="-3" y2="0"></line><line x1="-3" y1="-9" x2="-3" y2="9"></line><line x1="3" y1="-9" x2="3" y2="9"></line><line x1="3" y1="0" x2="20" y2="0"></line></g></g><g class="component" transform="translate(810,0)"><g class="sym" transform="rotate(180)"><line x1="-30" y1="0" x2="-18" y2="0"></line><path d="M -18 0 L -15 -6 L -9 6 L -3 -6 L 3 6 L 9 -6 L 15 6 L 18 0"></path><line x1="18" y1="0" x2="30" y2="0"></line><path d="M 0 -20 L 0 -12 M -4 -8 L 0 -12 L 4 -8"></path></g></g><g class="component" transform="translate(60,-170)"><g class="sym" transform="rotate(0)"><line x1="0" y1="10" x2="0" y2="0"></line><line x1="-10" y1="0" x2="10" y2="0"></line><text x="0" y="-5" text-anchor="middle">+9V</text></g></g><g class="component" transform="translate(60,190)"><g class="sym" transform="rotate(0)"><line x1="0" y1="-10" x2="0" y2="0"></line><line x1="-12" y1="0" x2="12" y2="0"></line><line x1="-8" y1="5" x2="8" y2="5"></line><line x1="-4" y1="10" x2="4" y2="10"></line></g></g><g class="component" transform="translate(880,60)"><g class="sym" transform="rotate(0)"><line x1="-20" y1="0" x2="-1" y2="0"></line><circle cx="8" cy="0" r="9"></circle><path d="M 3 -4 L 9 0 L 3 4 Z" class="fill"></path><text x="8" y="-14" text-anchor="middle">OUT</text></g></g><circle class="jn" cx="120" cy="0" r="3"></circle>
           </g>
           <circle id="pulse" cx="20" cy="0" r="5"></circle>
         </svg>
       </div>
       <div class="sch-cap">
-        <span><b>付属プリセット:</b> ビブラート (VB-2風)</span>
-        <span><b>部品:</b> 17</span>
-        <span><b>配線:</b> 31</span>
-        <span><b>要:</b> MN3007 BBD + LFO による遅延変調</span>
+        <span><b>Included preset:</b> Vibrato (VB-2 style)</span>
+        <span><b>Parts:</b> 17</span>
+        <span><b>Wires:</b> 31</span>
+        <span><b>Key point:</b> Delay modulation from an MN3007 BBD and an LFO</span>
       </div>
     </div>
   </div>
@@ -941,23 +943,23 @@ document.addEventListener("DOMContentLoaded", function () {
   <div class="scrub-in">
     <div class="scrub-grid">
       <div>
-        <p class="eyebrow rise">設計のループ</p>
-        <h2 class="rise" style="font-size:clamp(27px,3.6vw,44px)">置く、鳴らす、直す。<br>その往復が数秒で回る。</h2>
+        <p class="eyebrow rise">The design loop</p>
+        <h2 class="rise" style="font-size:clamp(27px,3.6vw,44px)">Place it, play it, fix it.<br>The round trip takes seconds.</h2>
         <ol class="steps" id="steps">
           <li class="on">
-            <span class="n">01 / 置く</span>
-            <h3>部品を並べて配線する</h3>
-            <p>1920点の実部品から選んで置き、線でつなぐだけ。定数はあとから自由に変えられます。</p>
+            <span class="n">01 / Place</span>
+            <h3>Lay out parts and wire them up</h3>
+            <p>Pick from 1,920 real parts, drop them in and draw wires. Values can be changed later, freely.</p>
           </li>
           <li>
-            <span class="n">02 / 鳴らす</span>
-            <h3>再生ボタンを押すと音になる</h3>
-            <p>回路がそのまま解かれて音が出ます。波形とスペクトラムも同時に見えるので、耳と目の両方で確認できます。</p>
+            <span class="n">02 / Play</span>
+            <h3>Press play and it becomes sound</h3>
+            <p>The circuit itself is solved and comes out as audio. The waveform and spectrum are shown at the same time, so you can check with your ears and your eyes at once.</p>
           </li>
           <li>
-            <span class="n">03 / 直す</span>
-            <h3>おかしなところを指摘してくれる</h3>
-            <p>誤配線チェックが常に走ります。実測に基づく改善提案は、ボタン一つで回路に反映できます。</p>
+            <span class="n">03 / Fix</span>
+            <h3>It points out what looks wrong</h3>
+            <p>A wiring check runs continuously. Suggested improvements, grounded in measurement, can be applied to the circuit with a single button.</p>
           </li>
         </ol>
       </div>
@@ -965,12 +967,12 @@ document.addEventListener("DOMContentLoaded", function () {
       <div class="stage" id="stage">
         <!-- 1: 部品を置く -->
         <div class="pane on" data-pane="0">
-          <div class="pane-t">部品を配置</div>
+          <div class="pane-t">Place parts</div>
           <div class="fake-pal" id="fake-pal"></div>
         </div>
         <!-- 2: 鳴らす -->
         <div class="pane" data-pane="1">
-          <div class="pane-t">波形 / スペクトラム</div>
+          <div class="pane-t">Waveform / spectrum</div>
           <div class="wave-wrap">
             <svg class="wave-svg" id="w2" viewBox="0 0 400 150" preserveAspectRatio="none">
               <line class="axis" x1="0" y1="75" x2="400" y2="75"></line>
@@ -982,11 +984,11 @@ document.addEventListener("DOMContentLoaded", function () {
         </div>
         <!-- 3: 直す -->
         <div class="pane" data-pane="2">
-          <div class="pane-t">誤配線チェック / アドバイザー</div>
+          <div class="pane-t">Wiring check / advisor</div>
           <div class="cards">
-            <div class="card-l warn"><span class="ic">⚠</span><div><b>入力が浮いている</b><p>IN から先が GND に落ちていません。入力インピーダンスを決める抵抗を入れてください。</p></div></div>
-            <div class="card-l info"><span class="ic">◇</span><div><b>高域が落ちすぎている</b><p>出力段の 100n を 22n にすると −3dB 点が 1.6kHz から 7.2kHz に上がります。<span class="hl-b">［適用］</span></p></div></div>
-            <div class="card-l ok"><span class="ic">✓</span><div><b>バイアスは適正</b><p>Q1 のコレクタ電圧は 4.6V。9V 電源に対しておおよそ中点です。</p></div></div>
+            <div class="card-l warn"><span class="ic">⚠</span><div><b>The input is floating</b><p>Nothing past IN reaches GND. Add a resistor to set the input impedance.</p></div></div>
+            <div class="card-l info"><span class="ic">◇</span><div><b>Too much treble is being lost</b><p>Changing the 100n in the output stage to 22n moves the -3dB point from 1.6kHz up to 7.2kHz.<span class="hl-b">[Apply]</span></p></div></div>
+            <div class="card-l ok"><span class="ic">✓</span><div><b>Bias is where it should be</b><p>Q1's collector sits at 4.6V - roughly midpoint on a 9V supply.</p></div></div>
           </div>
         </div>
       </div>
@@ -997,27 +999,17 @@ document.addEventListener("DOMContentLoaded", function () {
 <!-- ================= 部品ライブラリ ================= -->
 <section id="parts">
   <div class="wrap">
-    <p class="eyebrow rise">部品ライブラリ</p>
-    <h2 class="rise">「その年代のその石」で組める。</h2>
-    <p class="lede rise" data-i18n-html>
-      同じ回路でもトランジスタを替えれば音は変わります。Rosso は部品ごとに hFE や接合容量、
-      真空管なら Koren 係数といった実際のパラメータを持っているので、
-      <span class="hl-o">AC128</span> と <span class="hl-b">BC109C</span> の違いも、
-      <span class="hl-p">12AX7</span> と <span class="hl-p">12AT7</span> の違いも、置き換えて聴き比べられます。
-    </p>
+    <p class="eyebrow rise">Part library</p>
+    <h2 class="rise">Build it with that decade's exact transistor.</h2>
+    <p class="lede rise" data-i18n-html>Swap the transistor and the same circuit sounds different. Rosso keeps the real parameters for every part - hFE and junction capacitance, Koren coefficients for tubes - so the difference between an <span class="hl-o">AC128</span> and a <span class="hl-b">BC109C</span>, or between a <span class="hl-p">12AX7</span> and a <span class="hl-p">12AT7</span>, is something you can swap in and listen to.</p>
 
     <div class="stats">
-      <div class="stat rise"><b><span class="num" data-to="1920">0</span></b><span>収録部品</span></div>
-      <div class="stat rise"><b><span class="num" data-to="180">0</span></b><span>ゲルマニウムトランジスタ</span></div>
-      <div class="stat rise"><b><span class="num" data-to="188">0</span></b><span>真空管 (プリ・パワー・整流)</span></div>
-      <div class="stat rise"><b><span class="num" data-to="47">0</span></b><span>物理モデルの種類</span></div>
+      <div class="stat rise"><b><span class="num" data-to="1920">0</span></b><span>Parts included</span></div>
+      <div class="stat rise"><b><span class="num" data-to="180">0</span></b><span>Germanium transistors</span></div>
+      <div class="stat rise"><b><span class="num" data-to="188">0</span></b><span>Tubes (preamp, power, rectifier)</span></div>
+      <div class="stat rise"><b><span class="num" data-to="47">0</span></b><span>Physical model types</span></div>
     </div>
-    <p class="note rise" style="margin-top:14px" data-i18n-html>
-      パラメータの細かさは分野によって違います。真空管158点は115通り、オペアンプ160点は107通りの
-      独立したパラメータを持ちます。一方ゲルマニウムトランジスタ180点は hFE と漏れ電流の等級で
-      36通りに分けているため、<b style="color:#9aa5b8;font-weight:500">同じ等級の型番は同じ挙動になります</b>
-      (公開されている実測値が乏しい領域なので、値をでっち上げないための割り切りです)。
-    </p>
+    <p class="note rise" style="margin-top:14px" data-i18n-html>How finely a part is modeled varies by field. The 158 tubes have 115 distinct parameter sets and the 160 op-amps have 107. The 180 germanium transistors, on the other hand, are sorted into 36 classes by hFE and leakage current, so <b style="color:#9aa5b8;font-weight:500">part numbers in the same class behave identically</b> (published measurements are scarce here, and we would rather not invent numbers).</p>
 
     <div class="marquee" aria-hidden="true">
       <div class="mrow a" id="m1"></div>
@@ -1025,12 +1017,12 @@ document.addEventListener("DOMContentLoaded", function () {
     </div>
 
     <div class="feat">
-      <div class="f rise"><span class="ic c-ge"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12.5" cy="12" r="8.5"/><path d="M9 8.2v7.6M9 12H3.5M9 9.6l6.5-3.9M15.5 5.7V3M9 14.4l6.5 3.9M15.5 18.3V21"/></svg></span><h3>ゲルマニウム</h3><p>AC128・OC44・NKT275・AD149・MP38 など180点。低い hFE、大きな漏れ電流、1.5MHz しかない fT まで持つので、あの丸さと不安定さが出ます。</p></div>
-      <div class="f rise"><span class="ic c-tube"><svg viewBox="0 0 24 24" aria-hidden="true"><ellipse cx="12" cy="10.5" rx="7.5" ry="8"/><path d="M9 13.5l3-5.5 3 5.5M8 5.5h8M8.5 21h7"/></svg></span><h3>真空管</h3><p>12AX7・EL34・KT88・6L6GC・300B・2A3 など188点。Koren モデルで動くので、プリからパワー段まで組めます。</p></div>
-      <div class="f rise"><span class="ic c-bbd"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="5.5" width="14" height="13" rx="2"/><path d="M5 9H1.8M5 12H1.8M5 15H1.8M19 9h3.2M19 12h3.2M19 15h3.2"/></svg></span><h3>BBD (アナログ遅延)</h3><p>MN3007・MN3005・MN3207・V3205D など33点。コーラス・フランジャー・ビブラート・アナログディレイの中核です。</p></div>
-      <div class="f rise"><span class="ic c-op"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7.5 4l11 8-11 8z"/><path d="M7.5 8.5H2M7.5 15.5H2M18.5 12H22"/></svg></span><h3>オペアンプ 160点</h3><p>JRC4558D・TL072・NE5532・TA7136AP など。GBW とスルーレートを持つので、帯域による差も出ます。</p></div>
-      <div class="f rise"><span class="ic c-di"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5l9 6.5-9 6.5z"/><path d="M17 5.5v13M2 12h6M17 12h5"/></svg></span><h3>ダイオード・FET</h3><p>1N34A・1N4148・BAT41 のクリッピング差、2SK117・J201 のバラつき。歪みの質を決める部分がそのまま部品選びになります。</p></div>
-      <div class="f rise"><span class="ic c-mix"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 4.5h5.5a7.5 7.5 0 010 15H6z"/><path d="M2 9h4M2 15h4M19.2 12H22"/></svg></span><h3>CMOS・変わり種</h3><p>CD4013 によるサブオクターブ、SSM2164、NE570 コンパンダ、フォトカプラ、CdS、バリキャップ、サイリスタまで。</p></div>
+      <div class="f rise"><span class="ic c-ge"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12.5" cy="12" r="8.5"/><path d="M9 8.2v7.6M9 12H3.5M9 9.6l6.5-3.9M15.5 5.7V3M9 14.4l6.5 3.9M15.5 18.3V21"/></svg></span><h3>Germanium</h3><p>180 parts including the AC128, OC44, NKT275, AD149 and MP38. Low hFE, heavy leakage and an fT of only 1.5MHz are all modeled, so you get that round, unruly character.</p></div>
+      <div class="f rise"><span class="ic c-tube"><svg viewBox="0 0 24 24" aria-hidden="true"><ellipse cx="12" cy="10.5" rx="7.5" ry="8"/><path d="M9 13.5l3-5.5 3 5.5M8 5.5h8M8.5 21h7"/></svg></span><h3>Tubes</h3><p>188 parts including the 12AX7, EL34, KT88, 6L6GC, 300B and 2A3. They run on the Koren model, so you can build anything from a preamp to an output stage.</p></div>
+      <div class="f rise"><span class="ic c-bbd"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="5.5" width="14" height="13" rx="2"/><path d="M5 9H1.8M5 12H1.8M5 15H1.8M19 9h3.2M19 12h3.2M19 15h3.2"/></svg></span><h3>BBD (analog delay)</h3><p>33 parts including the MN3007, MN3005, MN3207 and V3205D - the heart of chorus, flanger, vibrato and analog delay.</p></div>
+      <div class="f rise"><span class="ic c-op"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7.5 4l11 8-11 8z"/><path d="M7.5 8.5H2M7.5 15.5H2M18.5 12H22"/></svg></span><h3>160 op-amps</h3><p>The JRC4558D, TL072, NE5532, TA7136AP and more. Each carries its own GBW and slew rate, so differences in bandwidth come through.</p></div>
+      <div class="f rise"><span class="ic c-di"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5l9 6.5-9 6.5z"/><path d="M17 5.5v13M2 12h6M17 12h5"/></svg></span><h3>Diodes and FETs</h3><p>The clipping differences between a 1N34A, a 1N4148 and a BAT41; the spread between a 2SK117 and a J201. What decides the quality of your distortion is simply which part you pick.</p></div>
+      <div class="f rise"><span class="ic c-mix"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 4.5h5.5a7.5 7.5 0 010 15H6z"/><path d="M2 9h4M2 15h4M19.2 12H22"/></svg></span><h3>CMOS and oddities</h3><p>Sub-octaves from a CD4013, the SSM2164, NE570 companders, optocouplers, CdS cells, varicaps, even thyristors.</p></div>
     </div>
   </div>
 </section>
@@ -1041,32 +1033,22 @@ document.addEventListener("DOMContentLoaded", function () {
     <div class="scrub-grid">
       <div>
         <p class="eyebrow rise">Lotus Engine</p>
-        <h2 class="rise" style="font-size:clamp(27px,3.6vw,44px)">歪みを「モデル」ではなく<br>回路から出す。</h2>
-        <p class="lede rise" style="font-size:16.5px" data-i18n-html>
-          <b>Lotus Engine</b> は、回路を毎サンプル解くソルバです。Rust で書かれていて、
-          回路を節点方程式 (MNA) に組み立て、非線形な素子は Newton 法で解きます。
-          歪みの形は近似カーブではなく、ダイオードやトランジスタの式そのものから出てきます。
-        </p>
+        <h2 class="rise" style="font-size:clamp(27px,3.6vw,44px)">Distortion is not a model.<br>It comes out of the circuit.</h2>
+        <p class="lede rise" style="font-size:16.5px" data-i18n-html><b>Lotus Engine</b> is a solver that solves the circuit on every sample. Written in Rust, it assembles the circuit into nodal equations (MNA) and solves the nonlinear devices with Newton's method. The shape of the distortion is not an approximation curve - it falls out of the diode and transistor equations themselves.</p>
         <p class="note rise" style="margin-top:14px">
-          回路のどこか一箇所だけを先に解くことはできません。ある節点の電圧は回路全体に同時に
-          依存しているので、46種のデバイスを1つの行列に組んで一度に解きます。
+          No single point in a circuit can be solved ahead of the rest. The voltage at any node depends on the whole circuit at once, so all 46 device types go into one matrix and are solved together.
         </p>
         <div class="meters" style="margin-top:22px">
           <div class="meter"><span>DRIVE</span><b id="m-drive" class="hl">0%</b></div>
           <div class="meter"><span>THD</span><b id="m-thd" class="hl-o">0.0%</b></div>
-          <div class="meter"><span>3次倍音</span><b id="m-h" class="hl-p">0.5%</b></div>
+          <div class="meter"><span>3rd harmonic</span><b id="m-h" class="hl-p">0.5%</b></div>
         </div>
-        <p class="note" style="margin-top:20px" data-i18n-html>
-          右の波形とスペクトラムは、このページ上で実際に計算しています (正弦波 + tanh ソフトクリップの DFT)。
-          上下対称に潰しているので<b style="color:#9aa5b8;font-weight:500">偶数次の倍音は出ません</b> —
-          棒が1本飛びに立つのはそのためです。アプリ本体はこれよりずっと踏み込んで、
-          素子ごとの物理式を連立して解いています。
-        </p>
+        <p class="note" style="margin-top:20px" data-i18n-html>The waveform and spectrum on the right are computed right here on this page (a sine wave plus a tanh soft clip, then a DFT). Because it is squashed symmetrically, <b style="color:#9aa5b8;font-weight:500">no even harmonics appear</b> - that is why every other bar is missing. The app itself goes much further, solving the physical equations of each device simultaneously.</p>
       </div>
 
       <div class="stage" id="stage2" style="aspect-ratio:4/3.1">
         <div class="pane on" style="display:flex;flex-direction:column">
-          <div class="pane-t">スコープ ─ IN <span style="color:var(--blue)">■</span> / OUT <span style="color:var(--green)">■</span> ・ スクロールすると DRIVE が上がります</div>
+          <div class="pane-t">Scope - IN <span style="color:var(--blue)">■</span> / OUT <span style="color:var(--green)">■</span>  · Scroll to raise DRIVE</div>
           <div class="wave-wrap" style="flex:1">
             <svg class="wave-svg" id="w1" viewBox="0 0 400 160" preserveAspectRatio="none">
               <line class="grid" x1="0" y1="40" x2="400" y2="40"></line>
@@ -1075,7 +1057,7 @@ document.addEventListener("DOMContentLoaded", function () {
               <path class="win" id="w1in"></path>
               <path class="wout" id="w1out"></path>
             </svg>
-            <div class="pane-t" style="margin:6px 0 0">スペクトラム (OUT) — 横軸は倍音の次数</div>
+            <div class="pane-t" style="margin:6px 0 0">Spectrum (OUT) - horizontal axis is harmonic order</div>
             <div class="spec" id="spec1"></div>
             <div class="spec-ax" id="spec1ax"></div>
           </div>
@@ -1089,26 +1071,17 @@ document.addEventListener("DOMContentLoaded", function () {
 <section id="vision">
   <div class="wrap two">
     <div>
-      <p class="eyebrow rise">4DEM — 回路図の転写と診断</p>
-      <h2 class="rise" style="font-size:clamp(27px,3.8vw,46px)">紙の回路図を、<br>編集できる回路にする。</h2>
-      <p class="lede rise" data-i18n-html>
-        書籍やネットで見つけた回路図の画像を貼り付けると、<b>4DEM</b> が部品と配線を読み取って
-        Rosso の回路として起こします。並べ替えずに<span class="hl">元の図と同じ配置</span>で置くので、
-        手元の図と見比べながら作業できます。
-      </p>
-      <p class="lede rise" style="font-size:16px" data-i18n-html>
-        読み取りは複数回走らせて結果を突き合わせ、<span class="hl-b">食い違った箇所に印を付けて</span>提示します。
-        そのまま流し込まず、確認してから適用する作りです。組み終わったあとの改善提案
-        (どこに抵抗やコンデンサを足すべきか) も 4DEM の担当で、こちらは実測に基づいて出します。
-      </p>
+      <p class="eyebrow rise">4DEM - schematic capture and diagnosis</p>
+      <h2 class="rise" style="font-size:clamp(27px,3.8vw,46px)">Take a schematic on paper<br>and make it an editable circuit.</h2>
+      <p class="lede rise" data-i18n-html>Paste in a picture of a schematic from a book or the web and <b>4DEM</b> reads the parts and wiring and rebuilds it as a Rosso circuit. It places everything <span class="hl">in the same layout as the original</span> rather than rearranging it, so you can work with your source drawing side by side.</p>
+      <p class="lede rise" style="font-size:16px" data-i18n-html>The read runs several times and the results are cross-checked, then <span class="hl-b">anything that disagrees is flagged</span> for you. Nothing is poured straight in - you confirm before applying. Suggestions for what to improve once it is built (where to add a resistor or a capacitor) are 4DEM's job too, and those come from measurements.</p>
       <p class="note rise">
-        AI の読み取りには Google Gemini の API キー (無料枠あり) をご自分で設定します。
-        キーは端末内にのみ保存されます。この機能を使わない場合、設定は不要です。
+        Reading a schematic with AI uses your own Google Gemini API key (there is a free tier). The key is stored only on your machine. If you do not use this feature, no setup is needed.
       </p>
     </div>
 
     <div class="frame rise">
-      <div class="frame-h"><i></i><i></i><i></i> <span style="margin-left:6px">転写結果の確認</span></div>
+      <div class="frame-h"><i></i><i></i><i></i> <span style="margin-left:6px">Reviewing a capture</span></div>
       <div class="frame-b">
         <div class="ba">
           <div>
@@ -1123,7 +1096,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 <path d="M40 66 v14 M40 66 h-8 v-6 h16 v6 h-8" stroke-dasharray="2 1.4" opacity=".55"/>
               </svg>
             </div>
-            <div class="ba-lbl">写真・スキャン</div>
+            <div class="ba-lbl">Photo or scan</div>
           </div>
           <div class="arrow">→</div>
           <div>
@@ -1138,16 +1111,16 @@ document.addEventListener("DOMContentLoaded", function () {
                 <circle cx="62" cy="52" r="2.2" fill="currentColor" stroke="none"/>
               </svg>
             </div>
-            <div class="ba-lbl">編集できる回路</div>
+            <div class="ba-lbl">Editable circuit</div>
           </div>
         </div>
         <table class="ab-table" style="margin-top:18px">
-          <tr><td>読み取れた部品</td><td>14</td></tr>
-          <tr><td>3回の読み取りで一致</td><td class="hl">12</td></tr>
-          <tr><td>食い違い (要確認)</td><td class="hl-o">2 — R4 / C3 の値</td></tr>
+          <tr><td>Parts recognized</td><td>14</td></tr>
+          <tr><td>Agreed on across 3 reads</td><td class="hl">12</td></tr>
+          <tr><td>Disagreements (please check)</td><td class="hl-o">2 - the values of R4 and C3</td></tr>
         </table>
         <p class="note" style="margin:13px 0 0;font-size:12px">
-          ※ 表示は機能の説明用の例です。読み取り精度は回路図の状態によって大きく変わります。
+          Note: this display is an illustration of the feature. Accuracy depends heavily on the condition of the schematic.
         </p>
       </div>
     </div>
@@ -1157,42 +1130,40 @@ document.addEventListener("DOMContentLoaded", function () {
 <!-- ================= ビルダー向け ================= -->
 <section id="builder" style="background:var(--bg2);border-top:1px solid var(--border);border-bottom:1px solid var(--border)">
   <div class="wrap">
-    <p class="eyebrow rise">作る人のための機能</p>
-    <h2 class="rise">「どっちが良いか」を、<br>思い込みでなく耳で決める。</h2>
+    <p class="eyebrow rise">Features for people who build</p>
+    <h2 class="rise">Decide which one is better<br>with your ears, not your assumptions.</h2>
 
     <div class="two" style="margin-top:44px">
       <div>
-        <h3 class="rise">A/B 比較</h3>
+        <h3 class="rise">A/B comparison</h3>
         <p class="lede rise" style="font-size:16px">
-          選んだ部品の状態を A と B に記録して、Tab キーで切り替えます。回路の他の部分は共通のままなので、
-          比べたい箇所だけが変わります。ポットを回すと、コンパイルし直さずそのまま音が追従します。
+          Record the state of the selected parts as A and B, then switch with the Tab key. The rest of the circuit stays identical, so only what you wanted to compare changes. Turn a pot and the sound follows without recompiling.
         </p>
-        <h3 class="rise" style="margin-top:30px">コピーとグリッド複製</h3>
+        <h3 class="rise" style="margin-top:30px">Copy and grid duplication</h3>
         <p class="lede rise" style="font-size:16px">
-          Shift+ドラッグで範囲選択、Ctrl+C / Ctrl+V でコピー。段数を指定してグリッド状に複製もできるので、
-          多段クリッパーやラダーフィルタを一気に並べられます。
+          Shift-drag to select an area, Ctrl+C / Ctrl+V to copy. You can also duplicate onto a grid with a set number of stages, so a multi-stage clipper or a ladder filter goes down all at once.
         </p>
       </div>
       <div class="frame rise">
-        <div class="frame-h"><i></i><i></i><i></i> <span style="margin-left:6px">A/B — Q1 の差し替え</span></div>
+        <div class="frame-h"><i></i><i></i><i></i> <span style="margin-left:6px">A/B - swapping Q1</span></div>
         <div class="frame-b">
           <div class="ab-demo">
             <button type="button" class="ab-btn on" data-ab="a">A</button>
             <button type="button" class="ab-btn" data-ab="b">B</button>
           </div>
           <table class="ab-table" id="ab-tbl"></table>
-          <p class="note" style="margin:13px 0 0;font-size:12px">クリックで切り替わります。数値は各型番の収録パラメータです。</p>
+          <p class="note" style="margin:13px 0 0;font-size:12px">Click to switch. The numbers are the parameters stored for each part.</p>
         </div>
       </div>
     </div>
 
     <div class="feat">
-      <div class="f rise"><span class="ic c-bbd"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2 12h3l2-6 2.5 12L12 6l2.5 10L17 12h5"/></svg></span><h3>実際のギターを通せる</h3><p>オーディオ入力から生の信号を流せます。撥弦のシミュレーション、サイン波、矩形波、ノイズ、手持ちの音声ファイルも入力にできます。</p></div>
-      <div class="f rise"><span class="ic c-op"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9.5h3.5L13 5v14L7.5 14.5H4z"/><path d="M16.5 9.2a4 4 0 010 5.6M19.4 6.8a7.6 7.6 0 010 10.4"/></svg></span><h3>キャビネットシミュレーション</h3><p>1×12 オープンバック / 4×12 クローズドバックを後段に置けます。スピーカーを通した後の音で判断できます。</p></div>
-      <div class="f rise"><span class="ic c-mix"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 3v6M5 15v6M12 3v10M12 19v2M19 3v3M19 12v9"/><circle cx="5" cy="12" r="2.6"/><circle cx="12" cy="16" r="2.6"/><circle cx="19" cy="9" r="2.6"/></svg></span><h3>精度を選べる</h3><p>標準から 8× オーバーサンプリングまで。組んでいる間は軽く、詰めの段階で上げる、という使い方ができます。</p></div>
-      <div class="f rise"><span class="ic c-tube"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3.5" width="7.5" height="7.5" rx="1.5"/><rect x="13.5" y="3.5" width="7.5" height="7.5" rx="1.5"/><rect x="3" y="13" width="7.5" height="7.5" rx="1.5"/><rect x="13.5" y="13" width="7.5" height="7.5" rx="1.5"/></svg></span><h3>14種のプリセット</h3><p>RCフィルタから Marshall 1959風プリ (12AX7×3)、オクターブファズ (CD4013)、リングモジュレータ、クリーンなオクターブアップ、シンセのVCFやサンプル&ホールドまで。改造の出発点に。</p></div>
-      <div class="f rise"><span class="ic c-di"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 4.5C6.5 4.5 6 6 6 8v2c0 1.4-1 2-2 2 1 0 2 .6 2 2v2c0 2 .5 3.5 3 3.5M15 4.5c2.5 0 3 1.5 3 3.5v2c0 1.4 1 2 2 2-1 0-2 .6-2 2v2c0 2-.5 3.5-3 3.5"/></svg></span><h3>JSON で保存</h3><p>回路はテキストの JSON。差分が読めるので、バージョン管理にも人に渡すのにも向いています。</p></div>
-      <div class="f rise"><span class="ic c-ge"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.5 12a8.5 8.5 0 11-2.6-6.1"/><path d="M20.8 3.6v4.6h-4.6"/><path d="M12 7.5v5l3 2"/></svg></span><h3>自動アップデート</h3><p>新しいバージョンが出たらアプリが知らせます。ダウンロードし直しは不要です。</p></div>
+      <div class="f rise"><span class="ic c-bbd"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2 12h3l2-6 2.5 12L12 6l2.5 10L17 12h5"/></svg></span><h3>Run a real guitar through it</h3><p>Feed a live signal in from an audio input. A plucked-string simulation, sine, square, noise, or your own audio files can all be the source.</p></div>
+      <div class="f rise"><span class="ic c-op"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9.5h3.5L13 5v14L7.5 14.5H4z"/><path d="M16.5 9.2a4 4 0 010 5.6M19.4 6.8a7.6 7.6 0 010 10.4"/></svg></span><h3>Cabinet simulation</h3><p>Put a 1x12 open back or a 4x12 closed back after the circuit and judge the sound as it leaves a speaker.</p></div>
+      <div class="f rise"><span class="ic c-mix"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 3v6M5 15v6M12 3v10M12 19v2M19 3v3M19 12v9"/><circle cx="5" cy="12" r="2.6"/><circle cx="12" cy="16" r="2.6"/><circle cx="19" cy="9" r="2.6"/></svg></span><h3>Pick your accuracy</h3><p>From standard up to 8x oversampling. Keep it light while you build, then raise it when you are finishing.</p></div>
+      <div class="f rise"><span class="ic c-tube"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3.5" width="7.5" height="7.5" rx="1.5"/><rect x="13.5" y="3.5" width="7.5" height="7.5" rx="1.5"/><rect x="3" y="13" width="7.5" height="7.5" rx="1.5"/><rect x="13.5" y="13" width="7.5" height="7.5" rx="1.5"/></svg></span><h3>14 presets</h3><p>From an RC filter to a Marshall 1959-style preamp (three 12AX7s), an octave fuzz (CD4013), a ring modulator, a clean octave-up, and synth VCFs and sample-and-holds. Starting points to modify.</p></div>
+      <div class="f rise"><span class="ic c-di"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 4.5C6.5 4.5 6 6 6 8v2c0 1.4-1 2-2 2 1 0 2 .6 2 2v2c0 2 .5 3.5 3 3.5M15 4.5c2.5 0 3 1.5 3 3.5v2c0 1.4 1 2 2 2-1 0-2 .6-2 2v2c0 2-.5 3.5-3 3.5"/></svg></span><h3>Saved as JSON</h3><p>Circuits are plain-text JSON. Diffs are readable, which suits version control and handing a file to someone else.</p></div>
+      <div class="f rise"><span class="ic c-ge"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.5 12a8.5 8.5 0 11-2.6-6.1"/><path d="M20.8 3.6v4.6h-4.6"/><path d="M12 7.5v5l3 2"/></svg></span><h3>Automatic updates</h3><p>The app tells you when a new version is out. No downloading it again.</p></div>
     </div>
   </div>
 </section>
@@ -1200,55 +1171,48 @@ document.addEventListener("DOMContentLoaded", function () {
 <!-- ================= ダウンロード ================= -->
 <section id="dl">
   <div class="wrap">
-    <p class="eyebrow rise">ダウンロード</p>
-    <h2 class="rise">無料です。<br>アカウント登録もありません。</h2>
-    <p class="lede rise">バージョン <b id="ver2">1.4.0</b> ・ 個人利用は無料 ・ 回路データは端末内に保存されます。</p>
+    <p class="eyebrow rise">Download</p>
+    <h2 class="rise">It's free.<br>No account, either.</h2>
+    <p class="lede rise">Version <b id="ver2">1.4.0</b>  · Free for personal use · Circuit data is stored on your own machine.</p>
     <p class="note" id="dl-state" hidden></p>
 
     <div class="dl-grid">
       <a class="dl-card rise" id="dl-win" href="https://github.com/tsukuba-onkyo/Rosso-dist/releases">
         <span class="os"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2.5" y="4" width="19" height="14" rx="2"/><path d="M2.5 8h19M8 21h8"/></svg></span>
         <h3>Windows</h3>
-        <div class="meta" id="meta-win">64bit ・ インストーラ (.exe / .msi)</div>
-        <span class="btn btn-p">↓ ダウンロード</span>
+        <div class="meta" id="meta-win">64-bit · Installer (.exe / .msi)</div>
+        <span class="btn btn-p">↓ Download</span>
       </a>
       <a class="dl-card rise" id="dl-mac" href="https://github.com/tsukuba-onkyo/Rosso-dist/releases">
         <span class="os"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="3.5" width="16" height="12" rx="1.8"/><path d="M1.5 19.5h21l-1.5-4H3z"/></svg></span>
         <h3>macOS</h3>
-        <div class="meta" id="meta-mac">Apple Silicon (M1以降) ・ .dmg</div>
-        <span class="btn btn-p">↓ ダウンロード</span>
+        <div class="meta" id="meta-mac">Apple Silicon (M1 or later) · .dmg</div>
+        <span class="btn btn-p">↓ Download</span>
       </a>
     </div>
 
     <div class="caveat rise">
-      <h3>インストール前に知っておいてほしいこと</h3>
-      <p data-i18n-html><b style="color:var(--text)">配布物に署名を付けていません。</b>
-        そのため初回起動時に OS が警告を出します。macOS では
-        アプリを右クリック →「開く」を選ぶか、<code>システム設定 → プライバシーとセキュリティ</code> から許可してください。
-        Windows では SmartScreen の「詳細情報」→「実行」で進めます。</p>
-      <p data-i18n-html><b style="color:var(--text)">macOS で「"Rosso"は壊れているため開けません」と出る場合。</b>
-        v1.3.4 以前の macOS 版に起きる不具合で、アプリは壊れていません。この表示のときは
-        右クリック →「開く」では回避できないので、ターミナルで次を実行してから開いてください。</p>
+      <h3>What to know before you install</h3>
+      <p data-i18n-html><b style="color:var(--text)">The builds are not code-signed.</b> Your OS will warn you the first time you launch. On macOS, right-click the app and choose Open, or allow it from <code>System Settings &rarr; Privacy &amp; Security</code>. On Windows, click "More info" then "Run anyway" in SmartScreen.</p>
+      <p data-i18n-html><b style="color:var(--text)">If macOS says "Rosso is damaged and can't be opened".</b> This is a bug in macOS builds up to v1.3.4 - the app is not damaged. Right-click and Open does not get around this one, so run the following in Terminal first, then open it.</p>
       <pre style="overflow-x:auto"><code>xattr -cr /Applications/Rosso.app</code></pre>
-      <p>v1.3.5 以降では出なくなります (出た場合は上のコマンドで通せます)。</p>
-      <p data-i18n-html><b style="color:var(--text)">macOS 版は Apple Silicon 専用です。</b>
-        Intel Mac 向けのビルドはまだありません。</p>
-      <p>回路シミュレーションは CPU を使います。大きな回路や高い精度設定では負荷が上がるので、
-        必要に応じて品質設定を下げてください。</p>
+      <p>From v1.3.5 on this no longer happens (and if it does, the command above gets you through).</p>
+      <p data-i18n-html><b style="color:var(--text)">The macOS build is Apple Silicon only.</b> There is no Intel Mac build yet.</p>
+      <p>Circuit simulation uses the CPU. Large circuits and high accuracy settings raise the load, so turn the quality setting down if you need to.</p>
     </div>
   </div>
 </section>
 
 <footer>
   <div class="f-in">
-    <span><span style="color:var(--orange)">⚡</span> <b style="color:var(--text)">Rosso</b> — エフェクター回路シミュレーター</span>
-    <a href="https://github.com/tsukuba-onkyo/Rosso-dist/releases">リリース</a>
-    <a href="https://github.com/tsukuba-onkyo/Rosso-dist/issues">不具合の報告</a>
-    <span class="sp">© 2026 筑波音響</span>
+    <span><span style="color:var(--orange)">⚡</span> <b style="color:var(--text)">Rosso</b>  - a circuit simulator for guitar effects</span>
+    <a href="https://github.com/tsukuba-onkyo/Rosso-dist/releases">Releases</a>
+    <a href="https://github.com/tsukuba-onkyo/Rosso-dist/issues">Report a bug</a>
+    <span class="sp">© 2026 Tsukuba Onkyo</span>
   </div>
 </footer>
 
-<script src="anime.min.js"></script>
+<script src="../anime.min.js"></script>
 <script>
 "use strict";
 /* ============================================================
