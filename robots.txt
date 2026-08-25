@@ -1,13 +1,16 @@
 # Rosso 配布ページ
 #
-# 【注意】このファイルは github.io では**クローラに読まれない**。
-# robots.txt はホストのルート (https://tsukuba-onkyo.github.io/robots.txt) しか
-# 見られない仕様で、そこは GitHub の領域 (現状 404)。サブパスに置いても無効。
-# 効くのは独自ドメインに移したときだけ。それまで sitemap の在り処を伝えるのは
-# Search Console への手動送信が唯一の経路。
+# このファイルは**独自ドメインに移して初めて効くようになった**。
+# robots.txt はホストのルートしか読まれない仕様で、旧 tsukuba-onkyo.github.io/Rosso-dist/
+# はサブパスだったため、置いても一切読まれなかった (Sitemap の在り処を伝える経路が
+# Search Console への手動送信しか無かった)。
+# 今は rosso.tsukubaonkyo.com がホストのルートなので、/robots.txt が正しく読まれる。
 #
-# 消さずに置いてあるのは、独自ドメインへ移した瞬間に効き始めるため。
+# 【ホスト単位であることに注意】
+#   robots.txt も sitemap.xml もホストごとに1つ。tsukubaonkyo.com 配下に別の製品を
+#   置く場合、そちらはそちらで自分の robots.txt / sitemap.xml を持つことになる。
+#   ここに他ホストのページを書いても効かない。
 User-agent: *
 Allow: /
 
-Sitemap: https://tsukuba-onkyo.github.io/Rosso-dist/sitemap.xml
+Sitemap: https://rosso.tsukubaonkyo.com/sitemap.xml

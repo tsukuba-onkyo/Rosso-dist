@@ -18,22 +18,22 @@
        scripts/build-site-en.js が **このファイルから** 生成する実体のページ。
        ?lang=en は今まで通り動くが、canonical で本体に寄せて重複を作らない
      ============================================================ -->
-<link rel="canonical" href="https://tsukuba-onkyo.github.io/Rosso-dist/">
-<link rel="alternate" hreflang="ja" href="https://tsukuba-onkyo.github.io/Rosso-dist/">
-<link rel="alternate" hreflang="en" href="https://tsukuba-onkyo.github.io/Rosso-dist/en/">
-<link rel="alternate" hreflang="x-default" href="https://tsukuba-onkyo.github.io/Rosso-dist/">
-<meta property="og:url" content="https://tsukuba-onkyo.github.io/Rosso-dist/">
+<link rel="canonical" href="https://rosso.tsukubaonkyo.com/">
+<link rel="alternate" hreflang="ja" href="https://rosso.tsukubaonkyo.com/">
+<link rel="alternate" hreflang="en" href="https://rosso.tsukubaonkyo.com/en/">
+<link rel="alternate" hreflang="x-default" href="https://rosso.tsukubaonkyo.com/">
+<meta property="og:url" content="https://rosso.tsukubaonkyo.com/">
 <meta property="og:site_name" content="Rosso">
 <meta property="og:locale" content="ja_JP">
 <meta property="og:locale:alternate" content="en_US">
-<meta property="og:image" content="https://tsukuba-onkyo.github.io/Rosso-dist/ogp.png">
+<meta property="og:image" content="https://rosso.tsukubaonkyo.com/ogp.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:image:alt" content="Rosso — 回路図を描く。その場で音が鳴る。">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Rosso — エフェクター回路シミュレーター">
 <meta name="twitter:description" content="回路図を描くと、その場で音が鳴る。実部品1920点、Rust製ソルバ Lotus Engine。">
-<meta name="twitter:image" content="https://tsukuba-onkyo.github.io/Rosso-dist/ogp.png">
+<meta name="twitter:image" content="https://rosso.tsukubaonkyo.com/ogp.png">
 <link rel="icon" href="icon.png">
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"SoftwareApplication",
@@ -41,8 +41,8 @@
  "applicationCategory":"MultimediaApplication",
  "applicationSubCategory":"Circuit Simulator",
  "operatingSystem":"Windows 10+, macOS 12+ (Apple Silicon)",
- "url":"https://tsukuba-onkyo.github.io/Rosso-dist/",
- "image":"https://tsukuba-onkyo.github.io/Rosso-dist/ogp.png",
+ "url":"https://rosso.tsukubaonkyo.com/",
+ "image":"https://rosso.tsukubaonkyo.com/ogp.png",
  "inLanguage":["ja","en"],
  "author":{"@type":"Organization","name":"筑波音響"},
  "offers":{"@type":"Offer","price":"0","priceCurrency":"JPY"}}
@@ -415,6 +415,23 @@ h1 .l2{display:block;background:linear-gradient(96deg,var(--blue),var(--green));
 .caveat code{font-family:var(--mono);font-size:12.5px;background:var(--bg3);
   padding:2px 6px;border-radius:4px;color:#b9c2d2}
 
+/* ---------- SUPER SPECIAL THANKS ---------- */
+.thanks{
+  border:1px solid var(--border);border-top:2px solid var(--orange);
+  border-radius:12px;background:var(--bg2);padding:30px 32px;
+  display:flex;flex-wrap:wrap;gap:10px 44px;align-items:baseline;
+}
+.thanks-label{
+  font-family:var(--mono);font-size:11.5px;letter-spacing:.22em;
+  color:var(--orange);margin:0;white-space:nowrap;
+}
+.thanks-body{flex:1 1 380px;min-width:0}
+.thanks-body h3{font-size:19px;margin:0 0 8px}
+.thanks-body h3 a{color:var(--text);border-bottom:1px solid var(--border)}
+.thanks-body h3 a:hover{color:var(--orange);border-bottom-color:var(--orange)}
+.thanks-body p{margin:0;font-size:13.5px;color:var(--muted);line-height:1.8;max-width:70ch}
+@media(max-width:640px){ .thanks{padding:24px 20px} }
+
 /* ---------- 狭い画面 ----------
  * 100vh に貼り付けたまま2段組を縦に積むと入り切らないので、
  * 狭い画面ではスクロール追従をやめて普通に流す。 */
@@ -485,6 +502,10 @@ footer a:hover{color:var(--text)}
  * 未訳の検出は tests/site_i18n_test.js が担当 (ページの日本語と突合)。
  * ===================================================================== */
 var SITE_EN = {
+  "☕ 開発を支援する": "☕ Support development",
+  /* ---- SUPER SPECIAL THANKS ---- */
+  "Rosso が持つトランジスタ480型番ぶんの遷移周波数・接合容量・絶対最大定格は、<a href=\"https://huntingtonaudio.com\" target=\"_blank\" rel=\"noopener noreferrer\">Huntington Audio Labs</a> から譲り受けたデータシートの集積によるものです。既定値を当てはめるのをやめて、型番ごとの実測値で音を鳴らせるようになりました。エフェクター自作のための道具を一人で作り続けている工房に、心から感謝します。":
+    "The transition frequency, junction capacitance and absolute maximum ratings Rosso carries for 480 transistor part numbers come from a body of datasheet data handed to us by <a href=\"https://huntingtonaudio.com\" target=\"_blank\" rel=\"noopener noreferrer\">Huntington Audio Labs</a>. It let us stop falling back on category defaults and give every part number its own measured behaviour. Our heartfelt thanks to a one-person workshop that keeps building tools for people who build their own pedals.",
   /* ---- エフェクター自作セクション ---- */
   "エフェクター自作でいちばん惜しいのは、組み上がってから「思っていた音と違う」と分かることです。 部品を注文して、届くのを待って、基板に載せて、鳴らして、また外す。Rosso はこの往復を、 <span class=\"hl\">回路図の段階で</span>済ませておくための道具です。":
     "The most frustrating part of building your own pedals is finding out, once it is assembled, that it does not sound the way you pictured. Order the parts, wait for them, mount them, play it, unsolder them again. Rosso is a tool for getting that loop over with <span class=\"hl\">while it is still a schematic</span>.",
@@ -506,8 +527,8 @@ var SITE_EN = {
   /* ---- インラインマークアップを含む段落 (まるごと1キー) ---- */
   "同じ回路でもトランジスタを替えれば音は変わります。Rosso は部品ごとに hFE や接合容量、 真空管なら Koren 係数といった実際のパラメータを持っているので、 <span class=\"hl-o\">AC128</span> と <span class=\"hl-b\">BC109C</span> の違いも、 <span class=\"hl-p\">12AX7</span> と <span class=\"hl-p\">12AT7</span> の違いも、置き換えて聴き比べられます。":
     "Swap the transistor and the same circuit sounds different. Rosso keeps the real parameters for every part - hFE and junction capacitance, Koren coefficients for tubes - so the difference between an <span class=\"hl-o\">AC128</span> and a <span class=\"hl-b\">BC109C</span>, or between a <span class=\"hl-p\">12AX7</span> and a <span class=\"hl-p\">12AT7</span>, is something you can swap in and listen to.",
-  "パラメータの細かさは分野によって違います。真空管158点は115通り、オペアンプ160点は107通りの 独立したパラメータを持ちます。一方ゲルマニウムトランジスタ180点は hFE と漏れ電流の等級で 36通りに分けているため、<b style=\"color:#9aa5b8;font-weight:500\">同じ等級の型番は同じ挙動になります</b> (公開されている実測値が乏しい領域なので、値をでっち上げないための割り切りです)。":
-    "How finely a part is modeled varies by field. The 158 tubes have 115 distinct parameter sets and the 160 op-amps have 107. The 180 germanium transistors, on the other hand, are sorted into 36 classes by hFE and leakage current, so <b style=\"color:#9aa5b8;font-weight:500\">part numbers in the same class behave identically</b> (published measurements are scarce here, and we would rather not invent numbers).",
+  "パラメータの細かさは分野によって違います。真空管158点は115通り、オペアンプ160点は107通りの 独立したパラメータを持ちます。ゲルマニウムトランジスタ180点も、遷移周波数と接合容量を 型番ごとのデータシート実測値に置き換えて 169通りに分けているため、<b style=\"color:#9aa5b8;font-weight:500\">ほぼ全ての型番が固有の挙動になります</b> (それでも hFE の個体差は、実物のほうが遥かに大きい部品です)。":
+    "How finely a part is modeled varies by field. The 158 tubes have 115 distinct parameter sets and the 160 op-amps have 107. The 180 germanium transistors now carry per-part transition frequency and junction capacitance taken from datasheets, splitting them into 169 sets, so <b style=\"color:#9aa5b8;font-weight:500\">almost every part number behaves differently</b> (unit-to-unit hFE spread is still far wider on the real thing).",
   "<b>Lotus Engine</b> は、回路を毎サンプル解くソルバです。Rust で書かれていて、 回路を節点方程式 (MNA) に組み立て、非線形な素子は Newton 法で解きます。 歪みの形は近似カーブではなく、ダイオードやトランジスタの式そのものから出てきます。":
     "<b>Lotus Engine</b> is a solver that solves the circuit on every sample. Written in Rust, it assembles the circuit into nodal equations (MNA) and solves the nonlinear devices with Newton's method. The shape of the distortion is not an approximation curve - it falls out of the diode and transistor equations themselves.",
   "右の波形とスペクトラムは、このページ上で実際に計算しています (正弦波 + tanh ソフトクリップの DFT)。 上下対称に潰しているので<b style=\"color:#9aa5b8;font-weight:500\">偶数次の倍音は出ません</b> — 棒が1本飛びに立つのはそのためです。アプリ本体はこれよりずっと踏み込んで、 素子ごとの物理式を連立して解いています。":
@@ -630,8 +651,8 @@ var SITE_EN = {
     "Physical model types",
   "ゲルマニウム":
     "Germanium",
-  "AC128・OC44・NKT275・AD149・MP38 など180点。低い hFE、大きな漏れ電流、1.5MHz しかない fT まで持つので、あの丸さと不安定さが出ます。":
-    "180 parts including the AC128, OC44, NKT275, AD149 and MP38. Low hFE, heavy leakage and an fT of only 1.5MHz are all modeled, so you get that round, unruly character.",
+  "AC128・OC44・NKT275・AD149・MP38 など180点。低い hFE と大きな漏れ電流に加えて、AD149 の 0.2MHz から OC44 の 8MHz まで、fT と接合容量を型番ごとに持つので、あの丸さと不安定さが出ます。":
+    "180 parts including the AC128, OC44, NKT275, AD149 and MP38. On top of the low hFE and heavy leakage, every part number carries its own fT and junction capacitance - from 0.2MHz on the AD149 to 8MHz on the OC44 - so you get that round, unruly character.",
   "真空管":
     "Tubes",
   "12AX7・EL34・KT88・6L6GC・300B・2A3 など188点。Koren モデルで動くので、プリからパワー段まで組めます。":
@@ -1061,9 +1082,9 @@ document.addEventListener("DOMContentLoaded", function () {
     </div>
     <p class="note rise" style="margin-top:14px" data-i18n-html>
       パラメータの細かさは分野によって違います。真空管158点は115通り、オペアンプ160点は107通りの
-      独立したパラメータを持ちます。一方ゲルマニウムトランジスタ180点は hFE と漏れ電流の等級で
-      36通りに分けているため、<b style="color:#9aa5b8;font-weight:500">同じ等級の型番は同じ挙動になります</b>
-      (公開されている実測値が乏しい領域なので、値をでっち上げないための割り切りです)。
+      独立したパラメータを持ちます。ゲルマニウムトランジスタ180点も、遷移周波数と接合容量を
+      型番ごとのデータシート実測値に置き換えて 169通りに分けているため、<b style="color:#9aa5b8;font-weight:500">ほぼ全ての型番が固有の挙動になります</b>
+      (それでも hFE の個体差は、実物のほうが遥かに大きい部品です)。
     </p>
 
     <div class="marquee" aria-hidden="true">
@@ -1072,7 +1093,7 @@ document.addEventListener("DOMContentLoaded", function () {
     </div>
 
     <div class="feat">
-      <div class="f rise"><span class="ic c-ge"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12.5" cy="12" r="8.5"/><path d="M9 8.2v7.6M9 12H3.5M9 9.6l6.5-3.9M15.5 5.7V3M9 14.4l6.5 3.9M15.5 18.3V21"/></svg></span><h3>ゲルマニウム</h3><p>AC128・OC44・NKT275・AD149・MP38 など180点。低い hFE、大きな漏れ電流、1.5MHz しかない fT まで持つので、あの丸さと不安定さが出ます。</p></div>
+      <div class="f rise"><span class="ic c-ge"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12.5" cy="12" r="8.5"/><path d="M9 8.2v7.6M9 12H3.5M9 9.6l6.5-3.9M15.5 5.7V3M9 14.4l6.5 3.9M15.5 18.3V21"/></svg></span><h3>ゲルマニウム</h3><p>AC128・OC44・NKT275・AD149・MP38 など180点。低い hFE と大きな漏れ電流に加えて、AD149 の 0.2MHz から OC44 の 8MHz まで、fT と接合容量を型番ごとに持つので、あの丸さと不安定さが出ます。</p></div>
       <div class="f rise"><span class="ic c-tube"><svg viewBox="0 0 24 24" aria-hidden="true"><ellipse cx="12" cy="10.5" rx="7.5" ry="8"/><path d="M9 13.5l3-5.5 3 5.5M8 5.5h8M8.5 21h7"/></svg></span><h3>真空管</h3><p>12AX7・EL34・KT88・6L6GC・300B・2A3 など188点。Koren モデルで動くので、プリからパワー段まで組めます。</p></div>
       <div class="f rise"><span class="ic c-bbd"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="5.5" width="14" height="13" rx="2"/><path d="M5 9H1.8M5 12H1.8M5 15H1.8M19 9h3.2M19 12h3.2M19 15h3.2"/></svg></span><h3>BBD (アナログ遅延)</h3><p>MN3007・MN3005・MN3207・V3205D など33点。コーラス・フランジャー・ビブラート・アナログディレイの中核です。</p></div>
       <div class="f rise"><span class="ic c-op"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7.5 4l11 8-11 8z"/><path d="M7.5 8.5H2M7.5 15.5H2M18.5 12H22"/></svg></span><h3>オペアンプ 160点</h3><p>JRC4558D・TL072・NE5532・TA7136AP など。GBW とスルーレートを持つので、帯域による差も出ます。</p></div>
@@ -1307,6 +1328,19 @@ document.addEventListener("DOMContentLoaded", function () {
       <p>回路シミュレーションは CPU を使います。大きな回路や高い精度設定では負荷が上がるので、
         必要に応じて品質設定を下げてください。</p>
         
+    </div>
+  </div>
+</section>
+
+<!-- ================= SUPER SPECIAL THANKS ================= -->
+<section id="thanks" style="padding-top:0">
+  <div class="wrap">
+    <div class="thanks rise">
+      <p class="thanks-label">SUPER SPECIAL THANKS</p>
+      <div class="thanks-body">
+        <h3><a href="https://huntingtonaudio.com" target="_blank" rel="noopener noreferrer">Huntington Audio Labs</a></h3>
+        <p data-i18n-html>Rosso が持つトランジスタ480型番ぶんの遷移周波数・接合容量・絶対最大定格は、<a href="https://huntingtonaudio.com" target="_blank" rel="noopener noreferrer">Huntington Audio Labs</a> から譲り受けたデータシートの集積によるものです。既定値を当てはめるのをやめて、型番ごとの実測値で音を鳴らせるようになりました。エフェクター自作のための道具を一人で作り続けている工房に、心から感謝します。</p>
+      </div>
     </div>
   </div>
 </section>
@@ -1648,10 +1682,10 @@ onScroll();
 (function () {
   /* js/parts.js に入っている実際の値。書き換えるときは DB 側と必ず突き合わせる */
   var data = {
-    a: { name: "AC128", rows: [["hFE (bf)", "80"], [T("漏れ電流 ICBO"), "2µA"], [T("遷移周波数 fT"), "1.5MHz"],
-                               [T("接合容量 Cbc"), "30pF"], [T("極性"), T("PNP ・ ゲルマニウム")]] },
+    a: { name: "AC128", rows: [["hFE (bf)", "80"], [T("漏れ電流 ICBO"), "2µA"], [T("遷移周波数 fT"), "1MHz"],
+                               [T("接合容量 Cbc"), "200pF"], [T("極性"), T("PNP ・ ゲルマニウム")]] },
     b: { name: "BC109C", rows: [["hFE (bf)", "450"], [T("漏れ電流 ICBO"), "1nA"], [T("遷移周波数 fT"), "150MHz"],
-                                [T("接合容量 Cbc"), "4pF"], [T("極性"), T("NPN ・ シリコン")]] }
+                                [T("接合容量 Cbc"), "5pF"], [T("極性"), T("NPN ・ シリコン")]] }
   };
   var tbl = document.getElementById("ab-tbl");
   var btns = [].slice.call(document.querySelectorAll(".ab-btn"));
