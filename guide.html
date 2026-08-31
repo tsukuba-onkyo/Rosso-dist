@@ -228,6 +228,7 @@ h2{font-size:clamp(26px,3.4vw,42px);line-height:1.26;margin:0 0 20px;font-weight
 .sch .ln{stroke:#8792a8}
 .sch .fill{fill:currentColor;stroke:none}
 .sch .jn{fill:#8792a8;stroke:none}
+.sch .dec{stroke:#7c8290}
 .sch .hot{stroke:var(--c)}
 .sch text{fill:#8e98ab;stroke:none;font-family:var(--mono);font-size:10px;font-weight:500}
 .sch text.k{fill:var(--c)}
@@ -248,15 +249,17 @@ h2{font-size:clamp(26px,3.4vw,42px);line-height:1.26;margin:0 0 20px;font-weight
 }
 
 /* つまみ */
-.ar-ctl{display:flex;flex-direction:column;gap:9px;margin-top:13px}
-.knob{display:flex;align-items:center;gap:11px}
+.ar-ctl{display:flex;flex-direction:column;gap:12px;margin-top:14px}
+/* ラベルと値を1行目、スライダを2行目に置く。横並びにすると
+   「入力インピーダンス」のような長いラベルが折り返してガタつく */
+.knob{display:grid;grid-template-columns:1fr auto;gap:3px 12px;align-items:baseline}
 .knob label{
   font-family:var(--mono);font-size:11px;color:var(--muted);letter-spacing:.05em;
-  width:96px;flex:none;text-align:right;
+  grid-row:1;grid-column:1;text-align:left;line-height:1.4;
 }
 .knob input[type=range]{
-  flex:1;min-width:0;-webkit-appearance:none;appearance:none;height:3px;border-radius:2px;
-  background:var(--bg3);outline:none;cursor:pointer;
+  grid-row:2;grid-column:1 / 3;width:100%;-webkit-appearance:none;appearance:none;height:3px;border-radius:2px;
+  background:var(--bg3);outline:none;cursor:pointer;margin:2px 0 0;
 }
 .knob input[type=range]::-webkit-slider-thumb{
   -webkit-appearance:none;appearance:none;width:14px;height:14px;border-radius:50%;
@@ -268,7 +271,8 @@ h2{font-size:clamp(26px,3.4vw,42px);line-height:1.26;margin:0 0 20px;font-weight
 }
 .knob input[type=range]:focus-visible{outline:2px solid var(--c);outline-offset:4px}
 .knob .val{
-  font-family:var(--mono);font-size:11.5px;color:var(--text);width:78px;flex:none;text-align:left;
+  font-family:var(--mono);font-size:11.5px;color:var(--text);
+  grid-row:1;grid-column:2;text-align:right;white-space:nowrap;
 }
 .ar-sw{display:flex;flex-wrap:wrap;gap:7px}
 .sw{
@@ -329,8 +333,8 @@ footer a:hover{color:var(--text)}
   .fb{flex:none}
   .fsearch{margin-left:4px;flex:none;padding:6px 12px}
   .fsearch input{width:150px}
-  .knob label{width:74px;font-size:10.5px}
-  .knob .val{width:66px;font-size:11px}
+  .knob label{font-size:10.5px}
+  .knob .val{font-size:11px}
   .ar{padding:20px 18px 16px}
   .ar-t h3{font-size:16.5px}
 }
@@ -1231,8 +1235,12 @@ var S = (function () {
   function g(x, y, rot, body, label, lx, ly) {
     var s = '<g transform="translate(' + x + ',' + y + ')">'
       + '<g transform="rotate(' + (rot || 0) + ')">' + body + '</g>';
-    if (label) s += txt(lx === undefined ? (rot ? 15 : 0) : lx,
-      ly === undefined ? (rot ? 4 : -13) : ly, label, rot ? "start" : "middle");
+    /* 横向き (0/180) なら真上、縦向き (90/270) なら左に置く。
+       rot!=0 を一律「右」にしていたとき、rot180 では部品に重なり、
+       ポットでは摺動子の矢印の上に乗っていた */
+    var horiz = ((rot || 0) % 180) === 0;
+    if (label) s += txt(lx === undefined ? (horiz ? 0 : -17) : lx,
+      ly === undefined ? (horiz ? -13 : 4) : ly, label, horiz ? "middle" : "end");
     return s + '</g>';
   }
   function txt(x, y, s, anchor, cls) {
@@ -1253,10 +1261,12 @@ var S = (function () {
     },
     /* ポテンショメータ (抵抗 + 摺動子) */
     pot: function (x, y, rot, l) {
+      /* ラベルは摺動子の矢印 (y=-22〜-12) を避けて置く。既定位置だと重なる */
       return g(x, y, rot, '<line x1="-30" y1="0" x2="-18" y2="0"/>'
         + '<path d="M -18 0 L -15 -6 L -9 6 L -3 -6 L 3 6 L 9 -6 L 15 6 L 18 0"/>'
         + '<line x1="18" y1="0" x2="30" y2="0"/>'
-        + '<path d="M 0 -22 L 0 -12 M -4 -16 L 0 -12 L 4 -16"/>', l);
+        + '<path d="M 0 -22 L 0 -12 M -4 -16 L 0 -12 L 4 -16"/>', l,
+        undefined, ((rot || 0) % 180) === 0 ? -27 : undefined);
     },
     /* コンデンサ (全長40) */
     c: function (x, y, rot, l) {
@@ -1279,6 +1289,12 @@ var S = (function () {
     gnd: function (x, y) {
       return g(x, y, 0, '<line x1="0" y1="-10" x2="0" y2="0"/><line x1="-12" y1="0" x2="12" y2="0"/>'
         + '<line x1="-8" y1="5" x2="8" y2="5"/><line x1="-4" y1="10" x2="4" y2="10"/>');
+    },
+    /* 基準電圧 (仮想GND)。端子は (x, y-10) */
+    ref: function (x, y, l) {
+      return g(x, y, 0, '<line x1="0" y1="-10" x2="0" y2="0"/>'
+        + '<line x1="-11" y1="0" x2="11" y2="0"/><line x1="-6" y1="5" x2="6" y2="5"/>')
+        + txt(x, y + 17, l || "Vref", "middle");
     },
     vcc: function (x, y, l) {
       return g(x, y, 0, '<line x1="0" y1="10" x2="0" y2="0"/><line x1="-10" y1="0" x2="10" y2="0"/>')
@@ -1331,6 +1347,16 @@ var S = (function () {
         + '<path d="M -9 11 L 9 11 L 4 16 L -4 16 Z" class="fill"/><line x1="0" y1="16" x2="0" y2="24"/>',
         l, 0, -24);
     },
+    /* トランス。1次 p1/p2 (左)、2次 s1/s2 (右)、センタータップ ct (下) */
+    xfmr: function (x, y, l) {
+      return g(x, y, 0,
+        '<path d="M -10 -30 A 5 5 0 0 1 -10 -20 A 5 5 0 0 1 -10 -10 A 5 5 0 0 1 -10 0 A 5 5 0 0 1 -10 10"/>'
+        + '<path d="M 10 -30 A 5 5 0 0 0 10 -20 A 5 5 0 0 0 10 -10 A 5 5 0 0 0 10 0 A 5 5 0 0 0 10 10"/>'
+        + '<line x1="-2" y1="-34" x2="-2" y2="14"/><line x1="2" y1="-34" x2="2" y2="14"/>'
+        + '<line x1="-10" y1="-30" x2="-28" y2="-30"/><line x1="-10" y1="10" x2="-28" y2="10"/>'
+        + '<line x1="10" y1="-30" x2="28" y2="-30"/><line x1="10" y1="10" x2="28" y2="10"/>'
+        + '<line x1="10" y1="-10" x2="16" y2="-10"/><line x1="16" y1="-10" x2="16" y2="34"/>', l, 0, -40);
+    },
     /* 汎用ブロック */
     box: function (x, y, w, h, l, sub) {
       var s = '<g transform="translate(' + x + ',' + y + ')">'
@@ -1344,8 +1370,10 @@ var S = (function () {
       return g(x, y, 0, '<path d="M -16 -18 L -16 18 L 20 0 Z"/>'
         + '<line x1="-30" y1="0" x2="-16" y2="0"/><line x1="20" y1="0" x2="34" y2="0"/>', l, 0, -24);
     },
+    /* 注記用の矢印。配線ではないので class="ln" を付けない
+       (付けると「宙に浮いた配線端」として検査に引っかかる) */
     arrow: function (x1, y, x2) {
-      return '<line class="ln" x1="' + x1 + '" y1="' + y + '" x2="' + (x2 - 6) + '" y2="' + y + '"/>'
+      return '<line class="dec" x1="' + x1 + '" y1="' + y + '" x2="' + (x2 - 6) + '" y2="' + y + '"/>'
         + '<path class="fill" d="M ' + (x2 - 7) + ' ' + (y - 4) + ' L ' + x2 + ' ' + y + ' L ' + (x2 - 7) + ' ' + (y + 4) + ' Z"/>';
     }
   };
@@ -1354,6 +1382,66 @@ var S = (function () {
 /* SVG の外枠。カードの幅いっぱいに伸びる */
 function SVG(vb, body) {
   return '<svg class="sch" viewBox="' + vb + '" preserveAspectRatio="xMidYMid meet" aria-hidden="true">' + body + '</svg>';
+}
+
+/* =====================================================================
+ * A-1b. 回路図ビルダー
+ *
+ * 座標を手で数えるのをやめる。部品を置くと**端子の絶対座標が返る**ので、
+ * 配線はその座標同士を結ぶだけになる。
+ *
+ * 最初は S.* を直接並べて座標を直書きしていたが、38枚のうち38枚で
+ * 端子が数ピクセルずれ、配線が部品を貫き、viewBox から下がはみ出して
+ * 黙って切れていた。**図は表示されるので、日本語で眺めている限り気付けない。**
+ * tests/guide_sch_test.js が、はみ出し・宙に浮いた配線端・接続点の本数を見ている。
+ * ===================================================================== */
+function K(vb) {
+  var body = [];
+  /* 端子の絶対座標。rot は 0/90/180/270 のみ */
+  function tp(x, y, rot, p) {
+    var a = (rot || 0) * Math.PI / 180, c = Math.cos(a), s = Math.sin(a);
+    return [Math.round(x + p[0] * c - p[1] * s), Math.round(y + p[0] * s + p[1] * c)];
+  }
+  function put(str, x, y, rot, ports) {
+    body.push(str);
+    var o = {};
+    for (var k in ports) o[k] = tp(x, y, rot, ports[k]);
+    return o;
+  }
+  var LR = { a: [-30, 0], b: [30, 0] }, SH = { a: [-20, 0], b: [20, 0] };
+  return {
+    r:   function (x, y, rot, l) { return put(S.r(x, y, rot, l), x, y, rot, LR); },
+    ind: function (x, y, rot, l) { return put(S.ind(x, y, rot, l), x, y, rot, LR); },
+    pot: function (x, y, rot, l) { return put(S.pot(x, y, rot, l), x, y, rot, { a: [-30, 0], b: [30, 0], w: [0, -22] }); },
+    c:   function (x, y, rot, l) { return put(S.c(x, y, rot, l), x, y, rot, SH); },
+    d:   function (x, y, rot, l) { return put(S.d(x, y, rot, l), x, y, rot, SH); },
+    gnd: function (x, y)        { return put(S.gnd(x, y), x, y, 0, { a: [0, -10] }); },
+    vcc: function (x, y, l)     { return put(S.vcc(x, y, l), x, y, 0, { a: [0, 10] }); },
+    ref: function (x, y, l)     { return put(S.ref(x, y, l), x, y, 0, { a: [0, -10] }); },
+    inp: function (x, y, l)     { return put(S.inp(x, y, l), x, y, 0, { a: [20, 0] }); },
+    outp:function (x, y, l)     { return put(S.outp(x, y, l), x, y, 0, { a: [-20, 0] }); },
+    op:  function (x, y, l)     { return put(S.op(x, y, l), x, y, 0, { n: [-34, -11], p: [-34, 11], o: [38, 0] }); },
+    buf: function (x, y, l)     { return put(S.buf(x, y, l), x, y, 0, { a: [-30, 0], b: [34, 0] }); },
+    npn: function (x, y, l)     { return put(S.npn(x, y, l), x, y, 0, { b: [-20, 0], c: [10, -20], e: [10, 20] }); },
+    pnp: function (x, y, l)     { return put(S.pnp(x, y, l), x, y, 0, { b: [-20, 0], c: [10, -20], e: [10, 20] }); },
+    fet: function (x, y, l)     { return put(S.fet(x, y, l), x, y, 0, { g: [-20, 0], d: [10, -20], s: [10, 20] }); },
+    tri: function (x, y, l)     { return put(S.tri(x, y, l), x, y, 0, { g: [-20, 2], p: [0, -20], k: [0, 24] }); },
+    xfmr:function (x, y, l)     { return put(S.xfmr(x, y, l), x, y, 0, { p1: [-28, -30], p2: [-28, 10], s1: [28, -30], s2: [28, 10], ct: [16, 34] }); },
+    box: function (x, y, w, h, l, sub) {
+      return put(S.box(x, y, w, h, l, sub), x, y, 0, { l: [-w / 2, 0], r: [w / 2, 0], t: [0, -h / 2], b: [0, h / 2] });
+    },
+    /* 配線。点を順につなぐ (折れ点は共有されるのでズレない) */
+    w: function () {
+      for (var i = 0; i < arguments.length - 1; i++) {
+        var a = arguments[i], z = arguments[i + 1];
+        body.push(S.w(a[0], a[1], z[0], z[1]));
+      }
+    },
+    jn: function (p) { body.push(S.jn(p[0], p[1])); return p; },
+    t: function (x, y, str, anchor, cls) { body.push(S.t(x, y, str, anchor || "middle", cls)); },
+    raw: function (str) { body.push(str); },
+    svg: function () { return SVG(vb, body.join("")); }
+  };
 }
 
 /* =====================================================================
@@ -1449,6 +1537,28 @@ function bodeAxis(V, b) {
     tick(V, b.x + b.w * Math.log(marks[j][0] / f0) / Math.log(f1 / f0), b.y + b.h - 7, marks[j][1]);
   }
 }
+/* --- 線形の周波数軸。櫛 (コーラス/フランジャー) は対数だと谷が潰れて
+       ただのノイズに見えるので、低い方だけを線形で引き伸ばす --- */
+function linPlot(V, b, mag, col, fmax, lo, hi, lw) {
+  var pts = [], L = lo === undefined ? -26 : lo, H = hi === undefined ? 8 : hi;
+  for (var i = 0; i <= 420; i++) {
+    var f = fmax * i / 420;
+    var db = clamp(20 * Math.log10(Math.max(mag(f), 1e-6)), L, H);
+    pts.push([b.x + b.w * i / 420, b.y + b.h * (1 - (db - L) / (H - L))]);
+  }
+  stroke(V, pts, col, lw || 2.2, 1, true);
+}
+function linAxis(V, b, fmax) {
+  var g = V.g;
+  g.save(); g.strokeStyle = CO.grid; g.lineWidth = 1; g.beginPath();
+  for (var i = 1; i < 4; i++) { var x = Math.round(b.x + b.w * i / 4) + .5; g.moveTo(x, b.y); g.lineTo(x, b.y + b.h); }
+  g.stroke(); g.restore();
+  for (var j = 1; j < 4; j++) {
+    var f = fmax * j / 4;
+    tick(V, b.x + b.w * j / 4, b.y + b.h - 7, f >= 1000 ? (f / 1000) + "k" : String(Math.round(f)));
+  }
+}
+
 /* --- 倍音の棒グラフ。vals[0] が基音 --- */
 function bars(V, b, vals, col) {
   var g = V.g, n = vals.length, gap = 3;
@@ -1584,11 +1694,13 @@ CATALOG.push({
   key: "opamp buffer TL072 JRC4558",
   d: N_("出力を反転入力にそのまま戻したオペアンプ。増幅率はきっかり1倍で、入力インピーダンスは非常に高く、出力インピーダンスはほぼ0。<b>音を変えないための回路</b>です。ピックアップはコイルなので、ケーブルの容量と組んで共振点を作ります。ケーブルが長いほどその点が下がり、上が削れる。バッファを挟むと、後ろの長さがこの点に効かなくなります。"),
   sch: function () {
-    return SVG("0 0 380 120",
-      S.inp(30, 60) + S.w(50, 60, 96, 60) + S.op(150, 60)
-      + S.w(116, 49, 130, 49) + S.w(116, 71, 130, 71)
-      + S.w(188, 60, 230, 60) + S.w(230, 60, 230, 20) + S.w(230, 20, 116, 20) + S.w(116, 20, 116, 49)
-      + S.jn(230, 60) + S.outp(300, 60) + S.t(196, 34, "×1", "start", "k"));
+    var k = K("0 0 380 120"), n = [250, 74];
+    var i = k.inp(28, 85), o = k.op(160, 74), t = k.outp(330, 74);
+    k.w(i.a, o.p);
+    k.w(o.o, n); k.jn(n); k.w(n, t.a);
+    k.w(n, [250, 30], [126, 30], o.n);
+    k.t(206, 54, "×1", "middle", "k");
+    return k.svg();
   },
   knobs: [
     { k: "z", l: N_("ピックアップZ"), min: 4, max: 40, step: .5, def: 14, fmt: function (v) { return v.toFixed(1) + " kΩ"; } },
@@ -1616,11 +1728,15 @@ CATALOG.push({
   key: "transistor BJT 2N3904 buffer",
   d: N_("トランジスタ1石のバッファ。コレクタを電源に、出力をエミッタから取ります。増幅率は0.98倍ほどで<b>電圧は増えませんが、電流を供給する力が桁違いに増えます</b>。出力インピーダンスはおよそ (電源側の抵抗 ÷ hFE)。"),
   sch: function () {
-    return SVG("0 0 380 170",
-      S.vcc(190, 22) + S.w(190, 32, 190, 40) + S.npn(190, 60)
-      + S.inp(40, 60) + S.c(90, 60, 0) + S.w(60, 60, 70, 60) + S.w(110, 60, 170, 60)
-      + S.w(200, 80, 200, 105) + S.jn(200, 105) + S.r(200, 135, 90, "Re")
-      + S.gnd(200, 168) + S.w(200, 105, 260, 105) + S.outp(310, 105) + S.w(260, 105, 290, 105));
+    var k = K("0 0 380 215"), n = [200, 120];
+    var v = k.vcc(200, 24), q = k.npn(190, 74);
+    k.w(v.a, q.c);
+    var i = k.inp(28, 74), cin = k.c(90, 74);
+    k.w(i.a, cin.a); k.w(cin.b, q.b);
+    var re = k.r(200, 150, 90, "Re"), t = k.outp(320, 120);
+    k.w(q.e, n); k.jn(n); k.w(n, re.a); k.w(n, t.a);
+    k.gnd(200, 190);
+    return k.svg();
   },
   knobs: [
     { k: "rl", l: N_("次段の入力Z"), min: 2, max: 100, step: 1, def: 10, fmt: function (v) { return v + " kΩ"; } },
@@ -1643,12 +1759,16 @@ CATALOG.push({
   key: "JFET 2SK117 J201 input impedance",
   d: N_("JFET で組むバッファ。入力インピーダンスが1MΩ以上まで上げられるので、<b>ピックアップの共振の山を潰しません</b>。入力抵抗を下げると山が丸まり、あの「艶」が消えます。ファズフェイスが前段のバッファを嫌うのも、突き詰めればこの話です。"),
   sch: function () {
-    return SVG("0 0 380 170",
-      S.vcc(190, 22) + S.w(190, 32, 190, 40) + S.fet(190, 60)
-      + S.inp(40, 60) + S.c(90, 60, 0) + S.w(60, 60, 70, 60) + S.w(110, 60, 170, 60)
-      + S.jn(140, 60) + S.w(140, 60, 140, 90) + S.r(140, 120, 90, "Rg") + S.gnd(140, 152)
-      + S.w(200, 80, 200, 105) + S.jn(200, 105) + S.r(200, 135, 90, "Rs") + S.gnd(200, 168)
-      + S.w(200, 105, 260, 105) + S.outp(310, 105) + S.w(260, 105, 290, 105));
+    var k = K("0 0 380 215"), ng = [130, 74], ns = [200, 120];
+    var v = k.vcc(200, 24), q = k.fet(190, 74);
+    k.w(v.a, q.d);
+    var i = k.inp(24, 74), cin = k.c(76, 74), rg = k.r(130, 120, 90, "Rg");
+    k.w(i.a, cin.a); k.w(cin.b, ng); k.jn(ng); k.w(ng, q.g); k.w(ng, rg.a);
+    k.gnd(130, 160);
+    var rs = k.r(200, 150, 90, "Rs"), t = k.outp(320, 120);
+    k.w(q.s, ns); k.jn(ns); k.w(ns, rs.a); k.w(ns, t.a);
+    k.gnd(200, 190);
+    return k.svg();
   },
   knobs: [{ k: "rin", l: N_("入力インピーダンス"), min: 30, max: 2200, step: 10, def: 1000, fmt: function (v) { return v >= 1000 ? (v / 1000).toFixed(2) + " MΩ" : v + " kΩ"; } }],
   /* ピックアップの共振 (インダクタンス3H・自己容量で3kHz付近) を、負荷抵抗が減衰させる模式 */
@@ -1669,16 +1789,18 @@ CATALOG.push({
   key: "true bypass cable capacitance chain",
   d: N_("トゥルーバイパスは<b>そのペダル単体では</b>音を変えません。しかし切れているだけなので、ケーブルの容量は素通しで積み上がります。台数が増えるほど高域が減る。ボードの先頭にバッファを1個置くと、その後ろの長さが効かなくなります。"),
   sch: function () {
-    var s = S.inp(24, 46) + S.arrow(44, 46, 74);
-    for (var i = 0; i < 3; i++) {
-      var x = 74 + i * 92;
-      s += S.box(x + 34, 46, 62, 40, "FX" + (i + 1)) + S.arrow(x + 65, 46, x + 92);
-    }
-    s += S.outp(350, 46)
-      + S.w(74, 90, 74, 66) + S.c(74, 108, 90) + S.gnd(74, 140)
-      + S.w(258, 90, 258, 66) + S.c(258, 108, 90) + S.gnd(258, 140)
-      + S.t(166, 132, T("ケーブル容量が台数ぶん積み上がる"), "middle");
-    return SVG("0 0 380 150", s);
+    var k = K("0 0 380 152");
+    var i = k.inp(22, 46), t = k.outp(358, 46);
+    var b1 = k.box(94, 46, 60, 38, "FX1"), b2 = k.box(194, 46, 60, 38, "FX2"), b3 = k.box(294, 46, 60, 38, "FX3");
+    k.w(i.a, b1.l); k.w(b3.r, t.a);
+    [[b1, b2, 144], [b2, b3, 244]].forEach(function (p) {
+      var n = [p[2], 46];
+      k.w(p[0].r, n); k.w(n, p[1].l); k.jn(n);
+      var cc = k.c(p[2], 84, 90);
+      k.w(n, cc.a); k.gnd(p[2], 114);
+    });
+    k.t(190, 142, T("ケーブル容量が台数ぶん積み上がる"), "middle");
+    return k.svg();
   },
   knobs: [{ k: "n", l: N_("直列の台数"), min: 1, max: 8, step: 1, def: 4, fmt: function (v) { return v + T(" 台"); } }],
   sws: [{ k: "buf", l: N_("先頭にバッファ"), def: 0 }],
@@ -1707,12 +1829,14 @@ CATALOG.push({
   key: "feedback loop gain linearity",
   d: N_("出力の一部を入力に引き算で戻す。これだけで、素子のばらつきも歪みも<b>帰還量ぶん割り算される</b>。オペアンプの増幅率が抵抗2本で決まるのはこの効果です。裏返せば、帰還を減らすほど素子の個性がそのまま音に出ます。"),
   sch: function () {
-    return SVG("0 0 380 150",
-      S.inp(24, 73) + S.w(44, 73, 106, 73) + S.op(158, 62)
-      + S.w(196, 62, 268, 62) + S.jn(268, 62) + S.outp(336, 62) + S.w(268, 62, 306, 62)
-      + S.w(268, 62, 268, 118) + S.r(208, 118, 180, "") + S.w(178, 118, 124, 118)
-      + S.w(124, 118, 124, 51) + S.w(124, 51, 124, 51)
-      + S.t(208, 142, T("戻した分を引き算する"), "middle", "k"));
+    var k = K("0 0 380 142"), n = [276, 74];
+    var i = k.inp(24, 85), o = k.op(170, 74), t = k.outp(340, 74);
+    k.w(i.a, o.p);
+    k.w(o.o, n); k.jn(n); k.w(n, t.a);
+    var rf = k.r(200, 28, 180);
+    k.w(n, [276, 28], rf.a); k.w(rf.b, [100, 28], [100, 63], o.n);
+    k.t(190, 128, T("戻した分を引き算する"), "middle", "k");
+    return k.svg();
   },
   knobs: [
     { k: "b", l: N_("帰還量"), min: 0, max: 1, step: .01, def: .55, fmt: function (v) { return Math.round(v * 100) + " %"; } },
@@ -1747,12 +1871,15 @@ CATALOG.push({
   key: "opamp gain 1+Rf/Rg",
   d: N_("オペアンプの + に入れて、− を抵抗2本で分圧する。増幅率は <code>1 + Rf/Rg</code> で、<b>1倍を下回れません</b>。ブースターやオーバードライブの入口はほぼこの形です。電源電圧を超えたところで頭打ちになります。"),
   sch: function () {
-    return SVG("0 0 380 150",
-      S.inp(28, 78) + S.w(48, 78, 96, 78) + S.op(150, 67)
-      + S.w(116, 56, 116, 20) + S.w(116, 20, 232, 20) + S.w(232, 20, 232, 67)
-      + S.r(174, 20, 0, "Rf") + S.jn(232, 67) + S.w(188, 67, 260, 67) + S.outp(320, 67)
-      + S.w(116, 56, 130, 56) + S.w(116, 78, 130, 78)
-      + S.w(116, 56, 116, 108) + S.r(116, 118, 90, "Rg") + S.gnd(116, 148));
+    var k = K("0 0 380 172"), n = [280, 85], nn = [100, 74];
+    var i = k.inp(24, 96), o = k.op(170, 85), t = k.outp(340, 85);
+    k.w(i.a, o.p);
+    k.w(o.o, n); k.jn(n); k.w(n, t.a);
+    var rf = k.r(200, 28, 180, "Rf");
+    k.w(n, [280, 28], rf.a); k.w(rf.b, [100, 28], nn); k.jn(nn); k.w(nn, o.n);
+    var rg = k.r(100, 110, 90, "Rg");
+    k.w(nn, rg.a); k.gnd(100, 150);
+    return k.svg();
   },
   knobs: [{ k: "g", l: N_("増幅率"), min: 0, max: 40, step: .5, def: 8, fmt: function (v) { return "+" + v.toFixed(1) + " dB (×" + Math.pow(10, v / 20).toFixed(1) + ")"; } }],
   f: function (p) { var g = Math.pow(10, p.g / 20); return function (x) { return clamp(x * g, -1, 1); }; },
@@ -1773,12 +1900,15 @@ CATALOG.push({
   key: "opamp virtual ground summing mixer",
   d: N_("− 側に入れて + を基準電圧に落とす形。増幅率は <code>−Rf/Rin</code> で、<b>1倍未満にもできます</b>。入力を何本も並べればそのままミキサーになるので、原音混ぜ・ドライブレンドはこの型で作ります。位相は反転しますが、単体では聴き分けられません。"),
   sch: function () {
-    return SVG("0 0 380 150",
-      S.inp(24, 56) + S.w(44, 56, 62, 56) + S.r(92, 56, 0, "Rin") + S.w(122, 56, 146, 56)
-      + S.jn(146, 56) + S.w(146, 56, 146, 20) + S.r(200, 20, 0, "Rf") + S.w(170, 20, 146, 20)
-      + S.w(230, 20, 268, 20) + S.w(268, 20, 268, 67) + S.jn(268, 67)
-      + S.op(186, 67) + S.w(146, 56, 152, 56) + S.w(224, 67, 296, 67) + S.outp(340, 67)
-      + S.w(152, 78, 152, 112) + S.t(152, 128, "Vref", "middle", "k"));
+    var k = K("0 0 380 162"), nn = [140, 63], no = [270, 74];
+    var i = k.inp(20, 63), rin = k.r(90, 63, 0, "Rin"), o = k.op(200, 74), t = k.outp(342, 74);
+    k.w(i.a, rin.a); k.w(rin.b, nn); k.jn(nn); k.w(nn, o.n);
+    var rf = k.r(205, 24, 180, "Rf");
+    k.w(nn, [140, 24], rf.b);
+    k.w(o.o, no); k.jn(no); k.w(no, t.a); k.w(no, [270, 24], rf.a);
+    var vr = k.ref(166, 130);
+    k.w(o.p, vr.a);
+    return k.svg();
   },
   knobs: [{ k: "g", l: N_("増幅率"), min: -20, max: 30, step: .5, def: 6, fmt: function (v) { return (v >= 0 ? "+" : "") + v.toFixed(1) + " dB"; } }],
   viz: function (V, p) {
@@ -1797,13 +1927,17 @@ CATALOG.push({
   key: "transistor gain stage Rc Re bias",
   d: N_("トランジスタ増幅の基本形。増幅率はおおよそ <code>Rc/Re</code>。<b>動作点をどこに置くかで、潰れ方が上下どちらに偏るかが決まります</b>。電源の真ん中に置けば対称、上下にずらせば片側だけ先に潰れて偶数次倍音が出ます。"),
   sch: function () {
-    return SVG("0 0 380 190",
-      S.vcc(150, 14) + S.w(150, 24, 150, 34) + S.r(150, 64, 90, "Rc") + S.w(150, 94, 150, 108)
-      + S.jn(150, 108) + S.npn(160, 118) + S.w(150, 108, 240, 108) + S.c(268, 108, 0)
-      + S.outp(330, 108) + S.w(288, 108, 310, 108)
-      + S.inp(28, 118) + S.c(70, 118, 0) + S.w(48, 118, 50, 118) + S.w(90, 118, 140, 118)
-      + S.jn(110, 118) + S.w(110, 118, 110, 140) + S.r(110, 156, 90, "") + S.gnd(110, 186)
-      + S.w(170, 138, 170, 152) + S.r(170, 162, 90, "Re") + S.gnd(170, 188));
+    var k = K("0 0 380 232"), nOut = [170, 96], nb = [116, 124];
+    var v = k.vcc(170, 18), rc = k.r(170, 58, 90, "Rc"), q = k.npn(160, 124);
+    k.w(v.a, rc.a); k.w(rc.b, nOut); k.jn(nOut); k.w(nOut, q.c);
+    var cout = k.c(250, 96), t = k.outp(330, 96);
+    k.w(nOut, cout.a); k.w(cout.b, t.a);
+    var i = k.inp(24, 124), cin = k.c(76, 124), rb = k.r(116, 162, 90);
+    k.w(i.a, cin.a); k.w(cin.b, nb); k.jn(nb); k.w(nb, q.b); k.w(nb, rb.a);
+    k.gnd(116, 202);
+    var re = k.r(170, 174, 90, "Re");
+    k.w(q.e, re.a); k.gnd(170, 214);
+    return k.svg();
   },
   knobs: [
     { k: "g", l: "Rc/Re", min: 1, max: 60, step: 1, def: 18, fmt: function (v) { return "×" + v; } },
@@ -1830,11 +1964,14 @@ CATALOG.push({
   key: "booster volume level JFET",
   d: N_("歪ませずに音量だけ上げる型。自分では歪まないのに<b>次の段を歪ませる</b>ので、アンプの前に置くと結果的に歪みます。ブースターが「音が太くなる」と言われるのは、たいてい次の段の話です。"),
   sch: function () {
-    return SVG("0 0 380 130",
-      S.inp(26, 58) + S.w(46, 58, 78, 58) + S.buf(120, 58, "×N")
-      + S.w(154, 58, 176, 58) + S.jn(176, 58) + S.pot(176, 90, 90, "LEVEL") + S.gnd(176, 126)
-      + S.w(176, 58, 220, 58) + S.box(268, 58, 74, 40, "AMP", T("次段"))
-      + S.outp(350, 58) + S.w(305, 58, 330, 58));
+    var k = K("0 0 380 152"), n = [186, 58];
+    var i = k.inp(24, 58), b = k.buf(120, 58, "×N");
+    k.w(i.a, b.a);
+    var pv = k.pot(186, 94, 90, "LEVEL");
+    k.w(b.b, n); k.jn(n); k.w(n, pv.a); k.gnd(186, 134);
+    var nx = k.box(280, 58, 76, 42, "AMP", T("次段")), t = k.outp(358, 58);
+    k.w(n, nx.l); k.w(nx.r, t.a);
+    return k.svg();
   },
   knobs: [{ k: "b", l: N_("ブースト量"), min: 0, max: 26, step: .5, def: 8, fmt: function (v) { return "+" + v.toFixed(1) + " dB"; } }],
   f: function (p) { var g = Math.pow(10, p.b / 20) * .45; return function (x) { return Math.tanh(x * g * 2.2) / Math.tanh(2.2); }; },
@@ -1860,12 +1997,14 @@ CATALOG.push({
   key: "diode clipper 1N4148 1N34A hard clipping RAT",
   d: N_("直列抵抗の先に、逆向きに並べたダイオードを2本 GND へ落とすだけ。順方向電圧を超えた部分が<b>そこで頭打ち</b>になります。ディストーション+ や RAT の歪みはこの形。ダイオードを直列に増やすと頭打ちの高さが上がり、潰れ方が緩くなります。"),
   sch: function () {
-    return SVG("0 0 380 160",
-      S.inp(28, 56) + S.w(48, 56, 64, 56) + S.r(100, 56, 0, "R") + S.w(130, 56, 190, 56)
-      + S.jn(190, 56) + S.w(190, 56, 260, 56) + S.outp(320, 56) + S.w(260, 56, 290, 56)
-      + S.w(160, 56, 160, 84) + S.jn(160, 56) + S.d(160, 104, 90, "") + S.w(160, 124, 160, 134)
-      + S.w(220, 56, 220, 84) + S.d(220, 104, 270, "") + S.w(220, 124, 220, 134)
-      + S.w(160, 134, 220, 134) + S.gnd(190, 136) + S.w(190, 134, 190, 136));
+    var k = K("0 0 380 168"), n1 = [160, 56], n2 = [220, 56], g1 = [160, 134], g2 = [220, 134];
+    var i = k.inp(28, 56), rr = k.r(100, 56, 0, "R"), t = k.outp(320, 56);
+    k.w(i.a, rr.a); k.w(rr.b, n1); k.jn(n1); k.w(n1, n2); k.jn(n2); k.w(n2, t.a);
+    var d1 = k.d(160, 96, 90), d2 = k.d(220, 96, 270);
+    k.w(n1, d1.a); k.w(d1.b, g1);
+    k.w(n2, d2.b); k.w(d2.a, g2);
+    k.w(g1, g2); k.gnd(190, 144); k.jn([190, 134]);
+    return k.svg();
   },
   knobs: [
     { k: "dr", l: N_("入力レベル"), min: .1, max: 4, step: .05, def: 1.6, fmt: function (v) { return v.toFixed(2) + " Vp"; } },
@@ -1891,14 +2030,20 @@ CATALOG.push({
   key: "tube screamer TS808 soft clip opamp feedback",
   d: N_("オペアンプの帰還抵抗に並列でダイオードを入れる形。増幅した分だけが頭打ちになり、<b>1倍ぶんの原音は常に素通しで残ります</b>。だから完全な板にはならず、角も丸い。チューブスクリーマー系の「潰れきらない」感じの出どころです。"),
   sch: function () {
-    return SVG("0 0 380 160",
-      S.inp(24, 62) + S.w(44, 62, 58, 62) + S.c(80, 62, 0) + S.r(126, 62, 0, "Rg") + S.w(100, 62, 96, 62)
-      + S.w(156, 62, 176, 62) + S.jn(176, 62) + S.op(216, 73) + S.w(176, 62, 182, 62)
-      + S.w(176, 62, 176, 26) + S.r(238, 26, 0, "Rf") + S.w(208, 26, 176, 26)
-      + S.w(268, 26, 296, 26) + S.w(296, 26, 296, 73) + S.jn(296, 73)
-      + S.w(254, 73, 320, 73) + S.outp(352, 73)
-      + S.w(176, 26, 176, 4) + S.w(176, 4, 296, 4) + S.w(296, 4, 296, 26)
-      + S.d(216, 4, 0, "") + S.d(256, 4, 180, "") + S.w(182, 84, 182, 112) + S.t(182, 128, "Vref", "middle", "k"));
+    var k = K("0 0 380 192"), nn = [162, 96], no = [300, 107], nl = [162, 54], nr = [300, 54];
+    var i = k.inp(22, 96), cin = k.c(66, 96), rg = k.r(120, 96, 0, "Rg");
+    k.w(i.a, cin.a); k.w(cin.b, rg.a); k.w(rg.b, nn); k.jn(nn);
+    var o = k.op(214, 107), t = k.outp(352, 107);
+    k.w(nn, o.n);
+    k.w(o.o, no); k.jn(no); k.w(no, t.a);
+    var rf = k.r(228, 54, 180, "Rf");
+    k.w(nn, nl); k.jn(nl); k.w(nl, rf.b);
+    k.w(rf.a, nr); k.jn(nr); k.w(nr, no);
+    var d1 = k.d(208, 20, 0), d2 = k.d(256, 20, 180);
+    k.w(nl, [162, 20], d1.a); k.w(d1.b, d2.b); k.w(d2.a, [300, 20], nr);
+    var vr = k.ref(180, 158);
+    k.w(o.p, vr.a);
+    return k.svg();
   },
   knobs: [
     { k: "g", l: N_("ドライブ (Rf/Rg)"), min: 1, max: 120, step: 1, def: 30, fmt: function (v) { return "×" + v; } },
@@ -1922,12 +2067,15 @@ CATALOG.push({
   key: "asymmetric diode even harmonics",
   d: N_("片側だけダイオードを1本増やす。上下で頭打ちの高さが変わるので、波形が上下対称でなくなり、<b>偶数次の倍音が立ちます</b>。奇数次だけの対称クリップは硬く、偶数次が混ざると「太い」と感じる — その違いが棒グラフでそのまま見えます。"),
   sch: function () {
-    return SVG("0 0 380 180",
-      S.inp(28, 50) + S.w(48, 50, 64, 50) + S.r(100, 50, 0, "R") + S.w(130, 50, 200, 50)
-      + S.jn(200, 50) + S.w(200, 50, 262, 50) + S.outp(322, 50) + S.w(262, 50, 292, 50)
-      + S.w(160, 50, 160, 76) + S.jn(160, 50) + S.d(160, 96, 90, "") + S.w(160, 116, 160, 152)
-      + S.w(240, 50, 240, 66) + S.d(240, 86, 270, "") + S.d(240, 126, 270, "") + S.w(240, 106, 240, 106)
-      + S.w(240, 146, 240, 152) + S.w(160, 152, 240, 152) + S.gnd(200, 154) + S.w(200, 152, 200, 154));
+    var k = K("0 0 380 190"), n1 = [160, 50], n2 = [240, 50], g1 = [160, 152], g2 = [240, 152];
+    var i = k.inp(28, 50), rr = k.r(100, 50, 0, "R"), t = k.outp(322, 50);
+    k.w(i.a, rr.a); k.w(rr.b, n1); k.jn(n1); k.w(n1, n2); k.jn(n2); k.w(n2, t.a);
+    var d1 = k.d(160, 96, 90);
+    k.w(n1, d1.a); k.w(d1.b, g1);
+    var d2 = k.d(240, 86, 270), d3 = k.d(240, 126, 270);
+    k.w(n2, d2.b); k.w(d2.a, d3.b); k.w(d3.a, g2);
+    k.w(g1, g2); k.gnd(200, 162); k.jn([200, 152]);
+    return k.svg();
   },
   knobs: [
     { k: "dr", l: N_("入力レベル"), min: .2, max: 4, step: .05, def: 2, fmt: function (v) { return v.toFixed(2) + " Vp"; } },
@@ -1953,17 +2101,22 @@ CATALOG.push({
   key: "fuzz face AC128 NKT275 germanium bias",
   d: N_("2石を直結し、2段目のエミッタから1段目のベースへ抵抗で戻してバイアスを決める形。<b>動作点が信号自身で揺すられる</b>ので、素直な伝達曲線になりません。バイアスを浅くすると音の減衰がぶつ切りになり、いわゆる「ゲートっぽい」ファズになります。"),
   sch: function () {
-    return SVG("0 0 380 190",
-      S.vcc(120, 14) + S.w(120, 24, 120, 34) + S.r(120, 60, 90, "") + S.w(120, 86, 120, 100)
-      + S.jn(120, 100) + S.npn(130, 110) + S.inp(24, 110) + S.c(66, 110, 0) + S.w(44, 110, 46, 110)
-      + S.w(86, 110, 110, 110) + S.jn(110, 110)
-      + S.w(140, 130, 140, 150) + S.gnd(140, 152)
-      + S.vcc(268, 14) + S.w(268, 24, 268, 34) + S.r(268, 60, 90, "") + S.w(268, 86, 268, 100)
-      + S.jn(268, 100) + S.npn(278, 110) + S.w(120, 100, 258, 100)
-      + S.w(288, 130, 288, 150) + S.jn(288, 150) + S.r(288, 168, 90, "") + S.gnd(288, 190)
-      + S.w(288, 150, 330, 150) + S.w(330, 150, 330, 176) + S.w(110, 176, 330, 176)
-      + S.w(110, 176, 110, 110) + S.t(220, 190, T("帰還でバイアスが決まる"), "middle", "k")
-      + S.w(268, 100, 340, 100) + S.outp(360, 100) + S.w(340, 100, 340, 100));
+    var k = K("0 0 380 238"), nb1 = [92, 120], nc1 = [130, 94], nc2 = [278, 94], ne2 = [278, 146];
+    var v1 = k.vcc(130, 18), rc1 = k.r(130, 58, 90), q1 = k.npn(120, 120);
+    k.w(v1.a, rc1.a); k.w(rc1.b, nc1); k.jn(nc1); k.w(nc1, q1.c);
+    k.w(q1.e, [130, 158]); k.gnd(130, 168);
+    var i = k.inp(22, 120), cin = k.c(66, 120);
+    k.w(i.a, cin.a); k.w(cin.b, nb1); k.jn(nb1); k.w(nb1, q1.b);
+    var v2 = k.vcc(278, 18), rc2 = k.r(278, 58, 90), q2 = k.npn(268, 120);
+    k.w(v2.a, rc2.a); k.w(rc2.b, nc2); k.jn(nc2); k.w(nc2, q2.c);
+    k.w(nc1, [200, 94], [200, 120], q2.b);
+    var t = k.outp(350, 94);
+    k.w(nc2, t.a);
+    var re2 = k.r(278, 180, 90);
+    k.w(q2.e, ne2); k.jn(ne2); k.w(ne2, re2.a); k.gnd(278, 220);
+    k.w(ne2, [330, 146], [330, 200], [92, 200], nb1);
+    k.t(196, 192, T("帰還でバイアスが決まる"), "middle", "k");
+    return k.svg();
   },
   knobs: [
     { k: "g", l: N_("ファズ量"), min: 2, max: 40, step: .5, def: 16, fmt: function (v) { return "×" + v.toFixed(0); } },
@@ -1990,14 +2143,18 @@ CATALOG.push({
   key: "12AX7 triode tube preamp grid conduction",
   d: N_("三極管のプレート電流は格子電圧の <code>3/2</code> 乗に比例します。この曲がった特性そのものが歪みで、<b>上下で潰れ方が違います</b>。振幅が大きくなると格子が電流を引き始めて上側が急に頭打ちになり、下側は電流が0になって伸び切る。偶数次が多いのはこの非対称のためです。"),
   sch: function () {
-    return SVG("0 0 380 190",
-      S.vcc(180, 14) + S.w(180, 24, 180, 34) + S.r(180, 62, 90, "Rp") + S.w(180, 90, 180, 102)
-      + S.jn(180, 102) + S.tri(180, 122) + S.w(180, 102, 260, 102) + S.c(288, 102, 0)
-      + S.outp(348, 102) + S.w(308, 102, 328, 102)
-      + S.inp(24, 124) + S.c(66, 124, 0) + S.w(44, 124, 46, 124) + S.w(86, 124, 160, 124)
-      + S.jn(120, 124) + S.w(120, 124, 120, 146) + S.r(120, 162, 90, "Rg") + S.gnd(120, 192)
-      + S.w(180, 146, 180, 156) + S.jn(180, 156) + S.r(180, 172, 90, "Rk") + S.gnd(180, 202)
-      + S.w(180, 156, 226, 156) + S.c(226, 174, 90) + S.gnd(226, 202));
+    var k = K("0 0 380 262"), nOut = [180, 92], ng = [120, 114], nk = [180, 172];
+    var v = k.vcc(180, 18), rp = k.r(180, 56, 90, "Rp"), q = k.tri(180, 112);
+    k.w(v.a, rp.a); k.w(rp.b, nOut); k.jn(nOut); k.w(nOut, q.p);
+    var cout = k.c(256, 92), t = k.outp(336, 92);
+    k.w(nOut, cout.a); k.w(cout.b, t.a);
+    var i = k.inp(22, 114), cin = k.c(66, 114), rg = k.r(120, 160, 90, "Rg");
+    k.w(i.a, cin.a); k.w(cin.b, ng); k.jn(ng); k.w(ng, q.g); k.w(ng, rg.a);
+    k.gnd(120, 200);
+    var rk = k.r(180, 202, 90, "Rk"), ck = k.c(250, 192, 90);
+    k.w(q.k, nk); k.jn(nk); k.w(nk, rk.a); k.gnd(180, 242);
+    k.w(nk, ck.a); k.gnd(250, 222);
+    return k.svg();
   },
   knobs: [
     { k: "dr", l: N_("入力レベル"), min: .2, max: 3, step: .05, def: 1.2, fmt: function (v) { return v.toFixed(2) + " Vp"; } },
@@ -2025,13 +2182,16 @@ CATALOG.push({
   key: "CD4049 CD4069 inverter distortion",
   d: N_("ロジック用のインバータを、帰還抵抗でアナログ増幅器として使う型。増幅率が非常に高く、しきい値をまたいだ瞬間に飛ぶので、<b>ほぼ矩形波まで潰れます</b>。電源電圧がそのまま頭打ちの高さなので、電圧を下げると歪みの性格が変わります。"),
   sch: function () {
-    return SVG("0 0 380 140",
-      S.inp(26, 70) + S.w(46, 70, 62, 70) + S.c(84, 70, 0) + S.w(104, 70, 118, 70)
-      + S.r(150, 70, 0, "") + S.w(180, 70, 200, 70) + S.jn(200, 70)
-      + S.buf(240, 70, "") + S.t(238, 66, "1", "middle") + '<circle cx="264" cy="70" r="4.5"/>'
-      + S.w(268, 70, 300, 70) + S.outp(340, 70) + S.jn(300, 70)
-      + S.w(200, 70, 200, 26) + S.r(250, 26, 0, "Rf") + S.w(220, 26, 200, 26)
-      + S.w(280, 26, 300, 26) + S.w(300, 26, 300, 70));
+    var k = K("0 0 380 142"), nin = [200, 70], nout = [300, 70];
+    var i = k.inp(24, 70), cin = k.c(72, 70), rin = k.r(140, 70, 0);
+    k.w(i.a, cin.a); k.w(cin.b, rin.a); k.w(rin.b, nin); k.jn(nin);
+    var b = k.buf(236, 70), t = k.outp(340, 70);
+    k.w(nin, b.a);
+    k.raw('<circle cx="264" cy="70" r="4.5"/>');
+    k.w(b.b, nout); k.jn(nout); k.w(nout, t.a);
+    var rf = k.r(250, 24, 180, "Rf");
+    k.w(nin, [200, 24], rf.b); k.w(rf.a, [300, 24], nout);
+    return k.svg();
   },
   knobs: [
     { k: "g", l: N_("開ループ増幅率"), min: 2, max: 60, step: 1, def: 22, fmt: function (v) { return "×" + v; } },
@@ -2055,17 +2215,18 @@ CATALOG.push({
   key: "octavia octave up full wave rectifier transformer",
   d: N_("波形の下半分を折り返して上に重ねる。1周期の中に山が2つできるので、<b>1オクターブ上の成分が生まれます</b>。トランスのセンタータップと2本のダイオードで作るのが古典。原音と混ぜる量で「オクターブが乗る」感じの強さが決まります。"),
   sch: function () {
-    return SVG("0 0 380 170",
-      S.inp(24, 84) + S.w(44, 84, 66, 84)
-      + '<g transform="translate(96,84)"><path d="M -10 -34 A 5 5 0 0 1 -10 -24 A 5 5 0 0 1 -10 -14 A 5 5 0 0 1 -10 -4 A 5 5 0 0 1 -10 6"/>'
-      + '<path d="M 10 -34 A 5 5 0 0 0 10 -24 A 5 5 0 0 0 10 -14 A 5 5 0 0 0 10 -4 A 5 5 0 0 0 10 6"/>'
-      + '<line x1="0" y1="-36" x2="0" y2="8"/><line x1="-4" y1="-36" x2="4" y2="-36"/></g>'
-      + S.w(66, 84, 86, 84) + S.w(106, 50, 150, 50) + S.w(106, 78, 150, 78)
-      + S.w(106, 50, 106, 50) + S.w(106, 78, 106, 78)
-      + S.d(178, 50, 0, "") + S.d(178, 78, 0, "")
-      + S.w(198, 50, 236, 50) + S.w(198, 78, 236, 78) + S.w(236, 50, 236, 78)
-      + S.jn(236, 64) + S.w(236, 64, 290, 64) + S.outp(340, 64) + S.w(290, 64, 310, 64)
-      + S.w(96, 92, 96, 122) + S.gnd(96, 124) + S.t(190, 122, T("センタータップ + 2本で全波整流"), "middle"));
+    var k = K("0 0 380 188"), n = [240, 60];
+    var i = k.inp(22, 40), xf = k.xfmr(100, 70);
+    k.w(i.a, xf.p1);
+    k.w(xf.p2, [42, 80], [42, 120]); k.gnd(42, 130);
+    k.w(xf.ct, [116, 140]); k.gnd(116, 150);
+    var d1 = k.d(180, 40, 0), d2 = k.d(180, 80, 0);
+    k.w(xf.s1, d1.a); k.w(xf.s2, d2.a);
+    k.w(d1.b, [240, 40], n); k.w(d2.b, [240, 80], n); k.jn(n);
+    var t = k.outp(320, 60);
+    k.w(n, t.a);
+    k.t(196, 176, T("センタータップ + 2本で全波整流"), "middle");
+    return k.svg();
   },
   knobs: [{ k: "b", l: N_("原音とのブレンド"), min: 0, max: 1, step: .02, def: .8, fmt: function (v) { return Math.round(v * 100) + " % oct"; } }],
   f: function (p) { var b = p.b; return function (x) { return (1 - b) * x + b * (Math.abs(x) * 2 - 0.62) * 1.05; }; },
@@ -2094,10 +2255,12 @@ CATALOG.push({
   key: "low pass filter cutoff tone knob",
   d: N_("抵抗1本とコンデンサ1本。<code>fc = 1/(2πRC)</code> より上を、1オクターブごとに6dB ずつ落とします。トーンつまみのいちばん素朴な形で、歪みの後ろに置くと角が取れます。<b>急峻には切れません</b> — それがこの型の穏やかさの正体です。"),
   sch: function () {
-    return SVG("0 0 380 140",
-      S.inp(30, 56) + S.w(50, 56, 66, 56) + S.r(102, 56, 0, "R") + S.w(132, 56, 196, 56)
-      + S.jn(196, 56) + S.w(196, 56, 258, 56) + S.outp(318, 56) + S.w(258, 56, 288, 56)
-      + S.w(196, 56, 196, 74) + S.c(196, 92, 90, "C") + S.gnd(196, 126));
+    var k = K("0 0 380 142"), n = [196, 56];
+    var i = k.inp(30, 56), rr = k.r(102, 56, 0, "R"), t = k.outp(318, 56);
+    k.w(i.a, rr.a); k.w(rr.b, n); k.jn(n); k.w(n, t.a);
+    var cc = k.c(196, 92, 90, "C");
+    k.w(n, cc.a); k.gnd(196, 122);
+    return k.svg();
   },
   knobs: [{ k: "fc", l: N_("遮断周波数"), min: 100, max: 12000, step: 50, def: 2500, fmt: function (v) { return v >= 1000 ? (v / 1000).toFixed(2) + " kHz" : v + " Hz"; } }],
   viz: function (V, p) {
@@ -2118,10 +2281,12 @@ CATALOG.push({
   key: "coupling capacitor high pass DC block low cut",
   d: N_("段と段の間に入るコンデンサ。直流を止めて次段のバイアスを守るのが本業ですが、<b>同時に必ずハイパスフィルタになります</b>。容量を小さくすると低音が削れて歪みが締まり、大きくすると膨らんでブーミーになる。エフェクター改造でいちばん効く1本です。"),
   sch: function () {
-    return SVG("0 0 380 140",
-      S.inp(30, 56) + S.w(50, 56, 76, 56) + S.c(100, 56, 0, "C") + S.w(120, 56, 196, 56)
-      + S.jn(196, 56) + S.w(196, 56, 258, 56) + S.outp(318, 56) + S.w(258, 56, 288, 56)
-      + S.w(196, 56, 196, 76) + S.r(196, 100, 90, "R") + S.gnd(196, 134));
+    var k = K("0 0 380 152"), n = [196, 56];
+    var i = k.inp(30, 56), cc = k.c(100, 56, 0, "C"), t = k.outp(318, 56);
+    k.w(i.a, cc.a); k.w(cc.b, n); k.jn(n); k.w(n, t.a);
+    var rr = k.r(196, 96, 90, "R");
+    k.w(n, rr.a); k.gnd(196, 136);
+    return k.svg();
   },
   knobs: [
     { k: "cv", l: N_("容量"), min: 1, max: 200, step: 1, def: 47, fmt: function (v) { return (v / 1000).toFixed(3) + " µF"; } },
@@ -2148,16 +2313,21 @@ CATALOG.push({
   key: "fender marshall vox tone stack bass mid treble",
   d: N_("ローパス・バンドパス・ハイパスの3経路を足し合わせる、アンプの標準的なトーン回路。<b>つまみを全部12時にしても平らになりません</b> — 中域が凹んだ、いわゆるドンシャリがこの回路の素の顔です。Marshall の音の半分はこの凹みでできています。"),
   sch: function () {
-    return SVG("0 0 380 190",
-      S.inp(24, 40) + S.w(44, 40, 90, 40) + S.jn(90, 40)
-      + S.w(90, 40, 90, 68) + S.c(120, 68, 0) + S.w(140, 68, 168, 68) + S.pot(206, 68, 0, "TREBLE")
-      + S.w(90, 40, 90, 118) + S.r(120, 118, 0, "") + S.pot(206, 118, 0, "MID")
-      + S.w(90, 118, 90, 118) + S.w(150, 118, 176, 118)
-      + S.w(90, 40, 300, 40) + S.jn(300, 40) + S.w(300, 40, 300, 68) + S.jn(236, 68) + S.jn(236, 118)
-      + S.w(236, 68, 300, 68) + S.w(236, 118, 300, 118) + S.w(300, 68, 300, 152)
-      + S.w(90, 152, 90, 152) + S.c(120, 152, 0) + S.w(90, 118, 90, 152) + S.w(140, 152, 176, 152)
-      + S.pot(206, 152, 0, "BASS") + S.w(236, 152, 300, 152)
-      + S.outp(350, 68) + S.w(300, 68, 330, 68));
+    var k = K("0 0 380 196"), nin = [92, 40], nt = [306, 76], nm = [306, 126];
+    var i = k.inp(24, 40);
+    k.w(i.a, nin); k.jn(nin);
+    var ct = k.c(126, 76), pt = k.pot(216, 76, 0, "TREBLE");
+    k.w(nin, [92, 76], ct.a); k.w(ct.b, pt.a);
+    var rm = k.r(132, 126), pm = k.pot(216, 126, 0, "MID");
+    k.w(nin, [92, 126], rm.a); k.w(rm.b, pm.a);
+    var cb = k.c(126, 172), pb = k.pot(216, 172, 0, "BASS");
+    k.w(nin, [92, 172], cb.a); k.w(cb.b, pb.a);
+    k.w(pt.b, nt); k.jn(nt); k.w(nt, [306, 40], nin);
+    k.w(pm.b, nm); k.jn(nm); k.w(nm, nt);
+    k.w(pb.b, [306, 172], nm);
+    var t = k.outp(350, 40);
+    k.w([306, 40], t.a); k.jn([306, 40]);
+    return k.svg();
   },
   knobs: [
     { k: "b", l: "BASS", min: 0, max: 1, step: .01, def: .6, fmt: function (v) { return Math.round(v * 10) + " / 10"; } },
@@ -2193,14 +2363,17 @@ CATALOG.push({
   key: "big muff tone scoop blend notch",
   d: N_("ローパスした信号とハイパスした信号を、ポットで<b>混ぜる比率だけ</b>変える回路。つまみの中央で両方が中途半端に打ち消し合い、中域に谷ができます。片側に振り切ると谷が消えて、素直なローパス／ハイパスになります。"),
   sch: function () {
-    return SVG("0 0 380 170",
-      S.inp(24, 46) + S.w(44, 46, 100, 46) + S.jn(100, 46)
-      + S.w(100, 46, 100, 30) + S.r(140, 30, 0, "") + S.w(170, 30, 196, 30)
-      + S.jn(196, 30) + S.w(196, 30, 196, 52) + S.c(196, 70, 90) + S.gnd(196, 104)
-      + S.w(100, 46, 100, 110) + S.c(140, 110, 0) + S.w(160, 110, 196, 110)
-      + S.w(196, 30, 250, 30) + S.w(196, 110, 250, 110) + S.w(250, 30, 250, 110)
-      + S.pot(250, 70, 90, "TONE") + S.jn(250, 30) + S.jn(250, 110)
-      + S.w(272, 62, 300, 62) + S.outp(348, 62) + S.w(300, 62, 328, 62));
+    var k = K("0 0 380 172"), nin = [92, 76], na = [206, 34], nb = [206, 118];
+    var i = k.inp(24, 76);
+    k.w(i.a, nin); k.jn(nin);
+    var ch = k.c(140, 34), rl = k.r(146, 118);
+    k.w(nin, [92, 34], ch.a); k.w(ch.b, na);
+    k.w(nin, [92, 118], rl.a); k.w(rl.b, nb);
+    var pv = k.pot(206, 76, 90, "TONE");
+    k.w(na, pv.a); k.w(pv.b, nb);
+    var t = k.outp(320, 76);
+    k.w(pv.w, t.a);
+    return k.svg();
   },
   knobs: [{ k: "t", l: "TONE", min: 0, max: 1, step: .01, def: .5, fmt: function (v) { return Math.round(v * 10) + " / 10"; } }],
   /* ローパス側とハイパス側は交差点で位相が 180° 近く食い違う。
@@ -2229,14 +2402,21 @@ CATALOG.push({
   key: "wah cry baby inductor band pass sweep",
   d: N_("インダクタとコンデンサで作った共振点を、ペダルで<b>周波数ごと移動させる</b>型。山が高い(Qが高い)ほど「クワッ」と鳴き、低いと単なるトーン変化になります。オートワウは、この位置を足ではなく入力の音量で動かしているだけです。"),
   sch: function () {
-    return SVG("0 0 380 170",
-      S.inp(24, 48) + S.w(44, 48, 70, 48) + S.buf(112, 48, "") + S.w(146, 48, 200, 48)
-      + S.jn(200, 48) + S.w(200, 48, 280, 48) + S.outp(340, 48) + S.w(280, 48, 310, 48)
-      + S.w(200, 48, 200, 70) + S.ind(200, 100, 90, "L") + S.w(200, 130, 200, 140)
-      + S.gnd(200, 142)
-      + S.w(140, 48, 140, 90) + S.c(140, 110, 90, "C") + S.w(140, 130, 140, 140) + S.w(140, 140, 200, 140)
-      + S.jn(140, 48) + S.pot(272, 96, 90, "PEDAL") + S.w(272, 48, 272, 66) + S.jn(272, 48)
-      + S.w(272, 126, 272, 140) + S.w(200, 140, 272, 140));
+    var k = K("0 0 380 190"), nin = [140, 48], nres = [214, 48], ng = [214, 150];
+    var i = k.inp(24, 48), b = k.buf(88, 48);
+    k.w(i.a, b.a); k.w(b.b, nin); k.jn(nin);
+    var cc = k.c(140, 100, 90, "C");
+    k.w(nin, cc.a); k.w(cc.b, [140, 150], ng);
+    k.w(nin, nres); k.jn(nres);
+    var ld = k.ind(214, 100, 90, "L");
+    k.w(nres, ld.a); k.w(ld.b, ng); k.jn(ng);
+    k.gnd(214, 160);
+    var pv = k.pot(292, 100, 90, "PEDAL");
+    k.w(nres, [292, 48], pv.a); k.jn([292, 48]);
+    k.w(pv.b, [292, 150], ng);
+    var t = k.outp(350, 48);
+    k.w([292, 48], t.a);
+    return k.svg();
   },
   knobs: [
     { k: "pos", l: N_("ペダル位置"), min: 0, max: 1, step: .01, def: .45, fmt: function (v) { return Math.round(v * 100) + " %"; } },
@@ -2260,13 +2440,18 @@ CATALOG.push({
   key: "sallen key active filter 12dB octave resonance",
   d: N_("オペアンプ1個で2次のフィルタを作る型。減衰は<b>1オクターブあたり12dB</b>と急で、Q を上げると遮断点に山が立ちます。シンセの VCF やアンプシミュレータのスピーカー模擬など、「はっきり切りたい」ところに使います。"),
   sch: function () {
-    return SVG("0 0 380 160",
-      S.inp(20, 74) + S.w(40, 74, 52, 74) + S.r(84, 74, 0, "") + S.w(116, 74, 132, 74)
-      + S.jn(132, 74) + S.r(164, 74, 0, "") + S.w(196, 74, 216, 74)
-      + S.jn(216, 74) + S.w(216, 74, 216, 96) + S.c(216, 114, 90) + S.gnd(216, 148)
-      + S.op(266, 74) + S.w(216, 74, 232, 74) + S.w(304, 74, 336, 74) + S.outp(360, 74)
-      + S.jn(320, 74) + S.w(320, 74, 320, 30) + S.w(320, 30, 132, 30) + S.c(226, 30, 0)
-      + S.w(132, 30, 132, 74) + S.w(232, 63, 232, 40) + S.w(232, 40, 300, 40) + S.w(300, 40, 300, 74));
+    var k = K("0 0 380 172"), n1 = [140, 76], n2 = [214, 76], no = [316, 65], nf = [316, 38];
+    var i = k.inp(20, 76), r1 = k.r(80, 76), r2 = k.r(176, 76);
+    k.w(i.a, r1.a); k.w(r1.b, n1); k.jn(n1); k.w(n1, r2.a); k.w(r2.b, n2); k.jn(n2);
+    var c2 = k.c(214, 116, 90);
+    k.w(n2, c2.a); k.gnd(214, 146);
+    var o = k.op(268, 65), t = k.outp(350, 65);
+    k.w(n2, o.p);
+    k.w(o.o, no); k.jn(no); k.w(no, t.a);
+    var c1 = k.c(230, 26);
+    k.w(n1, [140, 26], c1.a); k.w(c1.b, [316, 26], no);
+    k.w(o.n, [234, 38], nf); k.jn(nf);
+    return k.svg();
   },
   knobs: [
     { k: "fc", l: N_("遮断周波数"), min: 150, max: 9000, step: 50, def: 1600, fmt: function (v) { return v >= 1000 ? (v / 1000).toFixed(2) + " kHz" : v + " Hz"; } },
@@ -2291,11 +2476,14 @@ CATALOG.push({
   key: "tone control after distortion fizz harshness",
   d: N_("クリップは高い倍音まで一気に作ります。そのままだと耳に刺さるので、<b>歪ませた直後に落とす</b>のが定石。ファズやディストーションのトーンつまみが「効く」のは、削っている対象が原音ではなく自分で作った倍音だからです。"),
   sch: function () {
-    return SVG("0 0 380 140",
-      S.inp(22, 56) + S.w(42, 56, 60, 56) + S.box(104, 56, 72, 42, "CLIP")
-      + S.w(140, 56, 156, 56) + S.r(190, 56, 0, "R") + S.w(220, 56, 264, 56) + S.jn(264, 56)
-      + S.w(264, 56, 300, 56) + S.outp(346, 56) + S.w(300, 56, 322, 56)
-      + S.w(264, 56, 264, 76) + S.c(264, 94, 90, "C") + S.gnd(264, 128));
+    var k = K("0 0 380 142"), n = [264, 56];
+    var i = k.inp(22, 56), bx = k.box(108, 56, 72, 42, "CLIP"), rr = k.r(196, 56, 0, "R");
+    k.w(i.a, bx.l); k.w(bx.r, rr.a); k.w(rr.b, n); k.jn(n);
+    var t = k.outp(342, 56);
+    k.w(n, t.a);
+    var cc = k.c(264, 92, 90, "C");
+    k.w(n, cc.a); k.gnd(264, 122);
+    return k.svg();
   },
   knobs: [
     { k: "dr", l: N_("歪みの深さ"), min: 1, max: 20, step: .5, def: 8, fmt: function (v) { return "×" + v.toFixed(1); } },
@@ -2326,11 +2514,13 @@ CATALOG.push({
   key: "MN3007 MN3005 BBD delay bucket brigade clock",
   d: N_("コンデンサを何百段も並べ、クロックごとに電荷を隣へ受け渡す遅延素子。<b>遅延時間はクロック周波数で決まります</b>。クロックを下げれば長く遅れますが、同時に標本化も粗くなって高域が落ち、折り返しノイズが出る。この「下げると曇る」性質が、BBD の音そのものです。"),
   sch: function () {
-    return SVG("0 0 380 150",
-      S.inp(24, 52) + S.w(44, 52, 74, 52) + S.box(160, 52, 172, 52, "BBD", T("1024段"))
-      + S.w(74, 52, 74, 52) + S.w(246, 52, 280, 52) + S.outp(330, 52) + S.w(280, 52, 306, 52)
-      + S.w(160, 78, 160, 96) + S.box(160, 116, 130, 34, "CLOCK", "")
-      + S.t(160, 146, T("遅延 = 段数 ÷ (2 × クロック)"), "middle"));
+    var k = K("0 0 380 158");
+    var i = k.inp(24, 52), bd = k.box(160, 52, 172, 52, "BBD", T("1024段")), t = k.outp(330, 52);
+    k.w(i.a, bd.l); k.w(bd.r, t.a);
+    var ck = k.box(160, 116, 130, 34, "CLOCK");
+    k.w(bd.b, ck.t);
+    k.t(160, 150, T("遅延 = 段数 ÷ (2 × クロック)"), "middle");
+    return k.svg();
   },
   knobs: [{ k: "clk", l: N_("クロック"), min: 10, max: 200, step: 2, def: 60, fmt: function (v) { return v + " kHz"; } }],
   viz: function (V, p) {
@@ -2352,13 +2542,17 @@ CATALOG.push({
   key: "chorus CE-2 CE-1 BBD LFO detune comb",
   d: N_("短い遅延(15〜30ms)を LFO でゆっくり伸縮させ、原音と混ぜる型。混ぜた瞬間に<b>櫛状の谷</b>ができ、それが遅延と一緒に動くので音が揺れて広がります。遅延そのものにはドップラーで軽い音程のずれも乗り、これが「厚み」の正体です。"),
   sch: function () {
-    return SVG("0 0 380 160",
-      S.inp(22, 46) + S.w(42, 46, 76, 46) + S.jn(76, 46)
-      + S.w(76, 46, 76, 100) + S.box(160, 100, 150, 44, "BBD", T("遅延 15〜30ms"))
-      + S.w(76, 100, 85, 100) + S.w(235, 100, 268, 100) + S.w(268, 100, 268, 60)
-      + S.w(76, 46, 268, 46) + S.jn(268, 46) + S.box(300, 53, 46, 42, "MIX")
-      + S.w(160, 122, 160, 136) + S.box(160, 148, 96, 30, "LFO", "")
-      + S.outp(366, 53) + S.w(323, 53, 344, 53));
+    var k = K("0 0 380 176"), nin = [76, 46], nmix = [268, 60];
+    var i = k.inp(22, 46);
+    k.w(i.a, nin); k.jn(nin);
+    var bd = k.box(164, 100, 150, 42, "BBD", T("遅延 15〜30ms"));
+    k.w(nin, [76, 100], bd.l);
+    var mx = k.box(302, 60, 44, 40, "MIX"), t = k.outp(358, 60);
+    k.w(nin, [268, 46], nmix); k.w(bd.r, [268, 100], nmix); k.jn(nmix);
+    k.w(nmix, mx.l); k.w(mx.r, t.a);
+    var lf = k.box(164, 154, 96, 30, "LFO");
+    k.w(bd.b, lf.t);
+    return k.svg();
   },
   anim: true,
   knobs: [
@@ -2366,12 +2560,12 @@ CATALOG.push({
     { k: "dep", l: "DEPTH", min: 0, max: 1, step: .01, def: .55, fmt: function (v) { return Math.round(v * 100) + " %"; } }
   ],
   viz: function (V, p) {
-    var b = box(V, 12, 14);
+    var b = box(V, 12, 14), FMAX = 900;
     var mod = Math.sin(2 * Math.PI * p.rate * p.t);
     var tau = (0.018 + 0.010 * p.dep * mod);
-    grid(V, b, 6, 4); bodeAxis(V, b);
-    bode(V, b, function (f) { var c = Math.cos(2 * Math.PI * f * 0.018); return Math.sqrt(1 + 1 + 2 * c) / 2; }, CO.dim, -26, 8, 1.3);
-    bode(V, b, function (f) { var c = Math.cos(2 * Math.PI * f * tau); return Math.sqrt(2 + 2 * c) / 2; }, p.c, -26, 8);
+    grid(V, b, 1, 4); linAxis(V, b, FMAX);
+    linPlot(V, b, function (f) { var c = Math.cos(2 * Math.PI * f * 0.018); return Math.sqrt(2 + 2 * c) / 2; }, CO.dim, FMAX, -26, 8, 1.3);
+    linPlot(V, b, function (f) { var c = Math.cos(2 * Math.PI * f * tau); return Math.sqrt(2 + 2 * c) / 2; }, p.c, FMAX, -26, 8);
     return { l: T("原音と混ぜてできる櫛の谷"), r: T("遅延 ") + (tau * 1000).toFixed(1) + " ms" };
   },
   tryIt: N_("プリセット「BBDコーラス (MN3007 + LFO)」と「CE-1風 コーラスアンサンブル (MN3002)」")
@@ -2382,14 +2576,19 @@ CATALOG.push({
   key: "flanger feedback comb jet sweep short delay",
   d: N_("コーラスより短い遅延(0.5〜5ms)を使い、さらに<b>出力を入口へ戻します</b>。帰還があるぶん谷が深く鋭くなり、山も立つ。ジェット機が通り過ぎるような音になるのは、この鋭い櫛が周波数軸を上下に走るからです。"),
   sch: function () {
-    return SVG("0 0 380 170",
-      S.inp(22, 50) + S.w(42, 50, 72, 50) + S.jn(72, 50)
-      + S.w(72, 50, 72, 104) + S.box(158, 104, 140, 42, "BBD", "0.5〜5ms")
-      + S.w(72, 104, 88, 104) + S.w(228, 104, 262, 104) + S.jn(262, 104)
-      + S.w(262, 104, 262, 62) + S.w(72, 50, 268, 50) + S.jn(268, 50) + S.box(300, 56, 44, 40, "MIX")
-      + S.outp(366, 56) + S.w(322, 56, 344, 56)
-      + S.w(262, 104, 262, 148) + S.r(180, 148, 180, "FB") + S.w(150, 148, 72, 148) + S.w(72, 148, 72, 104)
-      + S.w(158, 125, 158, 137) + S.t(300, 148, T("帰還が谷を深くする"), "middle", "k"));
+    var k = K("0 0 380 182"), nin = [72, 50], nwet = [262, 104], nmix = [268, 64];
+    var i = k.inp(22, 50);
+    k.w(i.a, nin); k.jn(nin);
+    var bd = k.box(158, 104, 140, 42, "BBD", "0.5〜5ms");
+    k.w(nin, [72, 104], bd.l);
+    var mx = k.box(302, 64, 44, 40, "MIX"), t = k.outp(358, 64);
+    k.w(nin, [268, 50], nmix); k.jn(nmix); k.w(nmix, mx.l); k.w(mx.r, t.a);
+    k.w(bd.r, nwet); k.jn(nwet); k.w(nwet, [262, 64], nmix);
+    var fb = k.r(170, 158, 180, "FB");
+    k.w(nwet, [262, 158], fb.a); k.w(fb.b, [72, 158], [72, 104]);
+    k.jn([72, 104]);
+    k.t(196, 176, T("帰還が谷を深くする"), "middle", "k");
+    return k.svg();
   },
   anim: true,
   knobs: [
@@ -2397,15 +2596,15 @@ CATALOG.push({
     { k: "fb", l: "FEEDBACK", min: 0, max: .92, step: .01, def: .6, fmt: function (v) { return Math.round(v * 100) + " %"; } }
   ],
   viz: function (V, p) {
-    var b = box(V, 12, 14);
+    var b = box(V, 12, 14), FMAX = 5000;
     var tau = 0.0009 + 0.0032 * (0.5 + 0.5 * Math.sin(2 * Math.PI * p.rate * p.t));
     var fb = p.fb;
-    grid(V, b, 6, 4); bodeAxis(V, b);
-    bode(V, b, function (f) {
+    grid(V, b, 1, 4); linAxis(V, b, FMAX);
+    linPlot(V, b, function (f) {
       var w = 2 * Math.PI * f * tau, cr = Math.cos(w), ci = -Math.sin(w);
       var num = [1 + cr, ci], den = [1 - fb * cr, -fb * ci];
       return cabs(cdiv(num, den)) / (1 + fb) * 1.3;
-    }, p.c, -30, 12);
+    }, p.c, FMAX, -30, 12);
     return { l: T("帰還で鋭くなった櫛"), r: T("遅延 ") + (tau * 1000).toFixed(2) + " ms" };
   },
   tryIt: N_("「BBD素子」+「ディレイIC」から短い遅延を作り、出力を入力側へ抵抗1本で戻します")
@@ -2416,11 +2615,13 @@ CATALOG.push({
   key: "vibrato VB-2 pitch modulation wet only",
   d: N_("コーラスから<b>原音を抜いたもの</b>。混ぜないので櫛の谷はできず、代わりに遅延が伸縮するぶんの音程の揺れだけが残ります。同じ回路でも原音を混ぜるかどうかで、コーラスにもビブラートにもなる — その分かれ目がこの型です。"),
   sch: function () {
-    return SVG("0 0 380 140",
-      S.inp(24, 52) + S.w(44, 52, 78, 52) + S.box(170, 52, 160, 46, "BBD", T("遅延を伸縮させる"))
-      + S.w(78, 52, 90, 52) + S.w(250, 52, 290, 52) + S.outp(340, 52) + S.w(290, 52, 316, 52)
-      + S.w(170, 75, 170, 90) + S.box(170, 106, 96, 30, "LFO", "")
-      + S.t(300, 100, T("原音は混ぜない"), "middle", "k"));
+    var k = K("0 0 380 152");
+    var i = k.inp(24, 52), bd = k.box(170, 52, 160, 46, "BBD", T("遅延を伸縮させる")), t = k.outp(340, 52);
+    k.w(i.a, bd.l); k.w(bd.r, t.a);
+    var lf = k.box(170, 112, 96, 30, "LFO");
+    k.w(bd.b, lf.t);
+    k.t(310, 110, T("原音は混ぜない"), "middle", "k");
+    return k.svg();
   },
   anim: true,
   knobs: [
@@ -2450,15 +2651,21 @@ CATALOG.push({
   key: "phase 90 phaser all pass stages notch JFET OTA",
   d: N_("振幅は変えずに<b>位相だけをずらす</b>オールパス段を何段も重ね、最後に原音と足す。位相が180°ずれた周波数で打ち消し合って谷ができます。<b>段数の半分だけ谷ができる</b>ので、2段なら1つ、4段なら2つ。段数が多いほど「うねり」が濃くなります。"),
   sch: function () {
-    var s = S.inp(20, 44) + S.w(40, 44, 62, 44) + S.jn(62, 44);
-    for (var i = 0; i < 4; i++) {
-      var x = 62 + i * 68;
-      s += S.box(x + 34, 84, 56, 40, "AP" + (i + 1)) + (i ? "" : S.w(62, 44, 62, 84)) + S.arrow(x + 62, 84, x + 68);
+    var k = K("0 0 380 154"), nin = [56, 44], nsum = [330, 44];
+    var i = k.inp(20, 44);
+    k.w(i.a, nin); k.jn(nin);
+    var prev = null;
+    for (var j = 0; j < 4; j++) {
+      var b = k.box(92 + j * 68, 92, 52, 40, "AP" + (j + 1));
+      if (prev) k.w(prev.r, b.l); else k.w(nin, [56, 92], b.l);
+      prev = b;
     }
-    s += S.w(62, 84, 68, 84) + S.w(334, 84, 344, 84) + S.w(344, 84, 344, 44)
-      + S.w(62, 44, 300, 44) + S.jn(300, 44) + S.w(300, 44, 344, 44)
-      + S.outp(366, 44) + S.t(200, 130, T("段数の半分だけ谷ができる"), "middle", "k");
-    return SVG("0 0 380 145", s);
+    k.w(prev.r, [330, 92], nsum); k.jn(nsum);
+    k.w(nin, nsum);
+    var t = k.outp(358, 44);
+    k.w(nsum, t.a);
+    k.t(196, 144, T("段数の半分だけ谷ができる"), "middle", "k");
+    return k.svg();
   },
   anim: true,
   knobs: [
@@ -2484,13 +2691,15 @@ CATALOG.push({
   key: "tremolo amplitude modulation LFO optocoupler LDR",
   d: N_("音量そのものを LFO で上下させる、いちばん素朴な変調。<b>周波数も位相もいじりません</b>。光る素子と CdS セルで抵抗を揺らす方式は角が丸く、トランジスタで直接切る方式は角が立つ — 波形の形がそのまま揺れ方の印象になります。"),
   sch: function () {
-    return SVG("0 0 380 160",
-      S.inp(24, 50) + S.w(44, 50, 70, 50) + S.r(108, 50, 0, "") + S.w(138, 50, 200, 50)
-      + S.jn(200, 50) + S.w(200, 50, 268, 50) + S.outp(320, 50) + S.w(268, 50, 292, 50)
-      + S.w(200, 50, 200, 72) + S.r(200, 96, 90, "CdS") + S.gnd(200, 130)
-      + S.box(120, 118, 96, 34, "LFO", "")
-      + S.arrow(168, 100, 190) + S.t(178, 92, T("光"), "middle", "k")
-      + S.w(120, 101, 120, 101));
+    var k = K("0 0 380 168"), n = [200, 50];
+    var i = k.inp(24, 50), rr = k.r(108, 50), t = k.outp(320, 50);
+    k.w(i.a, rr.a); k.w(rr.b, n); k.jn(n); k.w(n, t.a);
+    var cds = k.r(200, 96, 90, "CdS");
+    k.w(n, cds.a); k.gnd(200, 136);
+    var lf = k.box(104, 126, 96, 34, "LFO");
+    k.raw(S.arrow(154, 108, 184));
+    k.t(168, 100, T("光"), "middle", "k");
+    return k.svg();
   },
   anim: true,
   knobs: [
@@ -2522,13 +2731,18 @@ CATALOG.push({
   key: "delay echo repeats feedback PT2399 BBD",
   d: N_("遅らせた音を原音に足し、その一部をもう一度入口へ戻す。<b>戻す量が繰り返しの回数を決めます</b>。1.0 を超えると減らずに増え続けて発振します。BBD やアナログ IC では戻すたびに高域が落ちるので、繰り返すほど遠くなっていきます。"),
   sch: function () {
-    return SVG("0 0 380 170",
-      S.inp(22, 46) + S.w(42, 46, 72, 46) + S.jn(72, 46)
-      + S.w(72, 46, 72, 100) + S.box(160, 100, 140, 42, "DELAY", "")
-      + S.w(72, 100, 90, 100) + S.w(230, 100, 264, 100) + S.jn(264, 100)
-      + S.w(264, 100, 264, 60) + S.w(72, 46, 270, 46) + S.jn(270, 46) + S.box(302, 53, 44, 40, "MIX")
-      + S.outp(368, 53) + S.w(324, 53, 346, 53)
-      + S.w(264, 100, 264, 148) + S.pot(180, 148, 180, "REPEAT") + S.w(150, 148, 72, 148) + S.w(72, 148, 72, 100));
+    var k = K("0 0 380 182"), nin = [72, 46], nwet = [262, 100], nmix = [268, 60];
+    var i = k.inp(22, 46);
+    k.w(i.a, nin); k.jn(nin);
+    var bd = k.box(158, 100, 140, 42, "DELAY");
+    k.w(nin, [72, 100], bd.l);
+    var mx = k.box(302, 60, 44, 40, "MIX"), t = k.outp(358, 60);
+    k.w(nin, [268, 46], nmix); k.jn(nmix); k.w(nmix, mx.l); k.w(mx.r, t.a);
+    k.w(bd.r, nwet); k.jn(nwet); k.w(nwet, [262, 60], nmix);
+    var pv = k.pot(166, 158, 180, "REPEAT");
+    k.w(nwet, [262, 158], pv.a); k.w(pv.b, [72, 158], [72, 100]);
+    k.jn([72, 100]);
+    return k.svg();
   },
   knobs: [
     { k: "ms", l: N_("遅延時間"), min: 40, max: 800, step: 10, def: 320, fmt: function (v) { return v + " ms"; } },
@@ -2560,14 +2774,17 @@ CATALOG.push({
   key: "ring modulator diode ring transformer sidebands",
   d: N_("入力に別の発振波形を<b>掛け算</b>する。出てくるのは元の音でも搬送波でもなく、その和と差の周波数だけ。倍音の関係が壊れるので音程感が消え、金属的・鐘のような音になります。ダイオード4本とトランス2個で作れます。"),
   sch: function () {
-    return SVG("0 0 380 170",
-      S.inp(22, 60) + S.w(42, 60, 70, 60)
-      + S.box(120, 60, 84, 46, "×", T("掛け算"))
-      + S.w(162, 60, 200, 60) + S.outp(250, 60) + S.w(200, 60, 226, 60)
-      + S.w(120, 83, 120, 100) + S.box(120, 122, 110, 34, "OSC", T("搬送波"))
-      + S.t(300, 108, T("出るのは 和 と 差 だけ"), "middle", "k")
-      + S.d(300, 46, 0, "") + S.d(340, 46, 180, "") + S.d(300, 76, 180, "") + S.d(340, 76, 0, "")
-      + S.t(320, 26, T("ダイオードリング"), "middle"));
+    var k = K("0 0 380 180");
+    var i = k.inp(22, 60), mu = k.box(128, 60, 84, 46, "×", T("掛け算")), t = k.outp(250, 60);
+    k.w(i.a, mu.l); k.w(mu.r, t.a);
+    var os = k.box(128, 128, 110, 34, "OSC", T("搬送波"));
+    k.w(mu.b, os.t);
+    k.t(306, 132, T("出るのは 和 と 差 だけ"), "middle", "k");
+    var d1 = k.d(302, 46, 0), d2 = k.d(346, 46, 180), d3 = k.d(302, 84, 180), d4 = k.d(346, 84, 0);
+    k.w(d1.b, d2.b); k.w(d3.a, d4.a);
+    k.w([282, 46], [282, 84]); k.w([366, 46], [366, 84]);
+    k.t(324, 24, T("ダイオードリング"), "middle");
+    return k.svg();
   },
   knobs: [
     { k: "fc", l: N_(T("搬送波")), min: 20, max: 1200, step: 5, def: 330, fmt: function (v) { return v + " Hz"; } },
@@ -2610,13 +2827,16 @@ CATALOG.push({
   key: "compressor OTA VCA SSM2164 NE570 sustain ratio",
   d: N_("入力の音量を検出し、その値で増幅率を下げる。しきい値より上を <code>1/レシオ</code> に圧縮するので、<b>大きい音だけが抑えられ、小さい音との差が縮みます</b>。結果として減衰が伸びる — サステインが増えて聴こえるのは、音が大きくなったからではありません。"),
   sch: function () {
-    return SVG("0 0 380 160",
-      S.inp(22, 50) + S.w(42, 50, 66, 50) + S.jn(66, 50)
-      + S.box(150, 50, 108, 44, "VCA", T("増幅率を外から"))
-      + S.w(66, 50, 96, 50) + S.w(204, 50, 250, 50) + S.jn(250, 50)
-      + S.outp(310, 50) + S.w(250, 50, 280, 50)
-      + S.w(250, 50, 250, 112) + S.box(250, 128, 116, 34, T("検出 (整流+平滑)"), "")
-      + S.w(192, 128, 150, 128) + S.w(150, 128, 150, 72) + S.t(96, 100, T("音量が増幅率を動かす"), "middle", "k"));
+    var k = K("0 0 380 176"), nout = [252, 50];
+    var i = k.inp(22, 50), vca = k.box(156, 50, 108, 44, "VCA", T("増幅率を外から"));
+    k.w(i.a, vca.l);
+    var t = k.outp(312, 50);
+    k.w(vca.r, nout); k.jn(nout); k.w(nout, t.a);
+    var det = k.box(252, 134, 116, 34, T("検出 (整流+平滑)"));
+    k.w(nout, det.t);
+    k.w(det.l, [156, 134], vca.b);
+    k.t(92, 110, T("音量が増幅率を動かす"), "middle", "k");
+    return k.svg();
   },
   knobs: [
     { k: "th", l: N_(T("しきい値")), min: -48, max: -2, step: 1, def: -22, fmt: function (v) { return v + " dB"; } },
@@ -2653,13 +2873,15 @@ CATALOG.push({
   key: "envelope follower attack release rectifier auto wah",
   d: N_("信号を整流してコンデンサで平滑し、<b>音量を直流電圧に変える</b>回路。コンプもオートワウもノイズゲートも、入口はこれです。充電の速さがアタック、放電の速さがリリース。速すぎると波形に追従して歪み、遅すぎると効き始めが間に合いません。"),
   sch: function () {
-    return SVG("0 0 380 150",
-      S.inp(22, 56) + S.w(42, 56, 62, 56) + S.d(88, 56, 0, "") + S.w(108, 56, 150, 56)
-      + S.jn(150, 56) + S.w(150, 56, 230, 56) + S.jn(230, 56)
-      + S.w(230, 56, 290, 56) + S.outp(340, 56) + S.w(290, 56, 316, 56)
-      + S.w(150, 56, 150, 76) + S.c(150, 96, 90, "C") + S.gnd(150, 130)
-      + S.w(230, 56, 230, 76) + S.r(230, 100, 90, "R") + S.gnd(230, 134)
-      + S.t(300, 34, T("直流に変わる"), "middle", "k"));
+    var k = K("0 0 380 152"), n1 = [150, 56], n2 = [230, 56];
+    var i = k.inp(22, 56), dd = k.d(90, 56, 0), t = k.outp(340, 56);
+    k.w(i.a, dd.a); k.w(dd.b, n1); k.jn(n1); k.w(n1, n2); k.jn(n2); k.w(n2, t.a);
+    var cc = k.c(150, 92, 90, "C");
+    k.w(n1, cc.a); k.gnd(150, 122);
+    var rr = k.r(230, 102, 90, "R");
+    k.w(n2, rr.a); k.gnd(230, 142);
+    k.t(300, 34, T("直流に変わる"), "middle", "k");
+    return k.svg();
   },
   knobs: [
     { k: "at", l: N_("アタック"), min: 1, max: 120, step: 1, def: 12, fmt: function (v) { return v + " ms"; } },
@@ -2692,14 +2914,17 @@ CATALOG.push({
   key: "noise gate threshold hiss hum sustain cut",
   d: N_("エンベロープがしきい値を下回ったら音を切る。ハイゲインのノイズを黙らせる代わりに、<b>減衰の尻尾も一緒に切ります</b>。しきい値を上げるほど静かになり、同時に音が短くなる — このトレードオフは回避できません。"),
   sch: function () {
-    return SVG("0 0 380 150",
-      S.inp(22, 50) + S.w(42, 50, 66, 50) + S.jn(66, 50)
-      + S.box(150, 50, 96, 44, "GATE", "") + S.w(66, 50, 102, 50)
-      + S.w(198, 50, 250, 50) + S.outp(304, 50) + S.w(250, 50, 280, 50)
-      + S.w(66, 50, 66, 110) + S.box(120, 110, 96, 34, T("検出"), "")
-      + S.arrow(168, 110, 200) + S.box(250, 110, 84, 34, T("しきい値"), "")
-      + S.w(250, 93, 250, 93) + S.w(206, 72, 206, 110) + S.w(150, 72, 150, 88)
-      + S.w(150, 88, 206, 88) + S.jn(206, 88));
+    var k = K("0 0 380 162"), nin = [66, 50];
+    var i = k.inp(22, 50);
+    k.w(i.a, nin); k.jn(nin);
+    var gt = k.box(160, 50, 96, 44, "GATE"), t = k.outp(300, 50);
+    k.w(nin, gt.l); k.w(gt.r, t.a);
+    var det = k.box(112, 122, 92, 34, T("検出"));
+    k.w(nin, [66, 122], det.l);
+    var th = k.box(266, 122, 96, 34, T("しきい値"));
+    k.w(det.r, th.l);
+    k.w(th.t, [266, 88], [160, 88], gt.b);
+    return k.svg();
   },
   knobs: [
     { k: "th", l: N_(T("しきい値")), min: -60, max: -6, step: 1, def: -34, fmt: function (v) { return v + " dB"; } },
@@ -2734,14 +2959,19 @@ CATALOG.push({
   key: "bias divider operating point clipping asymmetry",
   d: N_("抵抗2本で電源を分け、増幅素子の入力を「何も入力が無いときの電圧」に固定する。<b>この一点で歪み方が決まります</b>。真ん中に置けば上下対称に潰れ、ずらせば片側だけ先に頭打ちになる。ファズのバイアス調整はこの分圧比を触っています。"),
   sch: function () {
-    return SVG("0 0 380 190",
-      S.vcc(150, 14) + S.w(150, 24, 150, 34) + S.r(150, 62, 90, "R1") + S.w(150, 90, 150, 104)
-      + S.jn(150, 104) + S.r(150, 132, 90, "R2") + S.gnd(150, 176)
-      + S.inp(24, 104) + S.c(70, 104, 0) + S.w(44, 104, 50, 104) + S.w(90, 104, 140, 104)
-      + S.w(150, 104, 210, 104) + S.npn(230, 104) + S.jn(150, 104)
-      + S.vcc(240, 14) + S.w(240, 24, 240, 34) + S.r(240, 56, 90, "") + S.w(240, 78, 240, 84)
-      + S.jn(240, 84) + S.w(240, 84, 300, 84) + S.outp(346, 84) + S.w(300, 84, 322, 84)
-      + S.w(240, 124, 240, 150) + S.gnd(240, 152));
+    var k = K("0 0 380 212"), nb = [150, 114];
+    var v1 = k.vcc(150, 18), r1 = k.r(150, 58, 90, "R1"), r2 = k.r(150, 148, 90, "R2");
+    k.w(r1.b, nb); k.jn(nb); k.w(nb, r2.a); k.gnd(150, 188);
+    var i = k.inp(24, 114), cin = k.c(76, 114);
+    k.w(i.a, cin.a); k.w(cin.b, nb);
+    var q = k.npn(234, 114);
+    k.w(nb, q.b);
+    var v2 = k.vcc(244, 18), rc = k.r(244, 58, 90);
+    k.w(rc.b, q.c); k.jn(q.c);
+    var t = k.outp(340, 94);
+    k.w(q.c, t.a);
+    k.w(q.e, [244, 160]); k.gnd(244, 170);
+    return k.svg();
   },
   knobs: [
     { k: "b", l: N_("動作点"), min: .1, max: .9, step: .01, def: .5, fmt: function (v) { return (v * 9).toFixed(2) + " V / 9V"; } },
@@ -2775,13 +3005,15 @@ CATALOG.push({
   key: "virtual ground vref single supply 4.5V bias",
   d: N_("オペアンプは本来プラスとマイナスの電源を欲しがりますが、エフェクターの電池は9Vが1本きり。そこで<b>電源の半分の電圧を作り、そこを「0V」ということにします</b>。ここが真ん中からずれると、片側の余裕だけが減ります。パスコンを付けないと電源のノイズが全部ここから入ります。"),
   sch: function () {
-    return SVG("0 0 380 180",
-      S.vcc(120, 16) + S.w(120, 26, 120, 36) + S.r(120, 62, 90, "R") + S.w(120, 88, 120, 100)
-      + S.jn(120, 100) + S.r(120, 128, 90, "R") + S.gnd(120, 172)
-      + S.w(120, 100, 170, 100) + S.jn(170, 100) + S.w(170, 100, 170, 128)
-      + S.c(170, 146, 90, "C") + S.gnd(170, 178)
-      + S.w(170, 100, 230, 100) + S.buf(268, 100, "") + S.w(302, 100, 330, 100)
-      + S.t(330, 90, "Vref", "middle", "k") + S.t(268, 140, T("4.5V を「0V」として使う"), "middle"));
+    var k = K("0 0 380 196"), n = [120, 100], nb = [180, 100];
+    var v = k.vcc(120, 20), r1 = k.r(120, 60, 90, "R"), r2 = k.r(120, 140, 90, "R");
+    k.w(v.a, r1.a); k.w(r1.b, n); k.jn(n); k.w(n, r2.a); k.gnd(120, 180);
+    var cc = k.c(180, 130, 90, "C");
+    k.w(n, nb); k.jn(nb); k.w(nb, cc.a); k.gnd(180, 160);
+    var b = k.buf(250, 100), t = k.outp(330, 100, "Vref");
+    k.w(nb, b.a); k.w(b.b, t.a);
+    k.t(224, 158, T("4.5V を「0V」として使う"), "middle");
+    return k.svg();
   },
   knobs: [
     { k: "vr", l: "Vref", min: 1.5, max: 7.5, step: .1, def: 4.5, fmt: function (v) { return v.toFixed(1) + " V"; } },
@@ -2812,12 +3044,16 @@ CATALOG.push({
   key: "decoupling bypass capacitor ripple hum power filter",
   d: N_("電源から回路へ入る直前に、抵抗1本とコンデンサ1個でローパスを作る。電源のリップルやノイズはここで削られます。<b>付け忘れると、ハムが直接信号に乗ります</b>。段ごとに分けて入れると、前段の電流変動が後段を揺らすのも止められます。"),
   sch: function () {
-    return SVG("0 0 380 150",
-      S.vcc(50, 30, "+9V") + S.w(50, 40, 50, 56) + S.w(50, 56, 66, 56) + S.r(102, 56, 0, "R")
-      + S.w(132, 56, 190, 56) + S.jn(190, 56) + S.w(190, 56, 260, 56)
-      + S.box(300, 56, 76, 42, T("回路"), "") + S.w(260, 56, 262, 56)
-      + S.w(190, 56, 190, 76) + S.c(190, 96, 90, "C") + S.gnd(190, 130)
-      + S.t(112, 100, T("ここで電源の揺れを落とす"), "middle", "k"));
+    var k = K("0 0 380 158"), n = [190, 56];
+    var v = k.vcc(72, 22, "+9V"), rr = k.r(130, 56, 0, "R");
+    k.w(v.a, [72, 56], rr.a);
+    k.w(rr.b, n); k.jn(n);
+    var bx = k.box(290, 56, 80, 44, T("回路"));
+    k.w(n, bx.l);
+    var cc = k.c(190, 92, 90, "C");
+    k.w(n, cc.a); k.gnd(190, 122);
+    k.t(112, 108, T("ここで電源の揺れを落とす"), "middle", "k");
+    return k.svg();
   },
   knobs: [
     { k: "cv", l: N_("容量"), min: 1, max: 470, step: 1, def: 47, fmt: function (v) { return v + " µF"; } },
@@ -2846,13 +3082,16 @@ CATALOG.push({
   key: "starve sag dying battery voltage bias gate splat",
   d: N_("電源電圧をわざと下げる。振れる幅が減るので<b>早く潰れ、同時にバイアスも一緒に下がって非対称になります</b>。電池が減ったファズの「ブツブツ切れる」音はこれ。単に音量が落ちるのではなく、潰れ方そのものが変わるのが要点です。"),
   sch: function () {
-    return SVG("0 0 380 150",
-      S.vcc(60, 20, "+9V") + S.w(60, 30, 60, 50) + S.w(60, 50, 76, 50)
-      + S.pot(116, 50, 0, "STARVE") + S.w(156, 50, 200, 50) + S.jn(200, 50)
-      + S.w(200, 50, 200, 66) + S.box(200, 96, 120, 46, T("回路"), "")
-      + S.w(200, 50, 260, 50) + S.jn(260, 50) + S.w(260, 50, 260, 66)
-      + S.c(300, 50, 0) + S.w(320, 50, 330, 50) + S.gnd(340, 52) + S.w(330, 50, 340, 50)
-      + S.t(300, 32, T("電圧が下がる"), "middle", "k") + S.gnd(200, 122));
+    var k = K("0 0 380 180"), n = [220, 50];
+    var v = k.vcc(60, 20, "+9V"), pv = k.pot(150, 50, 0, "STARVE");
+    k.w(v.a, [60, 50], pv.a);
+    k.w(pv.b, n); k.jn(n);
+    var bx = k.box(220, 112, 120, 46, T("回路"));
+    k.w(n, bx.t); k.gnd(220, 168);
+    var cc = k.c(320, 90, 90);
+    k.w(n, [320, 50], cc.a); k.gnd(320, 120);
+    k.t(292, 32, T("電圧が下がる"), "middle", "k");
+    return k.svg();
   },
   knobs: [
     { k: "v", l: N_("電源電圧"), min: 1.5, max: 9, step: .1, def: 4.5, fmt: function (v) { return v.toFixed(1) + " V"; } },
