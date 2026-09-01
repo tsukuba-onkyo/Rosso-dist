@@ -6,9 +6,9 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Circuit patterns - a catalogue of effects circuits | Rosso</title>
-<meta name="description" content="Voltage follower, negative feedback, diode clipping, BBD, chorus - every effects circuit is a handful of patterns combined. A catalogue of 38 of them, each with a figure you can drive with a knob.">
+<meta name="description" content="Voltage follower, negative feedback, diode clipping, BBD, chorus - every effects circuit is a handful of patterns combined. A catalogue of 50 of them, each with a figure you can drive with a knob.">
 <meta property="og:title" content="Circuit patterns - a catalogue of effects circuits | Rosso">
-<meta property="og:description" content="A catalogue of 38 circuit patterns for building your own effects, each with a figure you can drive with a knob.">
+<meta property="og:description" content="A catalogue of 50 circuit patterns for building your own effects, each with a figure you can drive with a knob.">
 <meta property="og:type" content="article">
 
 <!-- ============================================================
@@ -33,7 +33,7 @@
 <meta property="og:image:alt" content="Rosso - draw the schematic, hear it immediately">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Circuit patterns - a catalogue of effects circuits | Rosso">
-<meta name="twitter:description" content="A catalogue of 38 circuit patterns for building your own effects, each with a figure you can drive with a knob.">
+<meta name="twitter:description" content="A catalogue of 50 circuit patterns for building your own effects, each with a figure you can drive with a knob.">
 <meta name="twitter:image" content="https://rosso.tsukubaonkyo.com/ogp-en.png">
 <link rel="icon" href="../icon.png">
 <style>
@@ -444,10 +444,10 @@ var SITE_EN = {
     "Report a bug",
   "© 2026 筑波音響":
     "© 2026 Tsukuba Onkyo",
-  "ボルテージフォロワ、負帰還、ダイオードクリップ、BBD、コーラス — エフェクターの回路はいくつかの「型」の組み合わせでできています。38の型を、つまみで動かせる図と一緒に並べたカタログ。":
-    "Voltage follower, negative feedback, diode clipping, BBD, chorus - every effects circuit is a handful of patterns combined. A catalogue of 38 of them, each with a figure you can drive with a knob.",
-  "エフェクターを作るための38の回路パターンを、つまみで動かせる図と一緒に並べたカタログ。":
-    "A catalogue of 38 circuit patterns for building your own effects, each with a figure you can drive with a knob.",
+  "ボルテージフォロワ、負帰還、ダイオードクリップ、BBD、コーラス — エフェクターの回路はいくつかの「型」の組み合わせでできています。50の型を、つまみで動かせる図と一緒に並べたカタログ。":
+    "Voltage follower, negative feedback, diode clipping, BBD, chorus - every effects circuit is a handful of patterns combined. A catalogue of 50 of them, each with a figure you can drive with a knob.",
+  "エフェクターを作るための50の回路パターンを、つまみで動かせる図と一緒に並べたカタログ。":
+    "A catalogue of 50 circuit patterns for building your own effects, each with a figure you can drive with a knob.",
   "Rosso — 回路図を描く。その場で音が鳴る。":
     "Rosso - draw the schematic, hear it immediately",
 
@@ -1020,6 +1020,207 @@ var SITE_EN = {
   "電圧が下がる":
     "voltage drops",  " ・ ":
     " \u00b7 ",
+  /* ---- 真空管・アンプ ---- */
+  "真空管・アンプ":
+    "Tubes & amps",
+  "アンプ系":
+    "Amps",
+  "球で組むときだけ出てくる話。高圧の電源、動作点、位相反転、そして安全。":
+    "The things that only come up when you build with valves: high-voltage supplies, operating points, phase inversion - and safety.",
+  "プレート負荷線":
+    "Plate load line",
+  "プレート抵抗を流れる電流が、そのままプレート電圧を下げます。<code>Va = B+ − Ia·Rp</code> という直線と、球のプレート特性が交わるところが動作点。<b>ゲインも、上下どちらに先に潰れるかも、この一点で決まります</b>。曲線は 12AX7 の Koren モデル — アプリ本体が解いているのと同じ式です。":
+    "The current through the plate resistor is what pulls the plate voltage down. The straight line <code>Va = B+ − Ia·Rp</code> crosses the valve's plate curves, and where they meet is the operating point. <b>The gain, and which half clips first, are both decided at that one point.</b> The curves here are the Koren model for a 12AX7 - the same equations the app itself solves.",
+  "プレート抵抗":
+    "Plate resistor",
+  "プレート特性 と 負荷線":
+    "Plate curves and load line",
+  "プリセット「12AX7 真空管プリアンプ」でプレート抵抗を触ると、この交点が動きます":
+    "Move the plate resistor in the preset \"12AX7 tube preamp\" and this crossing moves with it",
+  "カソードバイパスコンデンサ":
+    "Cathode bypass capacitor",
+  "カソード抵抗に並列に入れる1個。無いとカソードの電位が信号で揺れて<b>自分で負帰還がかかり</b>、ゲインが <code>1/(1+gm·Rk)</code> に落ちます。容量は「どの周波数から本来のゲインに戻るか」を決める。Fender の 25µF は下まで全部戻し、Marshall の 0.68µF は低音だけ帰還を残して締める — つまみではなく<b>この1個</b>が性格を決めています。":
+    "One capacitor across the cathode resistor. Without it the cathode moves with the signal and <b>the stage applies negative feedback to itself</b>, dropping the gain to <code>1/(1+gm·Rk)</code>. The value decides from which frequency the full gain comes back. Fender's 25µF returns all of it; Marshall's 0.68µF leaves the feedback in place for the bass and tightens it - <b>that single part</b>, not a knob, is what sets the character.",
+  "Ck の容量":
+    "Ck value",
+  "カソード抵抗":
+    "Cathode resistor",
+  "バイパスの効き":
+    "How much the bypass does",
+  "低域 ":
+    "low end ",
+  "戻り ":
+    "back by ",
+  "プリセット「Marshall 1959風 プリ (12AX7×3 + トーンスタック)」の Ck を 0.68µF と 25µF で聴き比べてください":
+    "Compare Ck at 0.68µF and 25µF in the preset \"Marshall 1959-style preamp (12AX7×3 + tone stack)\"",
+  "グリッドストッパとブロッキング歪み":
+    "Grid stopper and blocking distortion",
+  "グリッドに直列に入れる抵抗。寄生発振を止めるのが本来の役目ですが、もう一つ大事な仕事があります。強く弾いてグリッドがプラスに振れると<b>グリッドが電流を引き、カップリングコンデンサが充電されます</b>。抵抗が無いと一気に充電され、抜けるまでの数十msだけ球が遮断されて音が途切れる — 「弾いた直後にブツッと詰まる」の正体です。":
+    "A resistor in series with the grid. Stopping parasitic oscillation is its official job, but it has another one. Hit the strings hard enough for the grid to swing positive and <b>the grid draws current, charging the coupling capacitor</b>. With no resistor it charges all at once, and until it bleeds away the valve is cut off for tens of milliseconds - that is the \"blocking\" that chokes a note right after you hit it.",
+  "ここが無いと一気に充電される":
+    "without this it charges all at once",
+  "グリッドストッパ":
+    "Grid stopper",
+  "入力 / 張り付いたバイアス / 出力":
+    "Input / stuck bias / output",
+  "詰まり ":
+    "choked for ",
+  "詰まらない":
+    "does not choke",
+  "「真空管(プリ)」の 12AX7 のグリッドに 68kΩ を1本足すだけです":
+    "One 68kΩ resistor on the grid of a 12AX7 from Preamp tubes",
+  "カソードフォロワ":
+    "Cathode follower",
+  "プレートを直接 B+ につなぎ、出力をカソードから取る形。ゲインは1弱ですが出力インピーダンスが <code>1/gm</code> 程度まで下がるので、<b>損失の大きいトーンスタックを鈍らせずに駆動できます</b>。Marshall の2段目後半がこれ。振幅が大きいとグリッドが電流を引いて上側だけ独特に潰れ、それも音の一部になっています。":
+    "Plate straight to B+, output taken from the cathode. The gain is just under one, but the output impedance drops to around <code>1/gm</code>, so <b>it can drive a lossy tone stack without dulling it</b>. It is the second half of Marshall's second stage. At large signals the grid draws current and only the top flattens, in a way that has become part of the sound.",
+  "次段の負荷":
+    "Next stage load",
+  "直結との差 と 伝達曲線":
+    "Loss vs straight in, and transfer curve",
+  "出力Z 約 ":
+    "output Z about ",
+  "プリセット「Marshall 1959風 プリ (12AX7×3 + トーンスタック)」のトーンスタックの手前がこれです":
+    "It sits just before the tone stack in the preset \"Marshall 1959-style preamp (12AX7×3 + tone stack)\"",
+  "位相反転 (ロングテールペア)":
+    "Phase inverter (long-tailed pair)",
+  "プッシュプルの出力段には逆相の2つの信号が要ります。2本の三極管を共通のカソード抵抗(テール)で結ぶと、片方に入れた信号がテールを通じてもう片方に逆相で現れる。<b>テールが小さいほど2本の振幅が揃わなくなり</b>、その差が偶数次として残ります。Marshall がプレート抵抗を 100k と 82k で非対称にしているのは、この差を打ち消すためです。":
+    "A push-pull output stage needs two signals in opposite phase. Tie two triodes together through a shared cathode resistor - the tail - and a signal into one appears inverted at the other. <b>The smaller the tail, the less the two amplitudes match</b>, and that mismatch survives as even harmonics. Marshall's asymmetric 100k / 82k plate resistors exist to cancel it.",
+  "テール抵抗":
+    "Tail resistor",
+  "プレート抵抗の比":
+    "Plate resistor ratio",
+  "逆相の2出力":
+    "The two out-of-phase outputs",
+  "振幅差 ":
+    "amplitude error ",
+  "「真空管(プリ)」の 12AT7 が位相反転の定番。テール抵抗を 10kΩ から 100kΩ に変えてみてください":
+    "A 12AT7 from Preamp tubes is the usual inverter. Try moving the tail from 10kΩ to 100kΩ",
+  "パワー管のバイアス":
+    "Power tube bias",
+  "プッシュプルは2本で波の上下を分担します。バイアスが浅い(冷たい)と、ゼロ交差の受け渡しで<b>どちらも導通しない隙間</b>ができ、小音量ほど耳につくクロスオーバー歪みが出る。深く(熱く)すれば隙間は消えてA級寄りになりますが、プレート損失が増えて球の寿命を削ります。<b>音と寿命の取り合いです</b>。":
+    "Push-pull splits the two halves of the wave between two valves. Bias it cold and there is <b>a gap where neither one conducts</b> at the handover, giving crossover distortion that is most obvious when you play quietly. Bias it hot and the gap closes and it moves towards class A - but the plate dissipation climbs and eats into the valve's life. <b>It is a trade between tone and lifespan.</b>",
+  "アイドル電流":
+    "Idle current",
+  "出力レベル":
+    "Output level",
+  "伝達曲線 と 波形":
+    "Transfer curve and waveform",
+  "受け渡しに隙間がある":
+    "there is a gap at the handover",
+  "奇数次 ":
+    "odd harmonics ",
+  "「真空管(パワー)」の EL34 / 6L6GC を2本。バイアス電圧を変えるとこの折れ方が動きます":
+    "Two EL34s or 6L6GCs from Power tubes. Changing the bias voltage moves this kink",
+  "出力トランスとインピーダンス整合":
+    "Output transformer and impedance matching",
+  "パワー管が欲しい負荷は数kΩ、スピーカーは8Ω。巻数比の<b>2乗</b>で変換するのが出力トランスです。<code>Z1 = n²·Z2</code> なので、<b>8Ωのタップに16Ωを繋ぐと球から見た負荷は2倍になります</b>。低域は1次インダクタンスで、高域は漏れインダクタンスで落ちる — 帯域はトランスが決めています。":
+    "A power valve wants a load of several kΩ; a speaker is 8Ω. The output transformer converts by the <b>square</b> of the turns ratio: <code>Z1 = n²·Z2</code>. So <b>a 16Ω cabinet on the 8Ω tap doubles the load the valve sees</b>. The low end is set by the primary inductance and the top by the leakage inductance - the transformer decides the bandwidth.",
+  "パワー管へ":
+    "to power tubes",
+  "巻数比の2乗で効く":
+    "the turns ratio counts squared",
+  "使うタップ":
+    "Tap used",
+  "繋いだスピーカー":
+    "Speaker connected",
+  "1次インダクタンス":
+    "Primary inductance",
+  "トランスが決める帯域":
+    "The bandwidth the transformer sets",
+  "球から見た負荷 ":
+    "load seen by the valve ",
+  "「トランス」に OT 8k:8Ω などがあります。「スピーカー・負荷」の 16Ω を繋ぐと負荷が2倍になります":
+    "Transformers has OT 8k:8Ω and others. Connect the 16Ω item from Speakers / loads and the load doubles",
+  "プレゼンス":
+    "Presence",
+  "出力トランスから位相反転段へ戻している負帰還の、帰り道にコンデンサを1本入れて高域だけ GND へ逃がす。<b>高域だけ帰還が減る = 高域だけゲインが上がる</b>。トーンつまみが「削る」のに対して、これは「戻す量を減らす」ので、上げると高域の余裕も一緒に減ってざらつきます。":
+    "One capacitor in the return path of the negative feedback that runs from the output transformer back to the phase inverter, shunting only the highs to ground. <b>Less feedback at high frequencies means more gain at high frequencies.</b> A tone knob subtracts; this one returns less - so turning it up also eats the headroom up there and it starts to grit.",
+  "位相反転":
+    "Phase inverter",
+  "出力段":
+    "Output stage",
+  "高域だけ帰還を逃がす":
+    "only the highs escape the feedback",
+  "帰還を減らした分だけ上がる":
+    "It rises by exactly what the feedback lost",
+  "高域 ":
+    "highs ",
+  "出力トランスの2次側から位相反転段のカソードへ抵抗1本。そこにコンデンサとポットを足すだけです":
+    "One resistor from the transformer secondary to the phase inverter cathode, then a capacitor and a pot on it",
+  "整流管のサグ":
+    "Rectifier sag",
+  "整流管は内部抵抗が大きく、電流を引くほど B+ が沈みます。強く弾いた瞬間に電圧が落ち、少し遅れて戻る — <b>電源が勝手にコンプレッサーになる</b>。シリコンダイオードはほとんど沈まないので、同じ回路でも張りが出ます。Rosso の部品DBでは GZ34 と 5Y3GT でこの沈み方が違う値になっています。":
+    "A rectifier valve has real internal resistance, so B+ sinks as you draw more current. Hit a chord and the voltage drops, then comes back a moment later - <b>the power supply turns itself into a compressor</b>. Silicon diodes barely sink at all, so the same circuit sounds firmer. Rosso's part database gives GZ34 and 5Y3GT different amounts of this.",
+  "整流の内部抵抗":
+    "Rectifier internal resistance",
+  "リザーバ容量":
+    "Reservoir value",
+  "弾いたときの電流":
+    "Current when you dig in",
+  "引いた電流 と 沈む B+":
+    "Current drawn, and B+ sinking",
+  "沈み込み ":
+    "sag ",
+  "「真空管(整流)」の GZ34 と 5Y3GT を差し替えると、この沈み方が変わります":
+    "Swap GZ34 for 5Y3GT in Rectifier tubes and this sag changes",
+  "B+ ラダー (段間デカップリング)":
+    "B+ ladder (inter-stage decoupling)",
+  "多段のアンプは B+ を段ごとに抵抗とコンデンサで分けます。奥の段(初段)ほど深く濾す。分けないと、パワー段が電流を引いた変動が初段まで回り込み、低い周波数で勝手に揺れ始めます(モーターボーティング)。<b>目的は段どうしを切り離すことで、リップル除去はその副産物</b>です。":
+    "A multi-stage amp splits B+ stage by stage with a resistor and a capacitor, filtering hardest at the far end (the first stage). Without it, the current the output stage draws finds its way back to the input and the whole thing starts swinging at a low frequency - motorboating. <b>The point is to isolate the stages from each other; ripple rejection is the side effect.</b>",
+  "第":
+    "to stage ",
+  "段へ":
+    "",
+  "段間の抵抗":
+    "Resistor between stages",
+  "各段の容量":
+    "Capacitor per stage",
+  "入口":
+    "in",
+  "100Hz のリップルが段ごとに減る":
+    "100Hz ripple falling stage by stage",
+  "初段で ":
+    "at the first stage ",
+  "「基本・電源」の B+ 300V から、抵抗と電解コンデンサを3組ぶら下げるだけです":
+    "Hang three resistor-and-electrolytic pairs off B+ 300V from Basics / power",
+  "ヒーターとハム":
+    "Heater wiring and hum",
+  "ヒーターは 6.3V の交流です。初段のグリッドに数 mV 漏れれば、そのままハムになります。100Ω の抵抗で中点を作って対称にし(ハムバランサ)、カソードより高い電位へ持ち上げると漏れが減る。撚る。直流点火なら消えますが、その分の電源が要ります。<b>この図は効き方の模式です</b> — 実際の量は配線の引き回しで決まります。":
+    "The heater runs on 6.3V AC. A few millivolts leaking into the first grid becomes hum. Make an artificial centre with two 100Ω resistors so it is symmetrical (a hum balancer), lift that centre above the cathode potential to reduce the leak, and twist the pair. DC heaters remove it altogether, at the cost of another supply. <b>This figure only shows how the controls behave</b> - the real amount depends on how you dress the wiring.",
+  "ヒーターへ":
+    "to the heaters",
+  "中点を持ち上げる":
+    "lift the centre point",
+  "バランスのずれ":
+    "Balance error",
+  "エレベート電圧":
+    "Elevation voltage",
+  "直流点火":
+    "DC heaters",
+  "ハム ":
+    "hum ",
+  " dB (最悪時比)":
+    " dB (vs worst case)",
+  "「トランス」のヒーター巻線と「受動部品」の 100Ω を2本。中点を B+ 側から持ち上げます":
+    "A heater winding from Transformers and two 100Ω from Passive parts. Lift the centre from the B+ side",
+  "ブリーダー抵抗と放電":
+    "Bleeder resistor and discharge",
+  "電源を切っても、リザーバのコンデンサには数百ボルトが残ります。<b>触れば死にます</b>。並列に高抵抗を1本入れておけば <code>τ = R×C</code> で自然に抜けていく。値は「放電の速さ」と「常時捨てる電流」の取り合いです。<b>作業前は必ずテスターで実測すること</b> — 抵抗が外れていれば、いつまでも残ります。":
+    "Switching off does not empty the reservoir capacitors - hundreds of volts stay in them. <b>Touch that and it kills you.</b> A high-value resistor in parallel drains it on its own with <code>τ = R×C</code>. The value is a trade between how fast it drains and how much current you throw away continuously. <b>Always measure with a meter before you work</b> - if that resistor has failed open, the charge stays there forever.",
+  "ブリーダー":
+    "Bleeder",
+  "ブリーダー抵抗":
+    "Bleeder resistor",
+  "総容量":
+    "Total capacitance",
+  "切る前の電圧":
+    "Voltage before switch-off",
+  "電源を切ったあとの残り電圧":
+    "Voltage left after switching off",
+  "50V を切るまで ":
+    "down to 50V in ",
+  "「基本・電源」の B+ 300V に電解コンデンサと 220kΩ を並列に置いて、放電を見てください":
+    "Put an electrolytic and a 220kΩ in parallel on B+ 300V from Basics / power and watch it drain",
 };
 
 var SITE_STATIC_LANG = "en";
@@ -1350,6 +1551,55 @@ var S = (function () {
         + '<path d="M -9 11 L 9 11 L 4 16 L -4 16 Z" class="fill"/><line x1="0" y1="16" x2="0" y2="24"/>',
         l, 0, -24);
     },
+    /* 左を向いた出力端子 (回路の左側から取り出すとき) */
+    outpl: function (x, y, l) {
+      return g(x, y, 0, '<line x1="20" y1="0" x2="1" y2="0"/><circle cx="-8" cy="0" r="9"/>'
+        + '<path d="M -3 -4 L -9 0 L -3 4 Z" class="fill"/>', l || "OUT", -8, -14);
+    },
+    /* 名前付きの中継端子。「ここから次段へ」を示すのに使う */
+    term: function (x, y, l) {
+      return g(x, y, 0, '<circle cx="0" cy="0" r="5"/><line x1="5" y1="0" x2="20" y2="0"/>', l, 0, -12);
+    },
+    /* センタータップの無いトランス */
+    xfmr2: function (x, y, l) {
+      return g(x, y, 0,
+        '<path d="M -10 -30 A 5 5 0 0 1 -10 -20 A 5 5 0 0 1 -10 -10 A 5 5 0 0 1 -10 0 A 5 5 0 0 1 -10 10"/>'
+        + '<path d="M 10 -30 A 5 5 0 0 0 10 -20 A 5 5 0 0 0 10 -10 A 5 5 0 0 0 10 0 A 5 5 0 0 0 10 10"/>'
+        + '<line x1="-2" y1="-34" x2="-2" y2="14"/><line x1="2" y1="-34" x2="2" y2="14"/>'
+        + '<line x1="-10" y1="-30" x2="-28" y2="-30"/><line x1="-10" y1="10" x2="-28" y2="10"/>'
+        + '<line x1="10" y1="-30" x2="28" y2="-30"/><line x1="10" y1="10" x2="28" y2="10"/>', l, 0, -40);
+    },
+    /* 整流管 (両波)。プレート2枚 p1/p2 (上)、フィラメント兼カソード k (下) */
+    rectube: function (x, y, l) {
+      return g(x, y, 0, '<circle cx="0" cy="0" r="17"/>'
+        + '<line x1="-14" y1="-8" x2="-4" y2="-8"/><line x1="-9" y1="-8" x2="-9" y2="-20"/>'
+        + '<line x1="4" y1="-8" x2="14" y2="-8"/><line x1="9" y1="-8" x2="9" y2="-20"/>'
+        + '<path d="M -8 5 L 0 13 L 8 5"/><line x1="0" y1="13" x2="0" y2="24"/>', l, 0, -27);
+    },
+    /* 五極管 / ビーム管。p (上) g1 (左) g2 (右) k (下) */
+    pent: function (x, y, l) {
+      return g(x, y, 0, '<circle cx="0" cy="0" r="19"/>'
+        + '<line x1="-11" y1="-11" x2="11" y2="-11"/><line x1="0" y1="-11" x2="0" y2="-22"/>'
+        + '<path d="M -12 -4 L -8 -4 M -4 -4 L 0 -4 M 4 -4 L 8 -4"/><line x1="12" y1="-4" x2="22" y2="-4"/>'
+        + '<path d="M -12 3 L -8 3 M -4 3 L 0 3 M 4 3 L 8 3"/><line x1="-22" y1="3" x2="-12" y2="3"/>'
+        + '<path d="M -9 11 L 9 11 L 4 17 L -4 17 Z" class="fill"/><line x1="0" y1="17" x2="0" y2="26"/>', l, 0, -28);
+    },
+    /* スピーカー。端子は左に2つ */
+    spk: function (x, y, l) {
+      return g(x, y, 0, '<rect x="-7" y="-9" width="8" height="18" rx="1"/>'
+        + '<path d="M 1 -9 L 14 -19 L 14 19 L 1 9 Z"/>'
+        + '<line x1="-22" y1="-5" x2="-7" y2="-5"/><line x1="-22" y1="5" x2="-7" y2="5"/>', l, 0, -26);
+    },
+    /* 出力トランス。1次側にセンタータップ (p1 / ct / p2 が左に3本並ぶ) */
+    xfmrp: function (x, y, l) {
+      return g(x, y, 0,
+        '<path d="M -10 -30 A 5 5 0 0 1 -10 -20 A 5 5 0 0 1 -10 -10 A 5 5 0 0 1 -10 0 A 5 5 0 0 1 -10 10"/>'
+        + '<path d="M 10 -30 A 5 5 0 0 0 10 -20 A 5 5 0 0 0 10 -10 A 5 5 0 0 0 10 0 A 5 5 0 0 0 10 10"/>'
+        + '<line x1="-2" y1="-34" x2="-2" y2="14"/><line x1="2" y1="-34" x2="2" y2="14"/>'
+        + '<line x1="-10" y1="-30" x2="-28" y2="-30"/><line x1="-10" y1="-10" x2="-28" y2="-10"/>'
+        + '<line x1="-10" y1="10" x2="-28" y2="10"/>'
+        + '<line x1="10" y1="-30" x2="28" y2="-30"/><line x1="10" y1="10" x2="28" y2="10"/>', l, 0, -40);
+    },
     /* トランス。1次 p1/p2 (左)、2次 s1/s2 (右)、センタータップ ct (下) */
     xfmr: function (x, y, l) {
       return g(x, y, 0,
@@ -1430,6 +1680,13 @@ function K(vb) {
     fet: function (x, y, l)     { return put(S.fet(x, y, l), x, y, 0, { g: [-20, 0], d: [10, -20], s: [10, 20] }); },
     tri: function (x, y, l)     { return put(S.tri(x, y, l), x, y, 0, { g: [-20, 2], p: [0, -20], k: [0, 24] }); },
     xfmr:function (x, y, l)     { return put(S.xfmr(x, y, l), x, y, 0, { p1: [-28, -30], p2: [-28, 10], s1: [28, -30], s2: [28, 10], ct: [16, 34] }); },
+    xfmrp:function (x, y, l)    { return put(S.xfmrp(x, y, l), x, y, 0, { p1: [-28, -30], ct: [-28, -10], p2: [-28, 10], s1: [28, -30], s2: [28, 10] }); },
+    rectube:function (x, y, l)  { return put(S.rectube(x, y, l), x, y, 0, { p1: [-9, -20], p2: [9, -20], k: [0, 24] }); },
+    outpl:function (x, y, l)    { return put(S.outpl(x, y, l), x, y, 0, { a: [20, 0] }); },
+    term:function (x, y, l)     { return put(S.term(x, y, l), x, y, 0, { a: [20, 0] }); },
+    xfmr2:function (x, y, l)    { return put(S.xfmr2(x, y, l), x, y, 0, { p1: [-28, -30], p2: [-28, 10], s1: [28, -30], s2: [28, 10] }); },
+    pent:function (x, y, l)     { return put(S.pent(x, y, l), x, y, 0, { p: [0, -22], g1: [-22, 3], g2: [22, -4], k: [0, 26] }); },
+    spk: function (x, y, l)     { return put(S.spk(x, y, l), x, y, 0, { a: [-22, -5], b: [-22, 5] }); },
     box: function (x, y, w, h, l, sub) {
       return put(S.box(x, y, w, h, l, sub), x, y, 0, { l: [-w / 2, 0], r: [w / 2, 0], t: [0, -h / 2], b: [0, h / 2] });
     },
@@ -1640,6 +1897,31 @@ function lp1(src, fc) {
   for (var i = 0; i < src.length; i++) { y += a * (src[i] - y); o[i] = y; }
   return o;
 }
+/* --- 三極管 (Koren モデル) ---
+ * 係数はアプリ本体の部品DB (js/parts.js) の 12AX7 と**同じ値**。
+ * プレート負荷線のカードはこの式をそのまま二分法で解いているので、
+ * 出てくる動作点は近似ではなくモデルの答えそのもの。 */
+var T12AX7 = { mu: 100, ex: 1.4, kg1: 1060, kp: 600, kvb: 300 };
+function korenIa(va, vg, T) {
+  var t = T || T12AX7;
+  if (va <= 0) return 0;
+  var e = clamp(t.kp * (1 / t.mu + vg / Math.sqrt(t.kvb + va * va)), -60, 60);
+  var e1 = (va / t.kp) * Math.log(1 + Math.exp(e));
+  return e1 <= 0 ? 0 : Math.pow(e1, t.ex) / t.kg1;      /* アンペア */
+}
+/* 負荷線 Va = B+ − Ia·Rp との交点を二分法で解く */
+function korenOp(bp, rp, vg) {
+  var lo = 0, hi = bp;
+  for (var i = 0; i < 48; i++) {
+    var m = (lo + hi) / 2;
+    if (bp - korenIa(m, vg) * rp > m) lo = m; else hi = m;
+  }
+  var va = (lo + hi) / 2;
+  return { va: va, ia: korenIa(va, vg) };
+}
+/* 12AX7 のデータシート値 (Va=250V / Ia=1.2mA のとき gm = 1.6 mA/V) */
+var GM12AX7 = 1.6e-3;
+
 /* 複素数 (フェイザーのオールパスに使う) */
 function cmul(a, b) { return [a[0] * b[0] - a[1] * b[1], a[0] * b[1] + a[1] * b[0]]; }
 function cdiv(a, b) { var d = b[0] * b[0] + b[1] * b[1]; return [(a[0] * b[0] + a[1] * b[1]) / d, (a[1] * b[0] - a[0] * b[1]) / d]; }
@@ -1684,7 +1966,9 @@ var CATS = [
   { id: "dyn",  n: N_("ダイナミクス"),             s: N_("コンプ系"),        c: "#ffd166",
     d: N_("音量そのものを信号として扱い、増幅率を音量で動かす。") },
   { id: "pwr",  n: N_("電源・バイアス"),           s: N_("土台系"),          c: "#ff4a5e",
-    d: N_("動作点と電源。ここが決まっていないと、上の型は全部おかしくなる。") }
+    d: N_("動作点と電源。ここが決まっていないと、上の型は全部おかしくなる。") },
+  { id: "amp",  n: N_("真空管・アンプ"),           s: N_("アンプ系"),        c: "#ff6ec7",
+    d: N_("球で組むときだけ出てくる話。高圧の電源、動作点、位相反転、そして安全。") }
 ];
 
 var CATALOG = [];
@@ -2139,45 +2423,6 @@ CATALOG.push({
     return { l: T("波形 と 倍音"), r: Math.abs(p.b) > .4 ? T("片側しか出ていない") : T("上下とも潰れている") };
   },
   tryIt: N_("プリセット「ファズフェイス (Ge AC127 ×2)」。バイアス抵抗を触ると、この非対称がそのまま動きます")
-});
-
-CATALOG.push({
-  id: "tube", cat: "dist", name: N_("真空管のソフトクリップ"), sub: "Triode overdrive",
-  key: "12AX7 triode tube preamp grid conduction",
-  d: N_("三極管のプレート電流は格子電圧の <code>3/2</code> 乗に比例します。この曲がった特性そのものが歪みで、<b>上下で潰れ方が違います</b>。振幅が大きくなると格子が電流を引き始めて上側が急に頭打ちになり、下側は電流が0になって伸び切る。偶数次が多いのはこの非対称のためです。"),
-  sch: function () {
-    var k = K("0 0 380 262"), nOut = [180, 92], ng = [120, 114], nk = [180, 172];
-    var v = k.vcc(180, 18), rp = k.r(180, 56, 90, "Rp"), q = k.tri(180, 112);
-    k.w(v.a, rp.a); k.w(rp.b, nOut); k.jn(nOut); k.w(nOut, q.p);
-    var cout = k.c(256, 92), t = k.outp(336, 92);
-    k.w(nOut, cout.a); k.w(cout.b, t.a);
-    var i = k.inp(22, 114), cin = k.c(66, 114), rg = k.r(120, 160, 90, "Rg");
-    k.w(i.a, cin.a); k.w(cin.b, ng); k.jn(ng); k.w(ng, q.g); k.w(ng, rg.a);
-    k.gnd(120, 200);
-    var rk = k.r(180, 202, 90, "Rk"), ck = k.c(250, 192, 90);
-    k.w(q.k, nk); k.jn(nk); k.w(nk, rk.a); k.gnd(180, 242);
-    k.w(nk, ck.a); k.gnd(250, 222);
-    return k.svg();
-  },
-  knobs: [
-    { k: "dr", l: N_("入力レベル"), min: .2, max: 3, step: .05, def: 1.2, fmt: function (v) { return v.toFixed(2) + " Vp"; } },
-    { k: "bias", l: N_("格子バイアス"), min: -2.6, max: -.6, step: .05, def: -1.5, fmt: function (v) { return v.toFixed(2) + " V"; } }
-  ],
-  /* Child–Langmuir の 3/2 乗則。遮断は vg < -3V、格子電流は vg > -0.2V で頭打ち */
-  f: function (p) {
-    var A = p.dr, vb = p.bias;
-    var ip = function (vg) { var e = Math.min(vg, -0.2) + 3; return e > 0 ? Math.pow(e, 1.5) : 0; };
-    var iq = ip(vb), sc = Math.max(ip(-0.2) - iq, iq) * 1.05 + .01;
-    return function (x) { return -(ip(vb + x * A) - iq) / sc; };
-  },
-  viz: function (V, p) {
-    var r = twoUp(V, 12, 14, 14), f = this.f(p);
-    grid(V, r[0], 4, 4); zero(V, r[0]); xy(V, r[0], f, p.c);
-    var h = harm(f, 10);
-    bars(V, r[1], h, p.c);
-    return { l: T("伝達曲線 と 倍音"), r: T("2次 / 3次 = ") + (h[1] / (h[2] || 1e-9)).toFixed(2) };
-  },
-  tryIt: N_("プリセット「12AX7 真空管プリアンプ」と「Marshall 1959風 プリ」。カソード抵抗でバイアスが動きます")
 });
 
 CATALOG.push({
@@ -3116,6 +3361,583 @@ CATALOG.push({
   tryIt: N_("「電源・バッテリー」の電圧を 9V から 4.5V に変えて、同じ回路を鳴らし比べてください")
 });
 
+/* ---------------------------------------------------------------
+ * 真空管・アンプ
+ * 三極管の曲線は Koren モデル (係数は部品DBの 12AX7 と同じ)。
+ * gm はデータシート値 1.6 mA/V。数字を作っていない箇所は説明にそう書く。
+ * --------------------------------------------------------------- */
+CATALOG.push({
+  id: "tube", cat: "amp", name: N_("真空管のソフトクリップ"), sub: "Triode overdrive",
+  key: "12AX7 triode tube preamp grid conduction",
+  d: N_("三極管のプレート電流は格子電圧の <code>3/2</code> 乗に比例します。この曲がった特性そのものが歪みで、<b>上下で潰れ方が違います</b>。振幅が大きくなると格子が電流を引き始めて上側が急に頭打ちになり、下側は電流が0になって伸び切る。偶数次が多いのはこの非対称のためです。"),
+  sch: function () {
+    var k = K("0 0 380 262"), nOut = [180, 92], ng = [120, 114], nk = [180, 172];
+    var v = k.vcc(180, 18), rp = k.r(180, 56, 90, "Rp"), q = k.tri(180, 112);
+    k.w(v.a, rp.a); k.w(rp.b, nOut); k.jn(nOut); k.w(nOut, q.p);
+    var cout = k.c(256, 92), t = k.outp(336, 92);
+    k.w(nOut, cout.a); k.w(cout.b, t.a);
+    var i = k.inp(22, 114), cin = k.c(66, 114), rg = k.r(120, 160, 90, "Rg");
+    k.w(i.a, cin.a); k.w(cin.b, ng); k.jn(ng); k.w(ng, q.g); k.w(ng, rg.a);
+    k.gnd(120, 200);
+    var rk = k.r(180, 202, 90, "Rk"), ck = k.c(250, 192, 90);
+    k.w(q.k, nk); k.jn(nk); k.w(nk, rk.a); k.gnd(180, 242);
+    k.w(nk, ck.a); k.gnd(250, 222);
+    return k.svg();
+  },
+  knobs: [
+    { k: "dr", l: N_("入力レベル"), min: .2, max: 3, step: .05, def: 1.2, fmt: function (v) { return v.toFixed(2) + " Vp"; } },
+    { k: "bias", l: N_("格子バイアス"), min: -2.6, max: -.6, step: .05, def: -1.5, fmt: function (v) { return v.toFixed(2) + " V"; } }
+  ],
+  /* Child–Langmuir の 3/2 乗則。遮断は vg < -3V、格子電流は vg > -0.2V で頭打ち */
+  f: function (p) {
+    var A = p.dr, vb = p.bias;
+    var ip = function (vg) { var e = Math.min(vg, -0.2) + 3; return e > 0 ? Math.pow(e, 1.5) : 0; };
+    var iq = ip(vb), sc = Math.max(ip(-0.2) - iq, iq) * 1.05 + .01;
+    return function (x) { return -(ip(vb + x * A) - iq) / sc; };
+  },
+  viz: function (V, p) {
+    var r = twoUp(V, 12, 14, 14), f = this.f(p);
+    grid(V, r[0], 4, 4); zero(V, r[0]); xy(V, r[0], f, p.c);
+    var h = harm(f, 10);
+    bars(V, r[1], h, p.c);
+    return { l: T("伝達曲線 と 倍音"), r: T("2次 / 3次 = ") + (h[1] / (h[2] || 1e-9)).toFixed(2) };
+  },
+  tryIt: N_("プリセット「12AX7 真空管プリアンプ」と「Marshall 1959風 プリ」。カソード抵抗でバイアスが動きます")
+});
+CATALOG.push({
+  id: "loadline", cat: "amp", name: N_("プレート負荷線"), sub: "Plate load line",
+  key: "load line operating point 12AX7 plate curves bias",
+  d: N_("プレート抵抗を流れる電流が、そのままプレート電圧を下げます。<code>Va = B+ − Ia·Rp</code> という直線と、球のプレート特性が交わるところが動作点。<b>ゲインも、上下どちらに先に潰れるかも、この一点で決まります</b>。曲線は 12AX7 の Koren モデル — アプリ本体が解いているのと同じ式です。"),
+  sch: function () {
+    var k = K("0 0 380 262"), nOut = [180, 92], ng = [120, 114], nk = [180, 172];
+    var v = k.vcc(180, 18, "B+"), rp = k.r(180, 56, 90, "Rp"), q = k.tri(180, 112);
+    k.w(v.a, rp.a); k.w(rp.b, nOut); k.jn(nOut); k.w(nOut, q.p);
+    var t = k.outp(320, 92);
+    k.w(nOut, t.a);
+    var i = k.inp(22, 114), cin = k.c(66, 114), rg = k.r(120, 160, 90, "Rg");
+    k.w(i.a, cin.a); k.w(cin.b, ng); k.jn(ng); k.w(ng, q.g); k.w(ng, rg.a);
+    k.gnd(120, 200);
+    var rk = k.r(180, 202, 90, "Rk");
+    k.w(q.k, nk); k.w(nk, rk.a); k.gnd(180, 242);
+    return k.svg();
+  },
+  knobs: [
+    { k: "bp", l: "B+", min: 150, max: 400, step: 5, def: 300, fmt: function (v) { return v + " V"; } },
+    { k: "rp", l: N_("プレート抵抗"), min: 33, max: 330, step: 1, def: 100, fmt: function (v) { return v + " kΩ"; } },
+    { k: "vg", l: N_("格子バイアス"), min: -4, max: -.4, step: .05, def: -1.5, fmt: function (v) { return v.toFixed(2) + " V"; } }
+  ],
+  viz: function (V, p) {
+    var b = box(V, 12, 14), rp = p.rp * 1000, imax = p.bp / rp;
+    grid(V, b, 6, 4);
+    var X = function (va) { return b.x + b.w * clamp(va / p.bp, 0, 1); };
+    var Y = function (ia) { return b.y + b.h - 12 - (b.h - 22) * clamp(ia / imax, 0, 1); };
+    for (var g = 0; g >= -5; g--) {
+      var pts = [];
+      for (var i = 0; i <= 90; i++) { var va = p.bp * i / 90; pts.push([X(va), Y(korenIa(va, g))]); }
+      stroke(V, pts, CO.dim, 1.2, .8);
+    }
+    var cur = [];
+    for (var j = 0; j <= 90; j++) { var v2 = p.bp * j / 90; cur.push([X(v2), Y(korenIa(v2, p.vg))]); }
+    stroke(V, cur, p.c, 1.9, 1, true);
+    stroke(V, [[X(0), Y(imax)], [X(p.bp), Y(0)]], "#8792a8", 1.5, 1);
+    var op = korenOp(p.bp, rp, p.vg);
+    var g2 = V.g;
+    g2.save(); g2.fillStyle = p.c; g2.shadowColor = p.c; g2.shadowBlur = 10;
+    g2.beginPath(); g2.arc(X(op.va), Y(op.ia), 4.5, 0, 7); g2.fill(); g2.restore();
+    tick(V, b.x + b.w - 4, b.y + b.h - 5, p.bp + "V", "right");
+    var a1 = korenOp(p.bp, rp, p.vg + .05), a2 = korenOp(p.bp, rp, p.vg - .05);
+    var gain = Math.abs((a1.va - a2.va) / .1);
+    return { l: T("プレート特性 と 負荷線"), r: op.va.toFixed(0) + "V / " + (op.ia * 1000).toFixed(2) + "mA" + T(" ・ ") + "×" + gain.toFixed(0) };
+  },
+  tryIt: N_("プリセット「12AX7 真空管プリアンプ」でプレート抵抗を触ると、この交点が動きます")
+});
+
+CATALOG.push({
+  id: "cathodecap", cat: "amp", name: N_("カソードバイパスコンデンサ"), sub: "Cathode bypass cap",
+  key: "cathode bypass capacitor 25uF 0.68uF gain shelf marshall fender",
+  d: N_("カソード抵抗に並列に入れる1個。無いとカソードの電位が信号で揺れて<b>自分で負帰還がかかり</b>、ゲインが <code>1/(1+gm·Rk)</code> に落ちます。容量は「どの周波数から本来のゲインに戻るか」を決める。Fender の 25µF は下まで全部戻し、Marshall の 0.68µF は低音だけ帰還を残して締める — つまみではなく<b>この1個</b>が性格を決めています。"),
+  sch: function () {
+    var k = K("0 0 380 242"), nOut = [180, 92], nk = [180, 152];
+    var v = k.vcc(180, 18, "B+"), rp = k.r(180, 56, 90, "Rp"), q = k.tri(180, 112);
+    k.w(v.a, rp.a); k.w(rp.b, nOut); k.jn(nOut); k.w(nOut, q.p);
+    var t = k.outp(320, 92);
+    k.w(nOut, t.a);
+    var i = k.inp(22, 114), cin = k.c(80, 114);
+    k.w(i.a, cin.a); k.w(cin.b, q.g);
+    var rk = k.r(180, 182, 90, "Rk"), ck = k.c(258, 182, 90, "Ck");
+    k.w(q.k, nk); k.jn(nk); k.w(nk, rk.a); k.gnd(180, 222);
+    k.w(nk, [258, 152], ck.a); k.gnd(258, 222);
+    return k.svg();
+  },
+  knobs: [
+    { k: "cv", l: N_("Ck の容量"), min: .1, max: 47, step: .05, def: 25, fmt: function (v) { return v.toFixed(2) + " µF"; } },
+    { k: "rk", l: N_("カソード抵抗"), min: 470, max: 10000, step: 10, def: 1500, fmt: function (v) { return v >= 1000 ? (v / 1000).toFixed(2) + " kΩ" : v + " Ω"; } }
+  ],
+  /* Zk = Rk ∥ 1/jωC。ゲインは 1/(1+gm·Zk) に比例する (gm はデータシート値) */
+  H: function (p) {
+    var rk = p.rk, c = p.cv * 1e-6;
+    return function (f) {
+      var z = cdiv([rk, 0], [1, 2 * Math.PI * f * rk * c]);
+      return 1 / cabs([1 + GM12AX7 * z[0], GM12AX7 * z[1]]);
+    };
+  },
+  viz: function (V, p) {
+    var b = box(V, 12, 14), H = this.H(p), full = 1;
+    grid(V, b, 6, 4); bodeAxis(V, b);
+    bode(V, b, function () { return full; }, CO.dim, -18, 4, 1.4);
+    bode(V, b, H, p.c, -18, 4);
+    var lowDb = 20 * Math.log10(H(20) / full);
+    var rp2 = 1 / GM12AX7, fc = 1 / (2 * Math.PI * p.cv * 1e-6 * (p.rk * rp2 / (p.rk + rp2)));
+    return { l: T("バイパスの効き"), r: T("低域 ") + lowDb.toFixed(1) + " dB" + T(" ・ ") + T("戻り ") + (fc >= 1000 ? (fc / 1000).toFixed(2) + "kHz" : Math.round(fc) + "Hz") };
+  },
+  tryIt: N_("プリセット「Marshall 1959風 プリ (12AX7×3 + トーンスタック)」の Ck を 0.68µF と 25µF で聴き比べてください")
+});
+
+CATALOG.push({
+  id: "gridstop", cat: "amp", name: N_("グリッドストッパとブロッキング歪み"), sub: "Grid stopper / blocking",
+  key: "grid stopper blocking distortion farting out coupling cap charge",
+  d: N_("グリッドに直列に入れる抵抗。寄生発振を止めるのが本来の役目ですが、もう一つ大事な仕事があります。強く弾いてグリッドがプラスに振れると<b>グリッドが電流を引き、カップリングコンデンサが充電されます</b>。抵抗が無いと一気に充電され、抜けるまでの数十msだけ球が遮断されて音が途切れる — 「弾いた直後にブツッと詰まる」の正体です。"),
+  sch: function () {
+    var k = K("0 0 380 226"), ng = [186, 118];
+    var i = k.inp(22, 118), cin = k.c(70, 118, 0, "C"), rs = k.r(140, 118, 0);
+    k.w(i.a, cin.a); k.w(cin.b, rs.a); k.w(rs.b, ng); k.jn(ng);
+    var q = k.tri(240, 116);
+    k.w(ng, q.g);
+    var rg = k.r(186, 162, 90, "Rg");
+    k.w(ng, rg.a); k.gnd(186, 202);
+    var v = k.vcc(240, 18, "B+"), rp = k.r(240, 58, 90, "Rp");
+    k.w(v.a, rp.a); k.w(rp.b, q.p); k.jn(q.p);
+    var t = k.outp(340, 96);
+    k.w(q.p, t.a);
+    k.w(q.k, [240, 166]); k.gnd(240, 176);
+    k.t(100, 92, T("ここが無いと一気に充電される"), "middle", "k");
+    return k.svg();
+  },
+  knobs: [
+    { k: "rs", l: N_("グリッドストッパ"), min: 0, max: 220, step: 1, def: 68, fmt: function (v) { return v + " kΩ"; } },
+    { k: "amp", l: N_("入力レベル"), min: .5, max: 8, step: .1, def: 4, fmt: function (v) { return v.toFixed(1) + " Vp"; } }
+  ],
+  viz: function (V, p) {
+    var b = box(V, 12, 14);
+    grid(V, b, 8, 4); zero(V, b);
+    /* グリッド電流でカップリングCが充電され、Rg で抜ける。
+       充電の速さは (ストッパ + 球の内部) で決まる */
+    var N = 480, dt = 0.25, bias = 0, back = 0;
+    var chargeT = 0.6 + p.rs * 0.09, dis = 40;       /* ms */
+    var src = [], out = [], gv = [];
+    for (var i = 0; i < N; i++) {
+      var t = i * dt;
+      var env = t < 4 ? t / 4 : Math.exp(-(t - 4) / 55);
+      var v = Math.sin(2 * Math.PI * t / 4.5) * p.amp * env;
+      var over = v + bias - 0.6;
+      if (over > 0) bias -= over * (dt / chargeT);
+      bias += (0 - bias) * (dt / dis);
+      var g = v + bias;
+      var o = clamp((g + 1.5) / 1.5, -1, 1);          /* −3V で遮断・0V で頭打ち */
+      if (g < -3) o = -1;
+      src.push([b.x + b.w * i / N, b.y + b.h / 2 - clamp(v / 8, -1, 1) * b.h / 2]);
+      out.push([b.x + b.w * i / N, b.y + b.h / 2 - clamp(o, -1, 1) * b.h * .46]);
+      gv.push([b.x + b.w * i / N, b.y + b.h / 2 - clamp(bias / 8, -1, 1) * b.h / 2]);
+      if (bias < -1.4 && t > 6) back = t;
+    }
+    stroke(V, src, CO.dim, 1.4, .9);
+    stroke(V, gv, "rgba(255,110,199,.45)", 1.6, 1);
+    stroke(V, out, p.c, 2.2, 1, true);
+    return { l: T("入力 / 張り付いたバイアス / 出力"), r: back > 6 ? T("詰まり ") + back.toFixed(0) + " ms" : T("詰まらない") };
+  },
+  tryIt: N_("「真空管(プリ)」の 12AX7 のグリッドに 68kΩ を1本足すだけです")
+});
+
+CATALOG.push({
+  id: "cathfollow", cat: "amp", name: N_("カソードフォロワ"), sub: "Cathode follower",
+  key: "cathode follower tone stack driver marshall V2b",
+  d: N_("プレートを直接 B+ につなぎ、出力をカソードから取る形。ゲインは1弱ですが出力インピーダンスが <code>1/gm</code> 程度まで下がるので、<b>損失の大きいトーンスタックを鈍らせずに駆動できます</b>。Marshall の2段目後半がこれ。振幅が大きいとグリッドが電流を引いて上側だけ独特に潰れ、それも音の一部になっています。"),
+  sch: function () {
+    var k = K("0 0 380 238"), nk = [180, 146];
+    var v = k.vcc(180, 22, "B+"), q = k.tri(180, 96);
+    k.w(v.a, q.p);
+    var i = k.inp(22, 98), cin = k.c(80, 98);
+    k.w(i.a, cin.a); k.w(cin.b, q.g);
+    var rk = k.r(180, 176, 90, "Rk");
+    k.w(q.k, nk); k.jn(nk); k.w(nk, rk.a); k.gnd(180, 216);
+    var cout = k.c(258, 146), t = k.outp(338, 146);
+    k.w(nk, cout.a); k.w(cout.b, t.a);
+    return k.svg();
+  },
+  knobs: [
+    { k: "amp", l: N_("入力レベル"), min: .2, max: 3, step: .05, def: 1.4, fmt: function (v) { return v.toFixed(2) + " Vp"; } },
+    { k: "rl", l: N_("次段の負荷"), min: 20, max: 500, step: 5, def: 100, fmt: function (v) { return v + " kΩ"; } }
+  ],
+  f: function (p) {
+    var A = p.amp;
+    /* 上側はグリッド電流で頭打ち、下側は遮断まで伸びる (非対称) */
+    return function (x) {
+      var v = x * A;
+      var y = v > 1.1 ? 1.1 + (v - 1.1) * .12 : v;
+      if (y < -2.4) y = -2.4 - (y + 2.4) * .25;
+      return clamp(y / 1.9, -1, 1);
+    };
+  },
+  viz: function (V, p) {
+    var r = twoUp(V, 12, 14, 14), f = this.f(p);
+    var zo = 1 / GM12AX7, loss = p.rl * 1e3 / (p.rl * 1e3 + zo);
+    grid(V, r[0], 8, 4); zero(V, r[0]);
+    var s = inSig(.9);
+    wave(V, r[0], mapSig(s, function (x) { return x * (p.rl * 1e3 / (p.rl * 1e3 + 40000)); }), CO.dim, 1.7, 1);
+    wave(V, r[0], mapSig(s, function (x) { return x * loss; }), p.c, 2.3, 1, true);
+    grid(V, r[1], 4, 4); zero(V, r[1]); xy(V, r[1], f, p.c);
+    return { l: T("直結との差 と 伝達曲線"), r: T("出力Z 約 ") + Math.round(zo) + "Ω" };
+  },
+  tryIt: N_("プリセット「Marshall 1959風 プリ (12AX7×3 + トーンスタック)」のトーンスタックの手前がこれです")
+});
+
+CATALOG.push({
+  id: "ltp", cat: "amp", name: N_("位相反転 (ロングテールペア)"), sub: "Long-tailed pair inverter",
+  key: "phase inverter long tailed pair concertina push pull balance",
+  d: N_("プッシュプルの出力段には逆相の2つの信号が要ります。2本の三極管を共通のカソード抵抗(テール)で結ぶと、片方に入れた信号がテールを通じてもう片方に逆相で現れる。<b>テールが小さいほど2本の振幅が揃わなくなり</b>、その差が偶数次として残ります。Marshall がプレート抵抗を 100k と 82k で非対称にしているのは、この差を打ち消すためです。"),
+  sch: function () {
+    var k = K("0 0 380 248"), nt = [180, 164], rail = [180, 26];
+    var v = k.vcc(180, 16, "B+");
+    var ra = k.r(110, 56, 90), rb = k.r(250, 56, 90);
+    k.w(v.a, rail); k.jn(rail); k.w(rail, ra.a); k.w(rail, rb.a);
+    var q1 = k.tri(110, 116), q2 = k.tri(250, 116);
+    k.w(ra.b, q1.p); k.jn(q1.p); k.w(rb.b, q2.p); k.jn(q2.p);
+    var o1 = k.outpl(46, 96, "OUT1"), o2 = k.outp(330, 96, "OUT2");
+    k.w(q1.p, o1.a); k.w(q2.p, o2.a);
+    var i = k.inp(22, 118), cin = k.c(66, 118);
+    k.w(i.a, cin.a); k.w(cin.b, q1.g);
+    k.w(q1.k, [110, 164], nt); k.jn(nt); k.w(nt, [250, 164], q2.k);
+    var rt = k.r(180, 194, 90, "TAIL");
+    k.w(nt, rt.a); k.gnd(180, 234);
+    k.w(q2.g, [214, 118], [214, 214]); k.gnd(214, 224);
+    return k.svg();
+  },
+  knobs: [
+    { k: "rt", l: N_("テール抵抗"), min: 4.7, max: 220, step: .1, def: 10, fmt: function (v) { return v.toFixed(1) + " kΩ"; } },
+    { k: "ra", l: N_("プレート抵抗の比"), min: .6, max: 1.4, step: .01, def: 1, fmt: function (v) { return "1 : " + v.toFixed(2); } }
+  ],
+  /* テール抵抗が有限なぶん「冷たい側」のゲインが落ちる。
+     rp と Ra は 12AX7 の代表値 (62.5kΩ / 100kΩ)。近似式です */
+  bal: function (p) {
+    var rp = 62500, ra = 100000, mu = 100;
+    var imb = (rp + ra) / (2 * p.rt * 1000 * (mu + 1) + rp + ra);
+    return (1 - imb) * p.ra;
+  },
+  viz: function (V, p) {
+    var b = box(V, 12, 14), g = this.bal(p);
+    grid(V, b, 8, 4); zero(V, b);
+    var s = inSig(.82);
+    wave(V, b, s, p.c, 2.2, 1, true);
+    wave(V, b, mapSig(s, function (x) { return -x * g; }), "#8792a8", 2.2, 1, true);
+    var err = (g - 1) * 100;
+    return { l: T("逆相の2出力"), r: T("振幅差 ") + (err >= 0 ? "+" : "") + err.toFixed(1) + " %" };
+  },
+  tryIt: N_("「真空管(プリ)」の 12AT7 が位相反転の定番。テール抵抗を 10kΩ から 100kΩ に変えてみてください")
+});
+
+CATALOG.push({
+  id: "pwbias", cat: "amp", name: N_("パワー管のバイアス"), sub: "Power tube bias / crossover",
+  key: "power tube bias crossover distortion class AB EL34 6L6GC plate dissipation",
+  d: N_("プッシュプルは2本で波の上下を分担します。バイアスが浅い(冷たい)と、ゼロ交差の受け渡しで<b>どちらも導通しない隙間</b>ができ、小音量ほど耳につくクロスオーバー歪みが出る。深く(熱く)すれば隙間は消えてA級寄りになりますが、プレート損失が増えて球の寿命を削ります。<b>音と寿命の取り合いです</b>。"),
+  sch: function () {
+    var k = K("0 0 380 244");
+    var v = k.vcc(56, 30, "B+");
+    var ot = k.xfmrp(258, 104);
+    k.w(v.a, [56, 94], ot.ct);
+    var q1 = k.pent(190, 56, "V1"), q2 = k.pent(190, 172, "V2");
+    k.w(q1.p, [190, 22], [230, 22], [230, 74], ot.p1);
+    k.w(q2.p, [190, 138], [230, 138], [230, 114], ot.p2);
+    k.w(q1.k, [190, 96]); k.gnd(190, 106);
+    k.w(q2.k, [190, 212]); k.gnd(190, 222);
+    var i1 = k.inp(30, 59, "IN+"), i2 = k.inp(30, 175, "IN−");
+    var rg1 = k.r(120, 59, 0), rg2 = k.r(120, 175, 0);
+    k.w(i1.a, rg1.a); k.w(rg1.b, q1.g1);
+    k.w(i2.a, rg2.a); k.w(rg2.b, q2.g1);
+    var sp = k.spk(348, 104);
+    k.w(ot.s1, [318, 74], [318, 99], sp.a); k.w(ot.s2, [318, 114], [318, 109], sp.b);
+    return k.svg();
+  },
+  knobs: [
+    { k: "idle", l: N_("アイドル電流"), min: 0, max: 45, step: .5, def: 22, fmt: function (v) { return v.toFixed(1) + " mA"; } },
+    { k: "amp", l: N_("出力レベル"), min: .15, max: 1, step: .01, def: .45, fmt: function (v) { return Math.round(v * 100) + " %"; } }
+  ],
+  /* 各球は片側しか流さない。3/2 乗則で、重なりの深さをアイドル電流で決める */
+  f: function (p) {
+    var d = Math.pow(p.idle / 45, 2 / 3) * 1.6, A = p.amp * 5;
+    var ip = function (v) { return v > 0 ? Math.pow(v, 1.5) : 0; };
+    var sc = ip(A + d) - ip(Math.max(0, d - A)) || 1;
+    return function (x) { var v = x * A; return (ip(v + d) - ip(-v + d)) / sc; };
+  },
+  viz: function (V, p) {
+    var r = twoUp(V, 12, 14, 14), f = this.f(p);
+    grid(V, r[0], 4, 4); zero(V, r[0]); xy(V, r[0], f, p.c);
+    var s = inSig(.9);
+    grid(V, r[1], 8, 4); zero(V, r[1]);
+    wave(V, r[1], s, CO.dim, 1.6, 1);
+    wave(V, r[1], norm(mapSig(s, f), .92), p.c, 2.2, 1, true);
+    var h = harm(f, 9), odd = 0;
+    for (var i = 2; i < h.length; i += 2) odd += h[i] * h[i];
+    return { l: T("伝達曲線 と 波形"), r: p.idle < 8 ? T("受け渡しに隙間がある") : T("奇数次 ") + (Math.sqrt(odd) / (h[0] || 1) * 100).toFixed(1) + " %" };
+  },
+  tryIt: N_("「真空管(パワー)」の EL34 / 6L6GC を2本。バイアス電圧を変えるとこの折れ方が動きます")
+});
+
+CATALOG.push({
+  id: "opt", cat: "amp", name: N_("出力トランスとインピーダンス整合"), sub: "Output transformer matching",
+  key: "output transformer impedance matching taps reflected load primary inductance",
+  d: N_("パワー管が欲しい負荷は数kΩ、スピーカーは8Ω。巻数比の<b>2乗</b>で変換するのが出力トランスです。<code>Z1 = n²·Z2</code> なので、<b>8Ωのタップに16Ωを繋ぐと球から見た負荷は2倍になります</b>。低域は1次インダクタンスで、高域は漏れインダクタンスで落ちる — 帯域はトランスが決めています。"),
+  sch: function () {
+    var k = K("0 0 380 200");
+    var v = k.vcc(60, 50, "B+");
+    var ot = k.xfmrp(180, 100);
+    k.w(v.a, [60, 90], ot.ct);
+    var t1 = k.term(90, 56, T("パワー管へ")), t2 = k.term(90, 144, T("パワー管へ"));
+    k.w(t1.a, [110, 56], [110, 70], ot.p1);
+    k.w(t2.a, [110, 144], [110, 110], ot.p2);
+    var sp = k.spk(300, 100);
+    k.w(ot.s1, [258, 70], [258, 95], sp.a); k.w(ot.s2, [258, 110], [258, 105], sp.b);
+    k.t(196, 186, T("巻数比の2乗で効く"), "middle");
+    return k.svg();
+  },
+  knobs: [
+    { k: "tap", l: N_("使うタップ"), min: 0, max: 2, step: 1, def: 1, fmt: function (v) { return [4, 8, 16][v] + " Ω"; } },
+    { k: "spk", l: N_("繋いだスピーカー"), min: 0, max: 2, step: 1, def: 1, fmt: function (v) { return [4, 8, 16][v] + " Ω"; } },
+    { k: "lp", l: N_("1次インダクタンス"), min: 5, max: 60, step: 1, def: 30, fmt: function (v) { return v + " H"; } }
+  ],
+  /* 定格は 8Ωタップで 1次 8kΩ (部品DBの「OT 8k:8Ω」と同じ)。
+     漏れインダクタンスは 1次の 0.5% として高域の落ちを出す (代表値) */
+  z: function (p) {
+    var taps = [4, 8, 16], n2 = 8000 / taps[p.tap];
+    return n2 * taps[p.spk];
+  },
+  viz: function (V, p) {
+    var b = box(V, 12, 14), z = this.z(p);
+    var fl = z / (2 * Math.PI * p.lp), fh = z / (2 * Math.PI * (p.lp * 0.005));
+    grid(V, b, 6, 4); bodeAxis(V, b);
+    bode(V, b, function (f) { return mHP(f, 8000 / (2 * Math.PI * 30)) * mLP(f, 8000 / (2 * Math.PI * .15)); }, CO.dim, -24, 6, 1.4);
+    bode(V, b, function (f) { return mHP(f, fl) * mLP(f, fh); }, p.c, -24, 6);
+    return { l: T("トランスが決める帯域"), r: T("球から見た負荷 ") + (z / 1000).toFixed(1) + "kΩ" + T(" ・ ") + Math.round(fl) + "Hz〜" + (fh / 1000).toFixed(1) + "kHz" };
+  },
+  tryIt: N_("「トランス」に OT 8k:8Ω などがあります。「スピーカー・負荷」の 16Ω を繋ぐと負荷が2倍になります")
+});
+
+CATALOG.push({
+  id: "presence", cat: "amp", name: N_("プレゼンス"), sub: "Presence control",
+  key: "presence negative feedback treble marshall fender",
+  d: N_("出力トランスから位相反転段へ戻している負帰還の、帰り道にコンデンサを1本入れて高域だけ GND へ逃がす。<b>高域だけ帰還が減る = 高域だけゲインが上がる</b>。トーンつまみが「削る」のに対して、これは「戻す量を減らす」ので、上げると高域の余裕も一緒に減ってざらつきます。"),
+  sch: function () {
+    var k = K("0 0 380 244"), nOut = [300, 60], np = [300, 124];
+    var pi = k.box(96, 60, 96, 44, T("位相反転"));
+    var po = k.box(240, 60, 90, 44, T("出力段"));
+    k.w(pi.r, po.l);
+    var t = k.outp(346, 60);
+    k.w(po.r, nOut); k.jn(nOut); k.w(nOut, t.a);
+    k.w(nOut, np); k.jn(np);
+    var rf = k.r(200, 124, 180, "NFB");
+    k.w(np, rf.a); k.w(rf.b, [96, 124], pi.b);
+    var pv = k.pot(300, 158, 90, "PRESENCE");
+    k.w(np, pv.a); k.gnd(300, 198);
+    var cc = k.c(346, 188, 90);
+    k.w(pv.w, [346, 158], cc.a); k.gnd(346, 218);
+    k.t(150, 172, T("高域だけ帰還を逃がす"), "middle", "k");
+    return k.svg();
+  },
+  knobs: [
+    { k: "pre", l: "PRESENCE", min: 0, max: 1, step: .01, def: .5, fmt: function (v) { return Math.round(v * 10) + " / 10"; } },
+    { k: "b", l: N_("帰還量"), min: .05, max: 1, step: .01, def: .5, fmt: function (v) { return Math.round(v * 100) + " %"; } }
+  ],
+  H: function (p) {
+    var A = 30, b0 = p.b * .9;
+    return function (f) {
+      var beta = b0 * (1 - p.pre * mHP(f, 700));
+      return A / (1 + beta * A);
+    };
+  },
+  viz: function (V, p) {
+    var b = box(V, 12, 14), H = this.H(p);
+    grid(V, b, 6, 4); bodeAxis(V, b);
+    bode(V, b, function () { return 30 / (1 + p.b * .9 * 30); }, CO.dim, -6, 22, 1.4);
+    bode(V, b, H, p.c, -6, 22);
+    var rise = 20 * Math.log10(H(8000) / H(100));
+    return { l: T("帰還を減らした分だけ上がる"), r: T("高域 ") + (rise >= 0 ? "+" : "") + rise.toFixed(1) + " dB" };
+  },
+  tryIt: N_("出力トランスの2次側から位相反転段のカソードへ抵抗1本。そこにコンデンサとポットを足すだけです")
+});
+
+CATALOG.push({
+  id: "sag", cat: "amp", name: N_("整流管のサグ"), sub: "Rectifier sag",
+  key: "sag rectifier GZ34 5Y3GT tube rectifier compression B+ droop",
+  d: N_("整流管は内部抵抗が大きく、電流を引くほど B+ が沈みます。強く弾いた瞬間に電圧が落ち、少し遅れて戻る — <b>電源が勝手にコンプレッサーになる</b>。シリコンダイオードはほとんど沈まないので、同じ回路でも張りが出ます。Rosso の部品DBでは GZ34 と 5Y3GT でこの沈み方が違う値になっています。"),
+  sch: function () {
+    var k = K("0 0 380 226"), nb = [252, 60], nr = [252, 132];
+    var xf = k.xfmr(90, 92);
+    k.w(xf.p1, [42, 62], [42, 122]); k.w(xf.p2, [42, 102]); k.jn([42, 102]);
+    k.gnd(42, 132);
+    var rt = k.rectube(180, 92, "RECT");
+    k.w(xf.s1, [118, 62], [171, 62], rt.p1);
+    k.w(xf.s2, [118, 102], [140, 102], [140, 46], [189, 46], rt.p2);
+    k.w(xf.ct, [106, 172]); k.gnd(106, 182);
+    k.w(rt.k, [180, 132], nr); k.jn(nr); k.w(nr, nb);
+    var cc = k.c(300, 132, 90);
+    k.w(nr, [300, 132], cc.a); k.gnd(300, 162);
+    var t = k.outp(340, 60, "B+");
+    k.w(nb, t.a);
+    return k.svg();
+  },
+  knobs: [
+    { k: "rint", l: N_("整流の内部抵抗"), min: 5, max: 600, step: 5, def: 250, fmt: function (v) { return v + " Ω"; } },
+    { k: "cv", l: N_("リザーバ容量"), min: 8, max: 100, step: 1, def: 32, fmt: function (v) { return v + " µF"; } },
+    { k: "ip", l: N_("弾いたときの電流"), min: 30, max: 220, step: 5, def: 130, fmt: function (v) { return v + " mA"; } }
+  ],
+  viz: function (V, p) {
+    var b = box(V, 12, 14), V0 = 400, idle = 25;
+    var tau = p.rint * p.cv * 1e-6 * 1000;            /* ms */
+    var N = 420, dt = 2, i2 = idle, bp = V0 - idle * .001 * p.rint;
+    var vs = [], env = [], lo = V0;
+    for (var i = 0; i < N; i++) {
+      var t = i * dt;
+      var want = idle + (t > 60 ? (p.ip - idle) * Math.exp(-(t - 60) / 320) : 0);
+      i2 += (want - i2) * (1 - Math.exp(-dt / Math.max(tau, 1)));
+      var v = V0 - i2 * .001 * p.rint;
+      lo = Math.min(lo, v);
+      vs.push([b.x + b.w * i / N, b.y + b.h - 14 - (b.h - 26) * ((v - 260) / 150)]);
+      env.push([b.x + b.w * i / N, b.y + b.h - 14 - (b.h - 26) * (Math.max(0, want - idle) / 200) * .9]);
+    }
+    grid(V, b, 8, 4);
+    stroke(V, env, CO.dim, 1.5, .8);
+    stroke(V, vs, p.c, 2.4, 1, true);
+    tick(V, b.x + 4, b.y + 10, "B+ 400V", "left");
+    return { l: T("引いた電流 と 沈む B+"), r: T("沈み込み ") + (V0 - lo).toFixed(0) + " V" + T(" ・ ") + T("戻り ") + tau.toFixed(0) + " ms" };
+  },
+  tryIt: N_("「真空管(整流)」の GZ34 と 5Y3GT を差し替えると、この沈み方が変わります")
+});
+
+CATALOG.push({
+  id: "bplus", cat: "amp", name: N_("B+ ラダー (段間デカップリング)"), sub: "B+ decoupling ladder",
+  key: "B+ ladder decoupling motorboating ripple multistage supply",
+  d: N_("多段のアンプは B+ を段ごとに抵抗とコンデンサで分けます。奥の段(初段)ほど深く濾す。分けないと、パワー段が電流を引いた変動が初段まで回り込み、低い周波数で勝手に揺れ始めます(モーターボーティング)。<b>目的は段どうしを切り離すことで、リップル除去はその副産物</b>です。"),
+  sch: function () {
+    var k = K("0 0 380 184");
+    var v = k.vcc(34, 30, "B+");
+    var prev = [34, 68];
+    k.w(v.a, prev);
+    for (var i = 0; i < 3; i++) {
+      var rr = k.r(prev[0] + 46, 68, 0), n = [prev[0] + 92, 68];
+      k.w(prev, rr.a); k.w(rr.b, n);
+      if (i < 2) k.jn(n);
+      var cc = k.c(n[0], 104, 90);
+      k.w(n, cc.a); k.gnd(n[0], 134);
+      k.t(n[0], 154, T("第") + (3 - i) + T("段へ"), "middle", "k");
+      prev = n;
+    }
+    return k.svg();
+  },
+  knobs: [
+    { k: "rv", l: N_("段間の抵抗"), min: 4.7, max: 100, step: .1, def: 22, fmt: function (v) { return v.toFixed(1) + " kΩ"; } },
+    { k: "cv", l: N_("各段の容量"), min: 4, max: 100, step: 1, def: 22, fmt: function (v) { return v + " µF"; } }
+  ],
+  viz: function (V, p) {
+    var b = box(V, 12, 14), f = 100;
+    /* 100Hz のリップルが段ごとに何倍に減るか。1段あたり 1次ローパス */
+    var fc = 1 / (2 * Math.PI * p.rv * 1e3 * p.cv * 1e-6);
+    var per = mLP(f, fc), vals = [1, per, per * per, per * per * per];
+    grid(V, b, 4, 4);
+    var g = V.g, n = vals.length, gap = 16, w = (b.w - gap * (n - 1)) / n, base = b.y + b.h - 16;
+    for (var i = 0; i < n; i++) {
+      var db = 20 * Math.log10(vals[i]), h = Math.max(2, (1 + db / 80) * (b.h - 30));
+      var x = b.x + i * (w + gap);
+      g.save(); g.fillStyle = i === 0 ? "#7f8b9e" : p.c; g.globalAlpha = i === 0 ? .5 : .9;
+      if (g.roundRect) { g.beginPath(); g.roundRect(x, base - h, w, h, [3, 3, 0, 0]); g.fill(); }
+      else g.fillRect(x, base - h, w, h);
+      g.restore();
+      tick(V, x + w / 2, base + 9, i === 0 ? T("入口") : db.toFixed(0) + "dB", "center", i ? "#8a93a4" : "#5c6577");
+    }
+    return { l: T("100Hz のリップルが段ごとに減る"), r: T("初段で ") + (20 * Math.log10(vals[3])).toFixed(0) + " dB" };
+  },
+  tryIt: N_("「基本・電源」の B+ 300V から、抵抗と電解コンデンサを3組ぶら下げるだけです")
+});
+
+CATALOG.push({
+  id: "heater", cat: "amp", name: N_("ヒーターとハム"), sub: "Heater wiring and hum",
+  key: "heater hum balancer elevated DC filament AC 6.3V",
+  d: N_("ヒーターは 6.3V の交流です。初段のグリッドに数 mV 漏れれば、そのままハムになります。100Ω の抵抗で中点を作って対称にし(ハムバランサ)、カソードより高い電位へ持ち上げると漏れが減る。撚る。直流点火なら消えますが、その分の電源が要ります。<b>この図は効き方の模式です</b> — 実際の量は配線の引き回しで決まります。"),
+  sch: function () {
+    var k = K("0 0 380 206"), nm = [180, 105];
+    var xf = k.xfmr2(80, 76, "6.3V");
+    k.w(xf.p1, [32, 46], [32, 96]); k.w(xf.p2, [32, 86]); k.jn([32, 86]); k.gnd(32, 106);
+    k.w(xf.s1, [150, 46], [150, 30], [180, 30]);
+    k.w(xf.s2, [150, 86], [150, 180], [180, 180]);
+    k.t(128, 22, T("ヒーターへ"), "middle", "k");
+    var r1 = k.r(180, 60, 90), r2 = k.r(180, 150, 90);
+    k.w([180, 30], r1.a); k.w(r1.b, nm); k.jn(nm); k.w(nm, r2.a); k.w(r2.b, [180, 180]);
+    var re = k.r(250, 105, 0, "ELEV");
+    k.w(nm, re.a); k.w(re.b, [300, 105]); k.gnd(300, 115);
+    k.t(258, 142, T("中点を持ち上げる"), "middle", "k");
+    return k.svg();
+  },
+  knobs: [
+    { k: "bal", l: N_("バランスのずれ"), min: 0, max: 1, step: .01, def: .35, fmt: function (v) { return Math.round(v * 100) + " %"; } },
+    { k: "elev", l: N_("エレベート電圧"), min: 0, max: 90, step: 1, def: 0, fmt: function (v) { return v + " V"; } }
+  ],
+  sws: [{ k: "dc", l: N_("直流点火"), def: 0 }],
+  viz: function (V, p) {
+    var b = box(V, 12, 14);
+    grid(V, b, 8, 4); zero(V, b);
+    var lvl = p.dc ? 0.012 : (0.1 + 0.9 * p.bal) * (1 - p.elev / 130);
+    var s = inSig(.55), o = new Float64Array(NS);
+    for (var i = 0; i < NS; i++) {
+      var t = i / NS;
+      o[i] = s[i] + lvl * (Math.sin(2 * Math.PI * 3 * t) * .5 + Math.sin(2 * Math.PI * 6 * t + 1) * .25);
+    }
+    wave(V, b, s, CO.dim, 1.5, .8);
+    wave(V, b, o, p.c, 2.2, 1, true);
+    return { l: T("信号に乗るハム"), r: T("ハム ") + (20 * Math.log10(Math.max(lvl, 1e-3))).toFixed(0) + T(" dB (最悪時比)") };
+  },
+  tryIt: N_("「トランス」のヒーター巻線と「受動部品」の 100Ω を2本。中点を B+ 側から持ち上げます")
+});
+
+CATALOG.push({
+  id: "bleeder", cat: "amp", name: N_("ブリーダー抵抗と放電"), sub: "Bleeder resistor",
+  key: "bleeder resistor discharge safety high voltage capacitor 450V",
+  d: N_("電源を切っても、リザーバのコンデンサには数百ボルトが残ります。<b>触れば死にます</b>。並列に高抵抗を1本入れておけば <code>τ = R×C</code> で自然に抜けていく。値は「放電の速さ」と「常時捨てる電流」の取り合いです。<b>作業前は必ずテスターで実測すること</b> — 抵抗が外れていれば、いつまでも残ります。"),
+  sch: function () {
+    var k = K("0 0 380 190"), n = [180, 60];
+    var v = k.vcc(60, 26, "B+");
+    var sw = k.box(120, 60, 56, 34, "SW");
+    k.w(v.a, [60, 60], sw.l);
+    k.w(sw.r, n); k.jn(n);
+    var cc = k.c(180, 106, 90, "C");
+    k.w(n, cc.a); k.gnd(180, 146);
+    var rb = k.r(280, 106, 90, "R");
+    k.w(n, [280, 60], rb.a); k.gnd(280, 146);
+    k.t(280, 40, T("ブリーダー"), "middle", "k");
+    return k.svg();
+  },
+  knobs: [
+    { k: "rv", l: N_("ブリーダー抵抗"), min: 47, max: 1000, step: 1, def: 220, fmt: function (v) { return v + " kΩ"; } },
+    { k: "cv", l: N_("総容量"), min: 16, max: 220, step: 2, def: 64, fmt: function (v) { return v + " µF"; } },
+    { k: "v0", l: N_("切る前の電圧"), min: 200, max: 500, step: 5, def: 420, fmt: function (v) { return v + " V"; } }
+  ],
+  viz: function (V, p) {
+    var b = box(V, 12, 14), tau = p.rv * 1e3 * p.cv * 1e-6;
+    var span = Math.max(30, tau * 4);
+    var pts = [];
+    for (var i = 0; i <= 220; i++) {
+      var t = span * i / 220, v = p.v0 * Math.exp(-t / tau);
+      pts.push([b.x + b.w * i / 220, b.y + b.h - 14 - (b.h - 26) * (v / 500)]);
+    }
+    grid(V, b, 8, 4);
+    var sy = b.y + b.h - 14 - (b.h - 26) * (50 / 500);
+    stroke(V, [[b.x, sy], [b.x + b.w, sy]], "rgba(255,74,94,.6)", 1.4, 1);
+    tick(V, b.x + 4, sy - 8, "50V", "left", "#e0707e");
+    stroke(V, pts, p.c, 2.4, 1, true);
+    tick(V, b.x + b.w - 4, b.y + b.h - 4, span.toFixed(0) + " s", "right");
+    var t50 = tau * Math.log(p.v0 / 50);
+    return { l: T("電源を切ったあとの残り電圧"), r: T("50V を切るまで ") + t50.toFixed(1) + T(" 秒") };
+  },
+  tryIt: N_("「基本・電源」の B+ 300V に電解コンデンサと 220kΩ を並列に置いて、放電を見てください")
+});
+
 /* =====================================================================
  * C. 組み立て
  * ===================================================================== */
@@ -3276,6 +4098,17 @@ document.getElementById("q").addEventListener("input", function (ev) {
   curQ = ev.target.value.trim().toLowerCase(); applyFilter();
 });
 applyFilter();
+
+/* --------------------------- 直リンクで開かれたとき ---------------------------
+ * カードは JS で作るので、ブラウザが最初にハッシュへ飛ぼうとした時点では
+ * まだ存在しない。#t-<id> を貼れるように、作り終えてから自分で飛ぶ。 */
+(function () {
+  if (!location.hash) return;
+  var el = null;
+  try { el = document.querySelector(location.hash); } catch (e) { return; }
+  if (!el) return;
+  window.scrollTo({ top: el.getBoundingClientRect().top + window.pageYOffset - 64, behavior: "auto" });
+})();
 
 /* --------------------------- 出現アニメ --------------------------- */
 (function () {
