@@ -4,9 +4,9 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Rosso — エフェクター回路シミュレーター</title>
-<meta name="description" content="回路図を描くと、その場で音が鳴る。Rust製の回路ソルバ Lotus Engine が、ゲルマニウムファズから真空管プリまで実部品1920点の回路をそのまま解きます。Windows / macOS 無料。">
+<meta name="description" content="回路図を描くと、その場で音が鳴る。Rust製の回路ソルバ Lotus Engine が、ゲルマニウムファズから真空管プリまで実部品1921点の回路をそのまま解きます。Windows / macOS 無料。">
 <meta property="og:title" content="Rosso — エフェクター回路シミュレーター">
-<meta property="og:description" content="回路図を描くと、その場で音が鳴る。実部品1920点、Rust製ソルバ Lotus Engine。">
+<meta property="og:description" content="回路図を描くと、その場で音が鳴る。実部品1921点、Rust製ソルバ Lotus Engine。">
 <meta property="og:type" content="website">
 
 <!-- ============================================================
@@ -32,7 +32,7 @@
 <meta property="og:image:alt" content="Rosso — 回路図を描く。その場で音が鳴る。">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Rosso — エフェクター回路シミュレーター">
-<meta name="twitter:description" content="回路図を描くと、その場で音が鳴る。実部品1920点、Rust製ソルバ Lotus Engine。">
+<meta name="twitter:description" content="回路図を描くと、その場で音が鳴る。実部品1921点、Rust製ソルバ Lotus Engine。">
 <meta name="twitter:image" content="https://rosso.tsukubaonkyo.com/ogp.png">
 <link rel="icon" href="icon.png">
 <script type="application/ld+json">
@@ -607,8 +607,8 @@ var SITE_EN = {
     "01 / Place",
   "部品を並べて配線する":
     "Lay out parts and wire them up",
-  "1920点の実部品から選んで置き、線でつなぐだけ。定数はあとから自由に変えられます。":
-    "Pick from 1,920 real parts, drop them in and draw wires. Values can be changed later, freely.",
+  "1921点の実部品から選んで置き、線でつなぐだけ。定数はあとから自由に変えられます。":
+    "Pick from 1,921 real parts, drop them in and draw wires. Values can be changed later, freely.",
   "02 / 鳴らす":
     "02 / Play",
   "再生ボタンを押すと音になる":
@@ -781,10 +781,10 @@ var SITE_EN = {
     "© 2026 Tsukuba Onkyo",
 
   /* ---- meta ---- */
-  "回路図を描くと、その場で音が鳴る。Rust製の回路ソルバ Lotus Engine が、ゲルマニウムファズから真空管プリまで実部品1920点の回路をそのまま解きます。Windows / macOS 無料。":
-    "Draw a schematic and it makes sound on the spot. Lotus Engine, a circuit solver written in Rust, solves real circuits built from 1,920 real parts - from germanium fuzz to tube preamps. Free for Windows and macOS.",
-  "回路図を描くと、その場で音が鳴る。実部品1920点、Rust製ソルバ Lotus Engine。":
-    "Draw a schematic and it makes sound on the spot. 1,920 real parts, solved by Lotus Engine in Rust.",
+  "回路図を描くと、その場で音が鳴る。Rust製の回路ソルバ Lotus Engine が、ゲルマニウムファズから真空管プリまで実部品1921点の回路をそのまま解きます。Windows / macOS 無料。":
+    "Draw a schematic and it makes sound on the spot. Lotus Engine, a circuit solver written in Rust, solves real circuits built from 1,921 real parts - from germanium fuzz to tube preamps. Free for Windows and macOS.",
+  "回路図を描くと、その場で音が鳴る。実部品1921点、Rust製ソルバ Lotus Engine。":
+    "Draw a schematic and it makes sound on the spot. 1,921 real parts, solved by Lotus Engine in Rust.",
 
   /* ---- ページ内スクリプトが出す文字列 ---- */
   "64bit ・ ":
@@ -970,7 +970,7 @@ document.addEventListener("DOMContentLoaded", function () {
 <!-- ================= ヒーロー ================= -->
 <section class="hero" id="top">
   <div class="hero-in">
-    <div class="badge rise"><i class="dot"></i> <span>バージョン <b id="ver">1.5.1</b><span class="badge-os"> — Windows / macOS</span> ・ 無料</span></div>
+    <div class="badge rise"><i class="dot"></i> <span>バージョン <b id="ver">1.5.2</b><span class="badge-os"> — Windows / macOS</span> ・ 無料</span></div>
 
     <h1 class="rise">
       回路図を描く。<span class="l2">その場で音が鳴る。</span>
@@ -1018,7 +1018,7 @@ document.addEventListener("DOMContentLoaded", function () {
           <li class="on">
             <span class="n">01 / 置く</span>
             <h3>部品を並べて配線する</h3>
-            <p>1920点の実部品から選んで置き、線でつなぐだけ。定数はあとから自由に変えられます。</p>
+            <p>1921点の実部品から選んで置き、線でつなぐだけ。定数はあとから自由に変えられます。</p>
           </li>
           <li>
             <span class="n">02 / 鳴らす</span>
@@ -1078,7 +1078,7 @@ document.addEventListener("DOMContentLoaded", function () {
     </p>
 
     <div class="stats">
-      <div class="stat rise"><b><span class="num" data-to="1920">0</span></b><span>収録部品</span></div>
+      <div class="stat rise"><b><span class="num" data-to="1921">0</span></b><span>収録部品</span></div>
       <div class="stat rise"><b><span class="num" data-to="180">0</span></b><span>ゲルマニウムトランジスタ</span></div>
       <div class="stat rise"><b><span class="num" data-to="188">0</span></b><span>真空管 (プリ・パワー・整流)</span></div>
       <div class="stat rise"><b><span class="num" data-to="47">0</span></b><span>物理モデルの種類</span></div>
@@ -1293,7 +1293,7 @@ document.addEventListener("DOMContentLoaded", function () {
   <div class="wrap">
     <p class="eyebrow rise">ダウンロード</p>
     <h2 class="rise">無料です。<br>アカウント登録もありません。</h2>
-    <p class="lede rise">バージョン <b id="ver2">1.5.1</b> ・ 個人利用は無料 ・ 回路データは端末内に保存されます。</p>
+    <p class="lede rise">バージョン <b id="ver2">1.5.2</b> ・ 個人利用は無料 ・ 回路データは端末内に保存されます。</p>
     <p class="note" id="dl-state" hidden></p>
     <p class="rise" style="margin-top:22px">
   <a class="btn btn-s" href="https://ko-fi.com/Y2R325GOZV"

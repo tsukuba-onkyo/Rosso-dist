@@ -6,9 +6,9 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Rosso - a circuit simulator for guitar effects</title>
-<meta name="description" content="Draw a schematic and it makes sound on the spot. Lotus Engine, a circuit solver written in Rust, solves real circuits built from 1,920 real parts - from germanium fuzz to tube preamps. Free for Windows and macOS.">
+<meta name="description" content="Draw a schematic and it makes sound on the spot. Lotus Engine, a circuit solver written in Rust, solves real circuits built from 1,921 real parts - from germanium fuzz to tube preamps. Free for Windows and macOS.">
 <meta property="og:title" content="Rosso - a circuit simulator for guitar effects">
-<meta property="og:description" content="Draw a schematic and it makes sound on the spot. 1,920 real parts, solved by Lotus Engine in Rust.">
+<meta property="og:description" content="Draw a schematic and it makes sound on the spot. 1,921 real parts, solved by Lotus Engine in Rust.">
 <meta property="og:type" content="website">
 
 <!-- ============================================================
@@ -34,7 +34,7 @@
 <meta property="og:image:alt" content="Rosso - draw the schematic, hear it immediately">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Rosso - a circuit simulator for guitar effects">
-<meta name="twitter:description" content="Draw a schematic and it makes sound on the spot. 1,920 real parts, solved by Lotus Engine in Rust.">
+<meta name="twitter:description" content="Draw a schematic and it makes sound on the spot. 1,921 real parts, solved by Lotus Engine in Rust.">
 <meta name="twitter:image" content="https://rosso.tsukubaonkyo.com/ogp-en.png">
 <link rel="icon" href="../icon.png">
 <script type="application/ld+json">
@@ -609,8 +609,8 @@ var SITE_EN = {
     "01 / Place",
   "部品を並べて配線する":
     "Lay out parts and wire them up",
-  "1920点の実部品から選んで置き、線でつなぐだけ。定数はあとから自由に変えられます。":
-    "Pick from 1,920 real parts, drop them in and draw wires. Values can be changed later, freely.",
+  "1921点の実部品から選んで置き、線でつなぐだけ。定数はあとから自由に変えられます。":
+    "Pick from 1,921 real parts, drop them in and draw wires. Values can be changed later, freely.",
   "02 / 鳴らす":
     "02 / Play",
   "再生ボタンを押すと音になる":
@@ -783,10 +783,10 @@ var SITE_EN = {
     "© 2026 Tsukuba Onkyo",
 
   /* ---- meta ---- */
-  "回路図を描くと、その場で音が鳴る。Rust製の回路ソルバ Lotus Engine が、ゲルマニウムファズから真空管プリまで実部品1920点の回路をそのまま解きます。Windows / macOS 無料。":
-    "Draw a schematic and it makes sound on the spot. Lotus Engine, a circuit solver written in Rust, solves real circuits built from 1,920 real parts - from germanium fuzz to tube preamps. Free for Windows and macOS.",
-  "回路図を描くと、その場で音が鳴る。実部品1920点、Rust製ソルバ Lotus Engine。":
-    "Draw a schematic and it makes sound on the spot. 1,920 real parts, solved by Lotus Engine in Rust.",
+  "回路図を描くと、その場で音が鳴る。Rust製の回路ソルバ Lotus Engine が、ゲルマニウムファズから真空管プリまで実部品1921点の回路をそのまま解きます。Windows / macOS 無料。":
+    "Draw a schematic and it makes sound on the spot. Lotus Engine, a circuit solver written in Rust, solves real circuits built from 1,921 real parts - from germanium fuzz to tube preamps. Free for Windows and macOS.",
+  "回路図を描くと、その場で音が鳴る。実部品1921点、Rust製ソルバ Lotus Engine。":
+    "Draw a schematic and it makes sound on the spot. 1,921 real parts, solved by Lotus Engine in Rust.",
 
   /* ---- ページ内スクリプトが出す文字列 ---- */
   "64bit ・ ":
@@ -973,7 +973,7 @@ document.addEventListener("DOMContentLoaded", function () {
 <!-- ================= ヒーロー ================= -->
 <section class="hero" id="top">
   <div class="hero-in">
-    <div class="badge rise"><i class="dot"></i> <span>Version <b id="ver">1.5.1</b><span class="badge-os"> — Windows / macOS</span>  · Free</span></div>
+    <div class="badge rise"><i class="dot"></i> <span>Version <b id="ver">1.5.2</b><span class="badge-os"> — Windows / macOS</span>  · Free</span></div>
 
     <h1 class="rise">
       Draw a schematic.<span class="l2">Hear it immediately.</span>
@@ -1020,7 +1020,7 @@ document.addEventListener("DOMContentLoaded", function () {
           <li class="on">
             <span class="n">01 / Place</span>
             <h3>Lay out parts and wire them up</h3>
-            <p>Pick from 1,920 real parts, drop them in and draw wires. Values can be changed later, freely.</p>
+            <p>Pick from 1,921 real parts, drop them in and draw wires. Values can be changed later, freely.</p>
           </li>
           <li>
             <span class="n">02 / Play</span>
@@ -1075,7 +1075,7 @@ document.addEventListener("DOMContentLoaded", function () {
     <p class="lede rise" data-i18n-html>Swap the transistor and the same circuit sounds different. Rosso keeps the real parameters for every part - hFE and junction capacitance, Koren coefficients for tubes - so the difference between an <span class="hl-o">AC128</span> and a <span class="hl-b">BC109C</span>, or between a <span class="hl-p">12AX7</span> and a <span class="hl-p">12AT7</span>, is something you can swap in and listen to.</p>
 
     <div class="stats">
-      <div class="stat rise"><b><span class="num" data-to="1920">0</span></b><span>Parts included</span></div>
+      <div class="stat rise"><b><span class="num" data-to="1921">0</span></b><span>Parts included</span></div>
       <div class="stat rise"><b><span class="num" data-to="180">0</span></b><span>Germanium transistors</span></div>
       <div class="stat rise"><b><span class="num" data-to="188">0</span></b><span>Tubes (preamp, power, rectifier)</span></div>
       <div class="stat rise"><b><span class="num" data-to="47">0</span></b><span>Physical model types</span></div>
@@ -1260,7 +1260,7 @@ document.addEventListener("DOMContentLoaded", function () {
   <div class="wrap">
     <p class="eyebrow rise">Download</p>
     <h2 class="rise">It's free.<br>No account, either.</h2>
-    <p class="lede rise">Version <b id="ver2">1.5.1</b>  · Free for personal use · Circuit data is stored on your own machine.</p>
+    <p class="lede rise">Version <b id="ver2">1.5.2</b>  · Free for personal use · Circuit data is stored on your own machine.</p>
     <p class="note" id="dl-state" hidden></p>
     <p class="rise" style="margin-top:22px">
   <a class="btn btn-s" href="https://ko-fi.com/Y2R325GOZV"
