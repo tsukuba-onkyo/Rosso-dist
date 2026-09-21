@@ -564,8 +564,8 @@ var SITE_EN = {
     "Transfer curve and harmonics",
   "歪み率 ":
     "THD ",
-  "プリセット「オーバードライブ (4558+ダイオードクリップ)」の帰還抵抗を動かすと、この曲線が動きます":
-    "Move the feedback resistor in the preset \"Overdrive (4558 + diode clipping)\" and this curve moves with it",
+  "プリセット「低ゲインディストーション (4558+ダイオードクリップ)」の帰還抵抗を動かすと、この曲線が動きます":
+    "Move the feedback resistor in the preset \"Low-gain distortion (4558 + diode clipping)\" and this curve moves with it",
   "非反転増幅":
     "Non-inverting amp",
   "オペアンプの + に入れて、− を抵抗2本で分圧する。増幅率は <code>1 + Rf/Rg</code> で、<b>1倍を下回れません</b>。ブースターやオーバードライブの入口はほぼこの形です。電源電圧を超えたところで頭打ちになります。":
@@ -626,8 +626,8 @@ var SITE_EN = {
     "Input level",
   "ダイオード直列数":
     "Diodes in series",
-  "プリセット「オーバードライブ (4558+ダイオードクリップ)」。1N4148 を 1N34A に差し替えると頭打ちの高さが変わります":
-    "The preset \"Overdrive (4558 + diode clipping)\". Swap a 1N4148 for a 1N34A and the ceiling changes",
+  "プリセット「低ゲインディストーション (4558+ダイオードクリップ)」。1N4148 を 1N34A に差し替えると頭打ちの高さが変わります":
+    "The preset \"Low-gain distortion (4558 + diode clipping)\". Swap a 1N4148 for a 1N34A and the ceiling changes",
   "帰還路クリップ":
     "Clipping in the feedback loop",
   "オペアンプの帰還抵抗に並列でダイオードを入れる形。増幅した分だけが頭打ちになり、<b>1倍ぶんの原音は常に素通しで残ります</b>。だから完全な板にはならず、角も丸い。チューブスクリーマー系の「潰れきらない」感じの出どころです。":
@@ -636,8 +636,8 @@ var SITE_EN = {
     "Drive (Rf/Rg)",
   "原音が1倍ぶん残る":
     "dry signal survives at unity",
-  "プリセット「オーバードライブ (4558+ダイオードクリップ)」のダイオードを、帰還抵抗と並列に移してみてください":
-    "Take the diodes in the preset \"Overdrive (4558 + diode clipping)\" and move them across the feedback resistor",
+  "プリセット「低ゲインディストーション (4558+ダイオードクリップ)」のダイオードを、帰還抵抗と並列に移してみてください":
+    "Take the diodes in the preset \"Low-gain distortion (4558 + diode clipping)\" and move them across the feedback resistor",
   "非対称クリップ":
     "Asymmetric clipping",
   "片側だけダイオードを1本増やす。上下で頭打ちの高さが変わるので、波形が上下対称でなくなり、<b>偶数次の倍音が立ちます</b>。奇数次だけの対称クリップは硬く、偶数次が混ざると「太い」と感じる — その違いが棒グラフでそのまま見えます。":
@@ -936,8 +936,8 @@ var SITE_EN = {
     "The signal inside a single supply",
   "振れる余裕 ±":
     "headroom ±",
-  "プリセット「オーバードライブ (4558+ダイオードクリップ)」で、オペアンプの + 側がこの電圧に落ちています":
-    "In the preset \"Overdrive (4558 + diode clipping)\", the op-amp's + input sits on this voltage",
+  "プリセット「低ゲインディストーション (4558+ダイオードクリップ)」で、オペアンプの + 側がこの電圧に落ちています":
+    "In the preset \"Low-gain distortion (4558 + diode clipping)\", the op-amp's + input sits on this voltage",
   "デカップリング":
     "Supply decoupling",
   "電源から回路へ入る直前に、抵抗1本とコンデンサ1個でローパスを作る。電源のリップルやノイズはここで削られます。<b>付け忘れると、ハムが直接信号に乗ります</b>。段ごとに分けて入れると、前段の電流変動が後段を揺らすのも止められます。":
@@ -2190,7 +2190,7 @@ CATALOG.push({
     bars(V, r[1], h, p.c);
     return { l: T("伝達曲線 と 倍音"), r: T("歪み率 ") + thd.toFixed(1) + " %" };
   },
-  tryIt: N_("プリセット「オーバードライブ (4558+ダイオードクリップ)」の帰還抵抗を動かすと、この曲線が動きます")
+  tryIt: N_("プリセット「低ゲインディストーション (4558+ダイオードクリップ)」の帰還抵抗を動かすと、この曲線が動きます")
 });
 
 CATALOG.push({
@@ -2352,7 +2352,7 @@ CATALOG.push({
     bars(V, r[1], h, p.c);
     return { l: T("伝達曲線 と 倍音"), r: T("歪み率 ") + (Math.sqrt(thd) / (h[0] || 1) * 100).toFixed(1) + " %" };
   },
-  tryIt: N_("プリセット「オーバードライブ (4558+ダイオードクリップ)」。1N4148 を 1N34A に差し替えると頭打ちの高さが変わります")
+  tryIt: N_("プリセット「低ゲインディストーション (4558+ダイオードクリップ)」。1N4148 を 1N34A に差し替えると頭打ちの高さが変わります")
 });
 
 CATALOG.push({
@@ -2392,7 +2392,7 @@ CATALOG.push({
     bars(V, r[1], harm(f, 10), p.c);
     return { l: T("伝達曲線 と 倍音"), r: T("原音が1倍ぶん残る") };
   },
-  tryIt: N_("プリセット「オーバードライブ (4558+ダイオードクリップ)」のダイオードを、帰還抵抗と並列に移してみてください")
+  tryIt: N_("プリセット「低ゲインディストーション (4558+ダイオードクリップ)」のダイオードを、帰還抵抗と並列に移してみてください")
 });
 
 CATALOG.push({
@@ -3353,7 +3353,7 @@ CATALOG.push({
     var head = Math.min(p.vr, 9 - p.vr);
     return { l: T("単電源の中の信号"), r: T("振れる余裕 ±") + head.toFixed(1) + " V" };
   },
-  tryIt: N_("プリセット「オーバードライブ (4558+ダイオードクリップ)」で、オペアンプの + 側がこの電圧に落ちています")
+  tryIt: N_("プリセット「低ゲインディストーション (4558+ダイオードクリップ)」で、オペアンプの + 側がこの電圧に落ちています")
 });
 
 CATALOG.push({
