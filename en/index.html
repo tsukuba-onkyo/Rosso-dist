@@ -542,8 +542,8 @@ var SITE_EN = {
     "Paste in a picture of a schematic from a book or the web and <b>4DEM</b> reads the parts and wiring and rebuilds it as a Rosso circuit. It places everything <span class=\"hl\">in the same layout as the original</span> rather than rearranging it, so you can work with your source drawing side by side.",
   "読み取りは複数回走らせて結果を突き合わせ、<span class=\"hl-b\">食い違った箇所に印を付けて</span>提示します。 そのまま流し込まず、確認してから適用する作りです。組み終わったあとの改善提案 (どこに抵抗やコンデンサを足すべきか) も 4DEM の担当で、こちらは実測に基づいて出します。":
     "The read runs several times and the results are cross-checked, then <span class=\"hl-b\">anything that disagrees is flagged</span> for you. Nothing is poured straight in - you confirm before applying. Suggestions for what to improve once it is built (where to add a resistor or a capacitor) are 4DEM's job too, and those come from measurements.",
-  "<b style=\"color:var(--text)\">配布物に署名を付けていません。</b> そのため初回起動時に OS が警告を出します。macOS では アプリを右クリック →「開く」を選ぶか、<code>システム設定 → プライバシーとセキュリティ</code> から許可してください。 Windows では SmartScreen の「詳細情報」→「実行」で進めます。":
-    "<b style=\"color:var(--text)\">The builds are not code-signed.</b> Your OS will warn you the first time you launch. On macOS, right-click the app and choose Open, or allow it from <code>System Settings &rarr; Privacy &amp; Security</code>. On Windows, click \"More info\" then \"Run anyway\" in SmartScreen.",
+  "<b style=\"color:var(--text)\">macOS 版は Apple の公証を受けています (v1.7.1 以降)。</b> 警告は出ず、そのまま開けます。 Windows 版はまだ署名を付けていないので、 初回起動時に SmartScreen が警告を出します。「詳細情報」→「実行」で進めてください。":
+    "<b style=\"color:var(--text)\">The macOS build is notarized by Apple (v1.7.1 and later).</b> It opens without any warning. The Windows build is not code-signed yet, so SmartScreen will warn you the first time you launch - click \"More info\" then \"Run anyway\".",
   "<b style=\"color:var(--text)\">macOS で「\"Rosso\"は壊れているため開けません」と出る場合。</b> v1.3.4 以前の macOS 版に起きる不具合で、アプリは壊れていません。この表示のときは 右クリック →「開く」では回避できないので、ターミナルで次を実行してから開いてください。":
     "<b style=\"color:var(--text)\">If macOS says \"Rosso is damaged and can't be opened\".</b> This is a bug in macOS builds up to v1.3.4 - the app is not damaged. Right-click and Open does not get around this one, so run the following in Terminal first, then open it.",
   "<b style=\"color:var(--text)\">macOS 版は Apple Silicon 専用です。</b> Intel Mac 向けのビルドはまだありません。":
@@ -974,7 +974,7 @@ document.addEventListener("DOMContentLoaded", function () {
 <!-- ================= ヒーロー ================= -->
 <section class="hero" id="top">
   <div class="hero-in">
-    <div class="badge rise"><i class="dot"></i> <span>Version <b id="ver">1.7.0</b><span class="badge-os"> — Windows / macOS</span>  · Free</span></div>
+    <div class="badge rise"><i class="dot"></i> <span>Version <b id="ver">1.7.1</b><span class="badge-os"> — Windows / macOS</span>  · Free</span></div>
 
     <h1 class="rise">
       Draw a schematic.<span class="l2">Hear it immediately.</span>
@@ -1261,7 +1261,7 @@ document.addEventListener("DOMContentLoaded", function () {
   <div class="wrap">
     <p class="eyebrow rise">Download</p>
     <h2 class="rise">It's free.<br>No account, either.</h2>
-    <p class="lede rise">Version <b id="ver2">1.7.0</b>  · Free for personal use · Circuit data is stored on your own machine.</p>
+    <p class="lede rise">Version <b id="ver2">1.7.1</b>  · Free for personal use · Circuit data is stored on your own machine.</p>
     <p class="note" id="dl-state" hidden></p>
     <p class="rise" style="margin-top:22px">
   <a class="btn btn-s" href="https://ko-fi.com/Y2R325GOZV"
@@ -1285,7 +1285,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     <div class="caveat rise">
       <h3>What to know before you install</h3>
-      <p data-i18n-html><b style="color:var(--text)">The builds are not code-signed.</b> Your OS will warn you the first time you launch. On macOS, right-click the app and choose Open, or allow it from <code>System Settings &rarr; Privacy &amp; Security</code>. On Windows, click "More info" then "Run anyway" in SmartScreen.</p>
+      <p data-i18n-html><b style="color:var(--text)">The macOS build is notarized by Apple (v1.7.1 and later).</b> It opens without any warning. The Windows build is not code-signed yet, so SmartScreen will warn you the first time you launch - click "More info" then "Run anyway".</p>
       <p data-i18n-html><b style="color:var(--text)">If macOS says "Rosso is damaged and can't be opened".</b> This is a bug in macOS builds up to v1.3.4 - the app is not damaged. Right-click and Open does not get around this one, so run the following in Terminal first, then open it.</p>
       <pre style="overflow-x:auto"><code>xattr -cr /Applications/Rosso.app</code></pre>
       <p>From v1.3.5 on this no longer happens (and if it does, the command above gets you through).</p>
